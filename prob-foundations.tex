@@ -137,9 +137,74 @@ In this note we turn this result on its head and attempt to use it to motivate t
 
 If the probability of an event is supposed to be a measure of how often this event occurs, then it seems reasonable to assume that we are, in principle, able to distinguish when this event occurs. For example, rolling a six-sided die the state of affairs \textquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, throwing a ball the state of affairs \textquote{the ball was thrown more than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
 
-One might take a different view: One might agree that it is possible to \emph{affirm} that the length of the throw, measures in metres, lies in the interval $(50,\infty)$. If the length is $L$, we can simply take a ruler whose subdivisions are smaller than $L - 50$ in metres. However, one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smatter), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
+One might take a different view: One might agree that it is possible to \emph{affirm} that the length of the throw, measured in metres, lies in the interval $(50,\infty)$. If the length is $L$, we can simply take a ruler whose subdivisions are smaller than $L - 50$ in metres. However, one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smatter), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
 
 To be precise, after performing the relevant random experiment, we will assume that we are always able to decide whether or not the event has occured or not. In particular, if $E$ is an event, then the state of affairs \textquote{$E$ does not obtain} is also an event, denoted $E'$: If $E$ obtains, then $E'$ does not. And conversely, if $E$ does not obtain, then $E'$ does obtain. We call $E'$ the \emph{complement of} or the \emph{complementary event to $E$}.\footnote{In contrast, in the logic of affirmative assertions we do not allow complementation (i.e. negation). Hence it may not be surprising that this logic ends up being closely tied to topology.}
+
+Next consider two events $E_1$ and $E_2$. Since we are able to decide whether each of them have obtained, the same is true for the event \textquote{both $E_1$ and $E_2$ have obtained} and the event \textquote{at least one of $E_1$ and $E_2$ has obtained}. The first is called the \emph{conjunction} of $E_1$ and $E_2$ and is denoted $E_1 \meet E_2$, and the second is the \emph{disjunction} $E_1 \join E_2$ of $E_1$ and $E_2$.
+
+Finally it seems natural to allow an \textquote{empty event} $0$ which never occurs, as well as a \textquote{universal event} $1$ that always occurs.
+
+With these operations in place, we claim that this logic of events constitute a \emph{Boolean algebra}. We recall the definition of such a structure:
+
+\begin{definition}[Boolean algebras]
+    A \emph{Boolean algebra} is a structure $\langle B; \join, \meet, ', 0, 1 \rangle$ such that
+    %
+    \begin{enumdef}
+        \item $\langle B; \join, \meet \rangle$ is a distributive lattice,
+        \item $a \join 0 = a$ and $a \meet 1$ for all $a \in B$, and
+        \item $a \join a' = 1$ and $a \meet a' = 0$ for all $a \in B$.
+    \end{enumdef}
+\end{definition}
+%
+We leave it to the reader to reflect on whether or not Boolean algebras offer a reasonable way to formalise our intuition of events (in the opinion of the author, they do). This leads naturally to the following definition:
+
+\begin{definition}[Generalised abstract probability spaces]
+    A \emph{generalised abstract probability space} is a pair $(\calF, \P)$, where $\calF$ is a set and $\P \colon \calF \to [0,1]$, such that
+    %
+    \begin{enumdef}
+        \item $\langle \calF; \join, \meet, ', 0, 1 \rangle$ is a Boolean algebra,
+        \item $\P(1) = 1$, and
+        \item $E \meet F = 0$ implies $\P(E \join F) = \P(E) + \P(F)$ for all $E,F \in \calF$.
+    \end{enumdef}
+\end{definition}
+%
+In [ref] we consider more restrictive abstract probability spaces, hence the adjective \textquote{generalised}. We refer to the property (iii) as \emph{(finite) additivity} of $\P$.
+
+We define an ordering on events in the usual way: If $E$ and $F$ are events such that $E \join F = F$, then we write $E \leq F$ and say that \emph{$E$ implies $F$}. The intuition is that, if $F$ obtains just when \emph{either} $E$ or $F$ obtains, then there is no way for $E$ to obtain without $F$ also doing so.
+
+
+\begin{lemma}
+    Let $(\calF, \P)$ be a generalised abstract probability space.
+    %
+    \begin{enumlem}
+        \item $\P(0) = 0$.
+        \item $\P$ is increasing, i.e. $E \leq F$ implies $\P(E) \leq \P(F)$ for all $E,F \in \calF$.
+    \end{enumlem}
+\end{lemma}
+
+\begin{proof}
+    The first claim follows since $0 \join 0 = 0 \meet 0 = 0$, so by additivity of $\P$,
+    %
+    \begin{equation*}
+        \P(0)
+            = \P(0 \join 0)
+            = \P(0) + \P(0),
+    \end{equation*}
+    %
+    hence $\P(0) = 0$.
+
+    To prove the second claim, first notice that if $E \leq F$ then $F = E \join (F \meet E')$. But $E \meet (F \meet E') = 0$, so
+    %
+    \begin{equation*}
+        \P(F)
+            = \P \bigl( E \join (F \meet E') \bigr)
+            = \P(E) + \P(F \meet E')
+            \geq \P(E),
+    \end{equation*}
+    %
+    as claimed.
+\end{proof}
 
 
 \nocite{*}
