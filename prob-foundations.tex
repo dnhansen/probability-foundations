@@ -134,6 +134,230 @@ Whether or not this is the correct interpretation of probability as it occurs in
 In this note we turn this result on its head and attempt to use it to motivate the formalisation of probability theory in terms of measure spaces. As we shall see, this is not entirely successful and will require some leaps that are not entirely justified by our conceptual grasp of probability.
 
 
+\chapter{Metric Boolean algebras}
+
+\begin{definition}[Boolean algebras]
+    A \emph{Boolean algebra} is a structure $\langle B; \join, \meet, ', 0, 1 \rangle$ such that
+    %
+    \begin{enumdef}
+        \item $\langle B; \join, \meet \rangle$ is a distributive lattice,
+        \item $a \join 0 = a$ and $a \meet 1$ for all $a \in B$, and
+        \item $a \join a' = 1$ and $a \meet a' = 0$ for all $a \in B$.
+    \end{enumdef}
+    %
+    A \emph{measure} on a Boolean algebra $B$ is a map $\mu \colon B \to [0,\infty)$ such that $x \meet y = 0$ implies
+    %
+    \begin{equation}
+        \label{eq:finite-additivity}
+        \mu(x \join y)
+            = \mu(x) + \mu(y)
+    \end{equation}
+    %
+    for all $x,y \in B$.
+\end{definition}
+%
+The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of $\mu$. Recall that the lattice structure induces an order $\leq$ on $B$ such that $x \leq y$ if and only if $x \join y = y$ for $x,y \in B$. With this ordering it is clear that $\mu$ is increasing.
+
+We also have the following:
+
+\begin{lemma}[Boole's inequality]
+    Let $\mu$ be a measure on a Boolean algebra $B$. Then for any $x,y \in B$ we have
+    %
+    \begin{equation*}
+        \mu(x \join y)
+            \leq \mu(x) + \mu(y).
+    \end{equation*}
+\end{lemma}
+
+\begin{proof}
+    Notice that
+    %
+    \begin{equation*}
+        (x \meet y') \meet y = x \meet (y' \meet y) = 0,
+    \end{equation*}
+    %
+    and that
+    %
+    \begin{equation*}
+        (x \meet y') \join y = (x \join y) \meet (y' \join y) = x \join y.
+    \end{equation*}
+    %
+    It follows by additivity of $\mu$ that
+    %
+    \begin{equation*}
+        \mu(x \join y)
+            = \mu \bigl( (x \meet y') \join y \bigr)
+            = \mu(x \meet y') + \mu(y)
+            \leq \mu(x) + \mu(y),
+    \end{equation*}
+    %
+    as desired.
+\end{proof}
+
+
+Next we equip Boolean algebras with a pseudometric. Let $B$ be a Boolean algebra. For $x,y \in B$ we define the \emph{symmetric difference} between $x$ and $y$ by
+%
+\begin{equation*}
+    x \symdiff y
+        = (x \meet y') \join (y \meet x').
+\end{equation*}
+%
+If $\mu$ is a measure on $B$, define a map $\rho \colon B \times B \to [0,\infty)$ by
+%
+\begin{equation}
+    \label{eq:Boolean-metric}
+    \rho(x,y)
+        = \mu(x \symdiff y)
+\end{equation}
+%
+for $x,y \in B$.
+
+
+\begin{lemma}
+    The map $\rho$ is a pseudometric on $B$.
+\end{lemma}
+
+\begin{proof}
+    We only need to prove the triangle inequality. To this end, let $x,y,z \in B$ and notice that
+    %
+    \begin{align*}
+        x \meet z'
+            &= (x \meet z) \meet (y' \join y) \\
+            &= (x \meet z' \meet y') \join (x \meet z' \meet y) \\
+            &\leq (x \meet y') \join (y \meet z').
+    \end{align*}
+    %
+    Similarly we have $z \meet x' \leq (z \meet y') \join (y \meet x')$. It follows that
+    %
+    \begin{align*}
+        x \symdiff z
+            &= (x \meet z') \join (z \meet x') \\
+            &\leq (x \meet y') \join (y \meet x') \join
+                  (y \meet z') \join (z \meet y') \\
+            &= (x \symdiff y) \join (y \symdiff z).
+    \end{align*}
+    %
+    Now Boole's inequality implies that
+    %
+    \begin{equation*}
+        \rho(x,z)
+            = \mu(x \symdiff y)
+            \leq \mu(x \symdiff y) + \mu(y \symdiff z)
+            = \rho(x,y) + \rho(y,z),
+    \end{equation*}
+    %
+    as desired.
+\end{proof}
+
+\begin{definition}[Metric Boolean algebras]
+    A \emph{pseudometric Boolean algebra} is a tuple $(B,\mu,\rho)$, where $B$ is a Boolean algebra, $\mu$ is a measure on $B$, and $\rho$ is the pseudometric on $B$ given by \eqref{eq:Boolean-metric}.
+
+    If $\rho$ is a metric, then $(B,\mu,\rho)$ is called a \emph{metric Boolean algebra}.
+\end{definition}
+
+Next we show that this pseudometric respects the lattice operations and complementation:
+
+\begin{proposition}
+    Let $(B, \mu, \rho)$ be a pseudometric Boolean algebra. Then the maps $x \mapsto x'$, $(x,y) \mapsto x \join y$, and $(x,y) \mapsto x \meet y$ are continuous.
+\end{proposition}
+
+\begin{proof}
+    Let $x \in B$, and let $(x_n)_{n\in\naturals}$ be a sequence in $B$ that converges to $x$. Notice that $x_n' \symdiff x' = x_n \symdiff x$, so $\rho(x_n',x') = \rho(x_n,x)$. Hence the complementation map $x \mapsto x'$ is continuous.
+
+    Let further $(y_n)_{n\in\naturals}$ be a sequence converging to a point $y \in B$. A short calculation shows that
+    %
+    \begin{align*}
+        (x_n \join y_n) \symdiff (x \join y)
+            &= (x_n \meet x' \meet y') \join
+               (y_n \meet x' \meet y') \join
+               (x \meet x_n' \meet y_n') \join
+               (y \meet x_n' \meet y_n') \\
+            &\leq (x_n \meet x') \join
+            (x \meet x_n') \join
+            (y_n \meet y') \join
+            (y \meet y_n') \\
+            &= (x_n \symdiff x) \join (y_n \symdiff y).
+    \end{align*}
+    %
+    Thus Boole's inequality shows that
+    %
+    \begin{equation*}
+        \rho(x_n \join y_n, x \join y)
+            \leq \rho(x_n,x) + \rho(y_n,y),
+    \end{equation*}
+    %
+    which implies continuity of the join map $(x,y) \mapsto x \join y$.
+
+    Finally, continuity of the meet map $(x,y) \mapsto x \meet y$ follows since
+    %
+    \begin{equation*}
+        x \meet y
+            = \bigl( x' \join y' \bigr)',
+    \end{equation*}
+    %
+    so it is a composition of continuous functions.
+\end{proof}
+
+It is well-known that any pseudometric space has a completion, i.e. can be isometrically embedded as a dense subset of a complete pseudometric space. See for instance Willard Corollary~24.5. A natural question is then: If $(B,\rho)$ is a pseudometric Boolean algebra with metric completion $(\altoverline{B}, \altoverline{\rho})$, does $\altoverline{B}$ also carry the structure of a Boolean algebra? (Yes, obvious since operations are continuous.)
+
+\begin{lemma}
+    \label{thm:monotonic-sequence-Cauchy}
+    Let $(B,\rho)$ be a pseudometric Boolean algebra. Every monotonic sequence in $B$ is a Cauchy sequence.
+\end{lemma}
+
+\begin{proof}
+    Let $(x_n)_{n\in\naturals}$ be an increasing sequence in $B$. Then since $x_n \leq 1$ we also have $\mu(x_n) \leq \mu(1) < \infty$ for all $n \in \naturals$. Thus the sequence $(\mu(x_n))$ is a bounded increasing sequence in $\setR$, hence it converges to some $\alpha \geq 0$. For $\epsilon > 0$ there is an $N \in \naturals$ such that $\mu(x_n) \in (\alpha - \epsilon, \alpha]$ for all $n \geq N$.
+    
+    If then $m,n \geq N$ with $m \leq n$, then $x_m \leq x_n$ and so
+    %
+    \begin{equation*}
+        x_m \meet x_n'
+            \leq x_n \meet x_n'
+            = 0.
+    \end{equation*}
+    %
+    Hence $x_m \symdiff x_n = x_n \meet x_m'$, so it follows that
+    %
+    \begin{equation*}
+        \rho(x_m,x_n)
+            = \mu(x_n \meet x_m')
+            = \mu(x_n) - \mu(x_m)
+            < \epsilon.
+    \end{equation*}
+    %
+    Thus $(x_n)$ is indeed a Cauchy sequence. The case where $(x_n)$ is decreasing is similar.
+\end{proof}
+
+
+\begin{proposition}
+    Let $(B,\rho)$ be a pseudometric Boolean algebra with completion $(\altoverline{B}, \altoverline{\rho})$. Any $(x_n)_{n\in\naturals}$ is a sequence in $B$ has a join in $\altoverline{B}$, and
+    %
+    \begin{equation*}
+        \bigjoin_{n\in\naturals} x_n
+            = \lim_{n\to\infty} \bigjoin_{i \leq n} x_i.
+    \end{equation*}
+    %
+    Similarly for meets.
+\end{proposition}
+%
+[Something about limits not being unique... Is this a problem, since meets and joins are unique?]
+
+\begin{proof}
+    The sequence $( \bigjoin_{i \leq n} x_i )_{n\in\naturals}$ is increasing, so by \cref{thm:monotonic-sequence-Cauchy} it has a limit $s \in \altoverline{B}$. For $k \in \naturals$ and $n \geq k$ we have $x_k \leq \bigjoin_{i \leq n} x_i$, i.e.
+    %
+    \begin{equation*}
+        x_k \join \bigjoin_{i \leq n} x_i
+            = \bigjoin_{i \leq n} x_i.
+    \end{equation*}
+    %
+    Taking the limit as $n \to \infty$, continuity of (binary) joins implies that $x_k \join s = s$, or $x_k \leq s$. Thus $s$ is an upper bound of the sequence $(x_n)$.
+
+    On the other hand, if $t \in \altoverline{B}$ is an upper bound of $(x_n)$, then $x_k \leq t$. We have just seen that taking limits preserves inequalities, so this implies that $s \leq t$ as desired.
+
+    The corresponding result for meets follows similarly, or from the fact that complementation is continuous.
+\end{proof}
+
+
 \chapter{Event spaces as Boolean algebras}
 
 If the probability of an event is supposed to be a measure of how often this event occurs, then it seems reasonable to assume that we are, in principle, able to distinguish when this event occurs. For example, rolling a six-sided die the state of affairs \textquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, throwing a ball the state of affairs \textquote{the ball was thrown more than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
@@ -317,6 +541,8 @@ This axiom implies that $\P$ is countably additive when the join of a sequence o
     %
     as $n \to \infty$ as desired.
 \end{proof}
+
+Of course, we are not always guaranteed that a generalised abstract probability space is closed under countable joins.
 
 
 \begin{definition}[Abstract $\sigma$-algebra]
