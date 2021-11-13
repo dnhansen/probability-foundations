@@ -10,6 +10,7 @@
 
 % Formatting and layout
 \usepackage[autostyle]{csquotes}
+\renewcommand{\mktextelp}{(\textellipsis\unkern)}
 \usepackage[final]{microtype}
 \usepackage{xcolor}
 \frenchspacing
@@ -137,7 +138,7 @@ In this note we turn this result on its head and attempt to use it to motivate t
 
 If the probability of an event is supposed to be a measure of how often this event occurs, then it seems reasonable to assume that we are, in principle, able to distinguish when this event occurs. For example, rolling a six-sided die the state of affairs \textquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, throwing a ball the state of affairs \textquote{the ball was thrown more than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
 
-One might take a different view: One might agree that it is possible to \emph{affirm} that the length of the throw, measured in metres, lies in the interval $(50,\infty)$. If the length is $L$, we can simply take a ruler whose subdivisions are smaller than $L - 50$ in metres. However, one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smatter), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
+One might take a different view: One might agree that it is possible to \emph{affirm} that the length of the throw, measured in metres, lies in the interval $(50,\infty)$. If the length $L$ does in fact lie in the above interval, we can simply take a ruler whose subdivisions are smaller than $L - 50$ in metres. However, one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smatter), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
 
 To be precise, after performing the relevant random experiment, we will assume that we are always able to decide whether or not the event has occured or not. In particular, if $E$ is an event, then the state of affairs \textquote{$E$ does not obtain} is also an event, denoted $E'$: If $E$ obtains, then $E'$ does not. And conversely, if $E$ does not obtain, then $E'$ does obtain. We call $E'$ the \emph{complement of} or the \emph{complementary event to $E$}.\footnote{In contrast, in the logic of affirmative assertions we do not allow complementation (i.e. negation). Hence it may not be surprising that this logic ends up being closely tied to topology.}
 
@@ -169,7 +170,7 @@ We leave it to the reader to reflect on whether or not Boolean algebras offer a 
     \end{enumdef}
 \end{definition}
 %
-In [ref] we consider more restrictive abstract probability spaces, hence the adjective \textquote{generalised}. We refer to the property (iii) as \emph{(finite) additivity} of $\P$.
+In [ref] we consider more restrictive abstract probability spaces, hence the adjective \textquote{generalised}. We refer to the property (iii) as \emph{(finite) additivity} of $\P$. If $E$ and $F$ are events such that $E \meet F = 0$, then we call $E$ and $F$ \emph{disjoint} or \emph{incompatible}.
 
 We define an ordering on events in the usual way: If $E$ and $F$ are events such that $E \join F = F$, then we write $E \leq F$ and say that \emph{$E$ implies $F$}. The intuition is that, if $F$ obtains just when \emph{either} $E$ or $F$ obtains, then there is no way for $E$ to obtain without $F$ also doing so.
 
@@ -205,6 +206,124 @@ We define an ordering on events in the usual way: If $E$ and $F$ are events such
     %
     as claimed.
 \end{proof}
+
+
+\chapter[Abstract sigma-algebras and continuity][Abstract $\sigma$-algebras and continuity]{Abstract $\sigma$-algebras and continuity}
+
+Of course, the map $\P$ above is supposed to be a probability measure. But measures are \emph{countably} additive, not just finitely so. It is however difficult to justify this on conceptual groups. In fact, according to Kolmogorov himself:
+%
+\blockquote[\cite{kolmogorov1956}]{%
+    Since the new axiom \textins{countable additivity} is essential for infinite fields of probability only, it is almost impossible to elucidate its empirical meaning. \textelp{} For, in describing any observable random process we can obtain only finite fields of probability. Infinite fields of probability occur only as idealized models of real random processes. \emph{We limit ourselves, arbitrarily, to only those models which satisfy Axiom VI} \textins{countable additivity}. This limitation has been found expedient in researches of the most diverse sort.%
+}
+%
+And furthermore:
+%
+\blockquote[\cite{kolmogorov1995}]{%
+    \textins*{S}omewhat more complicated problems require, if the theory is to be simple and tractable, that probability be subject to the \emph{axiom of denumerable additivity}. However, the justification of that axiom remains purely empirical, in that we have not yet encountered any interesting problem for which we have not been able to construct a probability field conforming to the axiom in question.%
+}
+%
+\textcite{kolmogorov1956} introduces the axiom in the following form:
+
+\begin{definition}[Axiom of continuity]
+    A generalised abstract probability space $(\calF, \P)$ is said to satisfy the \emph{axiom of continuity} if it has the following property: If $(E_n)_{n\in\naturals}$ is a decreasing sequence of events in $\calF$ such that $\bigmeet_{n\in\naturals} E_n$ exists and equals $0$, then $\lim_{n\to\infty} \P(E_n) = 0$.
+\end{definition}
+%
+This axiom implies that $\P$ is countably additive when the join of a sequence of elements in $\calF$ also lies in $\calF$. To prove this fact we need a lemma, which is obvious if $\calF$ is a set algebra:
+
+\begin{lemma}
+    \label{thm:refine_join}
+    Let $\langle B; \join, \meet, ', 0, 1 \rangle$ be a Boolean algebra. Let $(a_i)_{i \in I}$ be a collection of elements in $B$ such that $a_i \meet a_j = 0$ when $i \neq j$. If $\bigjoin_{i \in I} a_i \in B$, then $\bigjoin_{i \in J} a_i \in B$ for any $J \subseteq I$ such that $I \setminus J$ is finite (i.e. $J$ is cofinite).
+\end{lemma}
+
+\begin{proof}
+    Let $(a_i)_{i \in I}$ be such a collection of elements, and let $J \subseteq I$ be cofinite. It suffices to prove the lemma in the case $I \setminus J = \{i_0\}$, since the general case then follows by induction. We claim that
+    %
+    \begin{equation*}
+        \bigjoin_{i \in J} a_i
+            = a_{i_0}' \meet \bigjoin_{i \in I} a_i.
+    \end{equation*}
+    %
+    Let $j \in J$ and notice that, since $a_{i_0} \meet a_j = 0$,
+    %
+    \begin{equation*}
+        a_{i_0}' \meet a_j
+            = (a_{i_0}' \meet a_j) \join (a_{i_0} \meet a_j)
+            = (a_{i_0}' \join a_{i_0}) \meet a_j
+            = 1 \meet a_j
+            = a_j.
+    \end{equation*}
+    %
+    Now because $a_j \leq \bigjoin_{i \in I} a_i$ we get
+    %
+    \begin{equation*}
+        a_j
+            = a_{i_0}' \meet a_j
+            \leq a_{i_0}' \meet \bigjoin_{i \in I} a_i.
+    \end{equation*}
+    %
+    Conversely, suppose that $a_j \leq s$ for all $j \in J$. Then $a_i \leq a_{i_0} \join s$ for all $i \in I$, so
+    %
+    \begin{equation*}
+        \bigjoin_{i \in I} a_i
+            \leq a_{i_0} \join s.
+    \end{equation*}
+    %
+    It follows that
+    %
+    \begin{equation*}
+        a_{i_0}' \meet \bigjoin_{i \in I} a_i
+            \leq a_{i_0}' \meet (a_{i_0} \join s)
+            = 0 \join (a_{i_0} \meet s)
+            \leq s,
+    \end{equation*}
+    %
+    as desired.
+\end{proof}
+
+
+\begin{proposition}[The generalised addition theorem]
+    Let $(\calF, \P)$ be a generalised abstract probability space satisfying the axiom of continuity. If $(E_n)_{n\in\naturals}$ be a sequence of pairwise disjoint events in $\calF$ such that $E = \bigjoin_{n\in\naturals} E_n \in \calF$, then
+    %
+    \begin{equation*}
+        \P(E)
+            = \sum_{n=1}^\infty \P(E_n).
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    By \cref{thm:refine_join}, $R_n = \bigjoin_{i > n} E_i$ exists in $\calF$, and we claim that $\bigmeet_{n\in\naturals} R_n = 0$. Let $L \in \calF$ be a lower bound of $R_n$ for $n \in \naturals$. Then for $n \in \naturals$ we have
+    %
+    \begin{equation*}
+        L \join \bigjoin_{i > n} E_i
+            = \bigjoin_{i > n} E_i,
+    \end{equation*}
+    %
+    and taking the meet of each side with $E_n'$ yields $L \meet E_n' = 0$. Hence $\bigjoin_{n\in\naturals} L \meet E_n = 0$. Now notice that $\bigmeet_{n\in\naturals} E_n = 0$, since $E_n \meet E_m = 0$ when $n \neq m$. It follows that $\bigjoin_{n\in\naturals} E_n' = 1$, and so
+    %
+    \begin{equation*}
+        L
+            = L \meet \bigjoin_{n\in\naturals} E_n'
+            = \bigjoin_{n\in\naturals} L \meet E_n'
+            = 0.
+    \end{equation*}
+    %
+    Thus $\bigmeet_{n\in\naturals} R_n = 0$ as claimed. It now follows from finite additivity of $\P$ and the axiom of continuity that
+    %
+    \begin{equation*}
+        \P(E)
+            = \sum_{i=1}^n \P(E_i) + \P(R_n)
+            \to \sum_{i=1}^\infty \P(E_i)
+    \end{equation*}
+    %
+    as $n \to \infty$ as desired.
+\end{proof}
+
+
+\begin{definition}[Abstract $\sigma$-algebra]
+    An \emph{abstract $\sigma$-algebra} is a Boolean algebra $\langle B; \join, \meet, ', 0, 1 \rangle$ with countable joins. That is, if $(a_n)_{n\in\naturals}$ is a sequence of elements in $B$, then their join $\bigjoin_{n\in\naturals} a_n$ exists.
+\end{definition}
+%
+If the join $\bigjoin_{n\in\naturals} a_n$ exists, then it follows by taking complements that the meet $\bigmeet_{n\in\naturals} a_n$ also exists.
 
 
 \nocite{*}
