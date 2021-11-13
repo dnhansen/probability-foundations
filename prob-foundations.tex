@@ -1,0 +1,150 @@
+% Document setup
+\documentclass[article, a4paper, 11pt, oneside]{memoir}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[UKenglish]{babel}
+
+% Document info
+\newcommand\doctitle{Foundations of probability theory}
+\newcommand\docauthor{Danny Nygård Hansen}
+
+% Formatting and layout
+\usepackage[autostyle]{csquotes}
+\usepackage[final]{microtype}
+\usepackage{xcolor}
+\frenchspacing
+\usepackage{latex-sty/articlepagestyle}
+\usepackage{latex-sty/articlesectionstyle}
+
+% Fonts
+\usepackage[largesmallcaps,partialup]{kpfonts}
+\DeclareSymbolFontAlphabet{\mathrm}{operators} % https://tex.stackexchange.com/questions/40874/kpfonts-siunitx-and-math-alphabets
+\linespread{1.06}
+\let\mathfrak\undefined
+\usepackage{eufrak}
+\usepackage{inconsolata}
+\usepackage{amssymb}
+
+% Hyperlinks
+\usepackage{hyperref}
+\definecolor{linkcolor}{HTML}{4f4fa3}
+\hypersetup{%
+	pdftitle=\doctitle,
+	pdfauthor=\docauthor,
+	colorlinks,
+	linkcolor=linkcolor,
+	citecolor=linkcolor,
+	urlcolor=linkcolor,
+	bookmarksnumbered=true
+}
+
+% Equation numbering
+\numberwithin{equation}{chapter}
+
+% Footnotes
+\footmarkstyle{\textsuperscript{#1}\hspace{0.25em}}
+
+% Mathematics
+\usepackage{latex-sty/basicmathcommands}
+\usepackage{latex-sty/framedtheorems}
+\usepackage{latex-sty/probabilitycommands}
+\usepackage{tikz-cd}
+\usetikzlibrary{babel}
+
+% Lists
+\usepackage{enumitem}
+\setenumerate[0]{label=\normalfont(\arabic*)}
+
+% Bibliography
+\usepackage[backend=biber, style=authoryear, maxcitenames=2, useprefix]{biblatex}
+\addbibresource{references.bib}
+
+% Title
+\title{\doctitle}
+\author{\docauthor}
+
+
+% Section style -- add to section style .sty?
+\setsubsecheadstyle{\normalfont\itshape}
+
+
+% Preimage -- to be added to mathcommands .sty
+\newcommand{\preim}{^{-1}}
+
+
+\newcommand{\calN}{\mathcal{N}}
+\DeclarePairedDelimiter{\nhoodfilteraux}{(}{)}
+% \newcommand{\nhoodfilter}[1]{\calN\nhoodfilteraux{#1}}
+\newcommand{\nhoodfilter}[1]{\calN_{#1}}
+
+
+\newcommand{\calU}{\mathcal{U}}
+\newcommand{\calV}{\mathcal{V}}
+\newcommand{\calW}{\mathcal{W}}
+\newcommand{\calT}{\mathcal{T}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calS}{\mathcal{S}}
+
+\newcommand{\borel}[1]{\calB(#1)}
+\DeclareMathOperator{\supp}{supp}
+
+\let\oldP\P
+\renewcommand{\P}{\mathbb{P}}
+
+% Add to basicmathcommands.sty
+\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+
+
+\begin{document}
+
+\maketitle
+
+\chapter{Introduction}
+
+In the usual measure-theoretical formulation of probability theory, the following result is a corollary of the Law of Large Numbers:
+
+\begin{theorem}[The frequency interpretation of probability]
+    Let $\rvar{X}, \rvar{X}_1, \rvar{X}_2, \ldots$ be i.i.d. real-valued random variables on a probability space $(\Omega, \calF, \P)$. For every $B \in \borel{\reals}$ we have
+    %
+    \begin{equation*}
+        \P(\rvar{X} \in B)
+            = \lim_{n\to\infty} \frac{
+                \card{ \set{j \in \{1, \ldots, n\} }{ \rvar{X}_j(\omega) \in B } }
+            }{
+                n
+            }
+    \end{equation*}
+    %
+    for $\P$-almost all $\omega \in \Omega$.
+\end{theorem}
+
+\begin{proof}
+    Thorbjørnsen Korollar~13.6.2. [Maybe reproduce the proof given LLN for completeness?]
+\end{proof}
+%
+That is, given a sequence $(\rvar{X}_n)_{n\in\naturals}$, and one extra $\rvar{X}$, of i.i.d. random variables, the probability that $\rvar{X}$ lies in some Borel set $B$ can be thought of as the proportion of the $\rvar{X}_n$ that lie in $B$, as $n$ tends to infinity. In other words, probability is a measure of the \emph{frequency} with which an outcome of a random experiment obtains, if we repeat the experiment many times.
+
+Whether or not this is the correct interpretation of probability as it occurs in the natural world we will not discuss here. Nonetheless the above result is an uncontroversial consequence of the theory, and it certainly aligns with our intuitive understanding of probability.
+
+In this note we turn this result on its head and attempt to use it to motivate the formalisation of probability theory in terms of measure spaces. As we shall see, this is not entirely successful and will require some leaps that are not entirely justified by our conceptual grasp of probability.
+
+
+\chapter{Event spaces as Boolean algebras}
+
+If the probability of an event is supposed to be a measure of how often this event occurs, then it seems reasonable to assume that we are, in principle, able to distinguish when this event occurs. For example, rolling a six-sided die the state of affairs \textquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, throwing a ball the state of affairs \textquote{the ball was thrown more than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
+
+One might take a different view: One might agree that it is possible to \emph{affirm} that the length of the throw, measures in metres, lies in the interval $(50,\infty)$. If the length is $L$, we can simply take a ruler whose subdivisions are smaller than $L - 50$ in metres. However, one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smatter), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
+
+To be precise, after performing the relevant random experiment, we will assume that we are always able to decide whether or not the event has occured or not. In particular, if $E$ is an event, then the state of affairs \textquote{$E$ does not obtain} is also an event, denoted $E'$: If $E$ obtains, then $E'$ does not. And conversely, if $E$ does not obtain, then $E'$ does obtain. We call $E'$ the \emph{complement of} or the \emph{complementary event to $E$}.\footnote{In contrast, in the logic of affirmative assertions we do not allow complementation (i.e. negation). Hence it may not be surprising that this logic ends up being closely tied to topology.}
+
+
+\nocite{*}
+
+\printbibliography
+
+
+\end{document}
