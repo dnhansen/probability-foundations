@@ -235,7 +235,7 @@ Before proceeding we note the following technical result that we shall need late
 %
 It is clear that $\mu(\emptyset) = 0$ and that $\mu$ is increasing. It follows that $\mu(x) \leq \mu(1)$ for all $x \in B$. Notice that we require that $\mu$ is finite, but this is no restriction since we are ultimately interested in the case where $\mu$ is a probability measure.
 
-The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of $\mu$. We will later define more restrictive structures and measures upon them, hence the adjective \enquote{generalised}.
+The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of $\mu$, sine an easy induction argument extends it to all finite joins. We will later define more restrictive structures and measures upon them, hence the adjective \enquote{generalised}.
 
 \begin{proposition}[Boole's inequality]
     Let $(B,\mu)$ be a generalised abstract measure space $B$. Then for any $x,y \in B$ we have
@@ -245,6 +245,8 @@ The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of
             \leq \mu(x) + \mu(y).
     \end{equation*}
 \end{proposition}
+%
+Similar to \eqref{eq:finite-additivity}, Boole's inequality may be extended to all finite joins by induction.
 
 \begin{proof}
     Notice that
@@ -515,6 +517,7 @@ This is an analogue of the continuity (from above) of ordinary countably additiv
 
 
 \begin{proposition}[The generalised addition theorem]
+    \label{thm:generalised-addition}
     Let $(B, \mu)$ be a generalised abstract measure space satisfying the axiom of continuity. If $(x_n)_{n\in\naturals}$ is a sequence of pairwise disjoint elements in $B$ such that $x = \bigjoin_{n\in\naturals} x_n \in B$, then
     %
     \begin{equation*}
@@ -549,6 +552,28 @@ This is an analogue of the continuity (from above) of ordinary countably additiv
     \end{equation*}
     %
     as $n \to \infty$ as desired.
+\end{proof}
+
+
+\begin{proposition}[Boole's inequality]
+    Let $(B,\mu)$ be a generalised abstract measure space, and let $(x_n)_{n\in\naturals}$ be a sequence in $B$. If $x = \bigjoin_{n\in\naturals} x_n \in B$, then
+    %
+    \begin{equation*}
+        \mu(x)
+            \leq \sum_{n=1}^\infty \mu(x_n).
+    \end{equation*}
+\end{proposition}
+
+\begin{proof}
+    First notice that, by the finite Boole equality,
+    %
+    \begin{equation*}
+        \mu \Bigl( \bigjoin_{i \leq n} x_i \Bigr)
+            \leq \sum_{i=1}^n \mu(x_i)
+            \leq \sum_{i=1}^\infty \mu(x_i)
+    \end{equation*}
+    %
+    for all $n \in \naturals$. By \cref{thm:existence-of-joins}, $\bigjoin_{i \leq n} x_i \to x$ as $n \to \infty$, so $\mu( \bigjoin_{i \leq n} x_i ) \to \mu(x)$. The claim follows
 \end{proof}
 
 
@@ -624,7 +649,7 @@ And furthermore:
     \textins*{S}omewhat more complicated problems require, if the theory is to be simple and tractable, that probability be subject to the \emph{axiom of denumerable additivity}. However, the justification of that axiom remains purely empirical, in that we have not yet encountered any interesting problem for which we have not been able to construct a probability field conforming to the axiom in question.%
 }
 %
-\textcite{kolmogorov1956} introduces the axiom in the following form:
+The axiom of continuity is, as we saw in \cref{thm:generalised-addition}, equivalent to countable additivity in our formalism. While countable additivity is usually preferred in the definition of (probability) measures today, \textcite{kolmogorov1956} preferred to assume the axiom of continuity and then prove the generalised addition theorem.
 
 
 \nocite{*}
