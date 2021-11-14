@@ -138,7 +138,7 @@ In this note we turn this result on its head and attempt to use it to motivate t
 \chapter{Preliminaries}
 
 
-\section{Abstract measure spaces}
+\section{Boolean algebras}
 
 We begin by reviewing some of the purely algebraic properties of Boolean algebras.
 
@@ -168,48 +168,49 @@ Before proceeding we note the following technical result that we shall need late
 
 \begin{lemma}
     \label{thm:refine_join}
-    Let $\langle B; \join, \meet, ', 0, 1 \rangle$ be a Boolean algebra. Let $(a_i)_{i \in I}$ be a collection of elements in $B$ such that $a_i \meet a_j = 0$ when $i \neq j$. If $\bigjoin_{i \in I} a_i \in B$, then $\bigjoin_{i \in J} a_i \in B$ for any $J \subseteq I$ such that $I \setminus J$ is finite (i.e. $J$ is cofinite).
+    Let $\langle B; \join, \meet, ', 0, 1 \rangle$ be a Boolean algebra. Let $(x_i)_{i \in I}$ be a collection of elements in $B$ such that $x_i \meet x_j = 0$ when $i \neq j$. If $\bigjoin_{i \in I} x_i \in B$, then $\bigjoin_{i \in J} x_i \in B$ for any cofinite\footnotemark{} $J \subseteq I$.
 \end{lemma}
+\footnotetext{Recall that a subset $J$ of a set $I$ is called \emph{cofinite} if the complement $I \setminus J$ is finite.}
 
 \begin{proof}
-    Let $(a_i)_{i \in I}$ be such a collection of elements, and let $J \subseteq I$ be cofinite. It suffices to prove the lemma in the case $I \setminus J = \{i_0\}$, since the general case then follows by induction. We claim that
+    Let $(x_i)_{i \in I}$ be such a collection of elements, and let $J \subseteq I$ be cofinite. It suffices to prove the lemma in the case $I \setminus J = \{i_0\}$, since the general case then follows by induction. We claim that
     %
     \begin{equation*}
-        \bigjoin_{i \in J} a_i
-            = a_{i_0}' \meet \bigjoin_{i \in I} a_i.
+        \bigjoin_{i \in J} x_i
+            = x_{i_0}' \meet \bigjoin_{i \in I} x_i.
     \end{equation*}
     %
-    Let $j \in J$ and notice that, since $a_{i_0} \meet a_j = 0$,
+    Let $j \in J$ and notice that, since $x_{i_0} \meet x_j = 0$,
     %
     \begin{equation*}
-        a_{i_0}' \meet a_j
-            = (a_{i_0}' \meet a_j) \join (a_{i_0} \meet a_j)
-            = (a_{i_0}' \join a_{i_0}) \meet a_j
-            = 1 \meet a_j
-            = a_j.
+        x_{i_0}' \meet x_j
+            = (x_{i_0}' \meet x_j) \join (x_{i_0} \meet x_j)
+            = (x_{i_0}' \join x_{i_0}) \meet x_j
+            = 1 \meet x_j
+            = x_j.
     \end{equation*}
     %
-    Now because $a_j \leq \bigjoin_{i \in I} a_i$ we get
+    Now because $x_j \leq \bigjoin_{i \in I} x_i$ we get
     %
     \begin{equation*}
-        a_j
-            = a_{i_0}' \meet a_j
-            \leq a_{i_0}' \meet \bigjoin_{i \in I} a_i.
+        x_j
+            = x_{i_0}' \meet x_j
+            \leq x_{i_0}' \meet \bigjoin_{i \in I} x_i.
     \end{equation*}
     %
-    Conversely, suppose that $a_j \leq s$ for all $j \in J$. Then $a_i \leq a_{i_0} \join s$ for all $i \in I$, so
+    Conversely, suppose that $x_j \leq s$ for all $j \in J$. Then $x_i \leq x_{i_0} \join s$ for all $i \in I$, so
     %
     \begin{equation*}
-        \bigjoin_{i \in I} a_i
-            \leq a_{i_0} \join s.
+        \bigjoin_{i \in I} x_i
+            \leq x_{i_0} \join s.
     \end{equation*}
     %
     It follows that
     %
     \begin{equation*}
-        a_{i_0}' \meet \bigjoin_{i \in I} a_i
-            \leq a_{i_0}' \meet (a_{i_0} \join s)
-            = 0 \join (a_{i_0} \meet s)
+        x_{i_0}' \meet \bigjoin_{i \in I} x_i
+            \leq x_{i_0}' \meet (x_{i_0} \join s)
+            = 0 \join (x_{i_0} \meet s)
             \leq s,
     \end{equation*}
     %
@@ -218,9 +219,9 @@ Before proceeding we note the following technical result that we shall need late
 
 
 
+\section{Abstract measure spaces}
 
-
-\begin{definition}[Abstract measure spaces]
+\begin{definition}[Generalised abstract measure spaces]
     A \emph{measure} on a Boolean algebra $B$ is a map $\mu \colon B \to [0,\infty)$ such that $x \meet y = 0$ implies
     %
     \begin{equation}
@@ -277,7 +278,7 @@ The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of
     If $\rho$ is a metric, then $(B,\rho)$ is called a \emph{metric Boolean algebra}.
 \end{definition}
 
-Next we equip abstract measure spaces with a canonical pseudometric. If $(B,\mu)$ is an abstract measure space, define a map $\rho_\mu \colon B \times B \to [0,\infty)$ by
+Next we equip generalised abstract measure spaces with a canonical pseudometric. If $(B,\mu)$ is a generalised abstract measure space, define a map $\rho_\mu \colon B \times B \to [0,\infty)$ by
 %
 \begin{equation}
     \label{eq:Boolean-metric}
@@ -285,10 +286,10 @@ Next we equip abstract measure spaces with a canonical pseudometric. If $(B,\mu)
         = \mu(x \symdiff y)
 \end{equation}
 %
-for $x,y \in B$. The next proposition shows that $\rho_\mu$ is in fact a pseudometric. We will always equip an abstract measure space with this pseudometric.
+for $x,y \in B$. The next proposition shows that $\rho_\mu$ is in fact a pseudometric. We will always equip a generalised abstract measure space with this pseudometric.
 
 \begin{proposition}
-    Given an abstract measure space $(B,\mu)$, the map $\rho_\mu$ defined in \eqref{eq:Boolean-metric} makes $(B,\rho_\mu)$ into a pseudometric Boolean algebra. Furthermore, $\rho_\mu$ is a metric if and only if $\mu$ is positive definite.
+    Given a generalised abstract measure space $(B,\mu)$, the map $\rho_\mu$ defined in \eqref{eq:Boolean-metric} makes $(B,\rho_\mu)$ into a pseudometric Boolean algebra. Furthermore, $\rho_\mu$ is a metric if and only if $\mu$ is positive definite.
 \end{proposition}
 
 % Add to framedtheorems.sty
@@ -381,10 +382,10 @@ It is well-known that any (pseudo)metric space has a completion, i.e. can be iso
 
 This is indeed the case, and we sketch the construction: Let $x,y \in \altoverline{B}$, and let $(x_n)$ and $(y_n)$ be sequences in $B$ that converge to $x$ and $y$, respectively. Then these are Cauchy sequences in $B$, and the calculation leading to \eqref{eq:join-continuous} show that $(x_n \join y_n)$ is also a Cauchy sequence. Thus it converges to some element of $\altoverline{B}$. Denote it $x \join y$. We define $x'$ and $x \meet y$ similarly. It is easy to check that these operations satisfy the conditions in \cref{def:Boolean-algebra}. Furthermore, the completion $\altoverline{\rho}$ of the pseudometric $\rho$ makes $(\altoverline{B}, \altoverline{\rho})$ into a pseudometric Boolean algebra.
 
-This takes care of the metric structure. The next proposition shows that we can also extend the measure on an abstract measure space to its completion.
+This takes care of the metric structure. The next proposition shows that we can also extend the measure on a generalised abstract measure space to its completion.
 
 \begin{proposition}
-    Let $(B,\mu)$ be an abstract measure space, and let $(\altoverline{B}, \altoverline{\rho}_\mu)$ be the completion of $(B,\rho_\mu)$. Define a map $\altoverline{\mu} \colon \altoverline{B} \to [0,\infty)$ by
+    Let $(B,\mu)$ be a generalised abstract measure space, and let $(\altoverline{B}, \altoverline{\rho}_\mu)$ be the completion of $(B,\rho_\mu)$. Define a map $\altoverline{\mu} \colon \altoverline{B} \to [0,\infty)$ by
     %
     \begin{equation}
         \label{eq:mu-overline-def}
@@ -437,7 +438,7 @@ This takes care of the metric structure. The next proposition shows that we can 
 
 \begin{lemma}
     \label{thm:monotonic-sequence-Cauchy}
-    Let $(B,\mu)$ be an abstract measure space. Every monotonic sequence in $B$ is a Cauchy sequence.
+    Let $(B,\mu)$ be a generalised abstract measure space. Every monotonic sequence in $B$ is a Cauchy sequence.
 \end{lemma}
 
 \begin{proof}
@@ -575,26 +576,30 @@ If the join $\bigjoin_{n\in\naturals} x_n$ exists, then it follows by taking com
 
 
 
-\chapter{Event spaces as Boolean algebras}
+\chapter{The algebra of probability spaces}
+
+\section{Motivation}
 
 \newcommand{\compl}[1]{\altoverline{#1}}
 
-If the probability of an event is supposed to be a measure of how often this event occurs, then it seems reasonable to assume that we are, in principle, able to distinguish when this event occurs. For example, rolling a six-sided die the state of affairs \textquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, after throwing a ball the state of affairs \textquote{the ball was thrown more than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
+If the probability of an event is supposed to be a measure of how often this event occurs on repetitions of the random experiment in question, then it seems reasonable to assume that we are, at least in principle, able to distinguish when the event does and does not obtain. For example, after rolling a six-sided die the state of affairs \textquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, after throwing a ball the state of affairs \textquote{the ball was thrown more than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
 
-One might take a different view: One might agree that it is possible to \emph{affirm} that the length of the throw, measured in metres, lies in the interval $(50,\infty)$. If the length $L$ in metres does in fact lie in the above interval, we can simply use a ruler whose subdivisions are smaller than $L - 50$ in metres. However, one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smatter), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
+One might take a different view: Say that one grants that it is possible to \emph{affirm} that the length of the throw, measured in metres, lies in the interval $(50,\infty)$. If the length $L$ in metres does in fact lie in the above interval, we can simply use a ruler whose subdivisions are smaller than $L - 50$ in metres. Still one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smaller), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
 
-To be precise, after performing the relevant random experiment, we will assume that we are always able to decide whether or not the event has occured or not. In particular, if $E$ is an event, then the state of affairs \textquote{$E$ does not obtain} is also an event, denoted $\compl{E}$: If $E$ obtains, then $\compl{E}$ does not. And conversely, if $E$ does not obtain, then $\compl{E}$ does obtain. We call $\compl{E}$ the \emph{complement of} or the \emph{complementary event to $E$}.\footnote{In contrast, in the logic of affirmative assertions we do not allow complementation (i.e. negation). Hence it may not be surprising that this logic ends up being closely tied to topology.}
+To be precise, after performing the relevant random experiment, we will assume that we are always able to decide whether or not the event has occurred or not. In particular, if $E$ is an event, then the state of affairs \textquote{$E$ does not obtain} is also an event, denoted $\compl{E}$: If $E$ obtains, then $\compl{E}$ does not. And conversely, if $E$ does not obtain, then $\compl{E}$ does obtain. We call $\compl{E}$ the \emph{complement of} or the \emph{complementary event to $E$}.\footnote{In contrast, in the logic of affirmative assertions we do not allow complementation (i.e. negation). Hence it may not be surprising that this logic ends up being closely tied to topology, the relevant analogy being that the complement of an open set need not be open.} Evidently, the complement of a complement is just the event we started with.
 
 Next consider two events $E_1$ and $E_2$. Since we are able to decide whether each of them have obtained, the same is true for the event \textquote{both $E_1$ and $E_2$ have obtained} and the event \textquote{at least one of $E_1$ and $E_2$ has obtained}. The first is called the \emph{conjunction} of $E_1$ and $E_2$ and is denoted $E_1 \meet E_2$, and the second is the \emph{disjunction} $E_1 \join E_2$ of $E_1$ and $E_2$.
 
-Finally it seems natural to allow an \textquote{impossible event} $0$ which never occurs, as well as a \textquote{sure event} $1$ that always occurs.
+Finally it seems natural to allow an \textquote{impossible event} $0$ which never occurs, as well as a \textquote{sure event} $1$ that always occurs. Clearly $0$ and $1$ are each other's complements. If $E_1$ and $E_2$ are events with $E_1 \meet E_2 = 0$, then this manifestly means that $E_1$ and $E_2$ cannot obtain simultaneously: The two events are \emph{incompatible}.
 
 We collect all the relevant events in a set $\calF$ and postulate that the structure $\langle \calF; \join, \meet, \compl{\,\cdot\,\vphantom{e}}, 0, 1 \rangle$ is a Boolean algebra. We leave it to the reader to reflect on the reasonability of this assumption. This leads naturally to the following definition:
 
-\begin{definition}[Abstract probability spaces]
-    An \emph{abstract probability space} is an abstract measure space $(\calF, \P)$, where $\P$ is a positive definite probability measure.
+\begin{definition}[Generalised abstract probability spaces]
+    A \emph{generalised abstract probability space} is a generalised abstract measure space $(\calF, \P)$, where $\P$ is a positive definite probability measure.
 \end{definition}
 %
+The partial order $\leq$ induced by the lattice structure then has the interpretation that if $E \leq F$, then $E$ implies $F$. For recall that this means that $E \join F = F$, i.e. if $F$ has already occurred then no information is gained by observing that $E$ has also occurred. Conversely, if $F$ has \emph{not} occurred, then $E$ is impossible.
+
 We have justified every part of this definition except for the positive definiteness of $\P$. In the usual measure theoretical formulation of probability theory, there may (and often do) exist events that are not empty but still have probability zero. Kolmogorov had the following to say in critique of this approach:
 %
 \blockquote[\cite{kolmogorov1995}]{%
@@ -602,12 +607,12 @@ We have justified every part of this definition except for the positive definite
     zero.%
 }
 %
-Furthermore, this also as the technical benefit that the pseudometric $\rho_\P$ induced by $\P$ is in fact a metric. We will return to the consequences of this choice.
+Furthermore, this also has the technical benefit that the pseudometric $\rho_\P$ induced by $\P$ is in fact a metric. We will return to the consequences of this choice later.
 
 
-\chapter[Abstract sigma-algebras and continuity][Abstract $\sigma$-algebras and continuity]{Abstract $\sigma$-algebras and continuity}
+\section[Abstract sigma-algebras and continuity][Abstract $\sigma$-algebras and continuity]{Abstract $\sigma$-algebras and continuity}
 
-Of course, the map $\P$ above is supposed to be a probability measure. But measures are \emph{countably} additive, not just finitely so. It is however difficult to justify this on conceptual groups. In fact, according to Kolmogorov himself:
+Of course, the map $\P$ above is supposed to be analogous to a probability measure on a (concrete) $\sigma$-algebra. But ordinary measures are \emph{countably} additive, not just finitely so. It is however difficult to justify extending the finite additivity to sequences of disjoint events purely on conceptual or operational groups. In fact, according to Kolmogorov himself:
 %
 \blockquote[\cite{kolmogorov1956}]{%
     Since the new axiom \textins{countable additivity} is essential for infinite fields of probability only, it is almost impossible to elucidate its empirical meaning. \textelp{} For, in describing any observable random process we can obtain only finite fields of probability. Infinite fields of probability occur only as idealized models of real random processes. \emph{We limit ourselves, arbitrarily, to only those models which satisfy Axiom VI} \textins{countable additivity}. This limitation has been found expedient in researches of the most diverse sort.%
@@ -620,109 +625,6 @@ And furthermore:
 }
 %
 \textcite{kolmogorov1956} introduces the axiom in the following form:
-
-\begin{definition}[Axiom of continuity]
-    A generalised abstract probability space $(\calF, \P)$ is said to satisfy the \emph{axiom of continuity} if it has the following property: If $(E_n)_{n\in\naturals}$ is a decreasing sequence of events in $\calF$ such that $\bigmeet_{n\in\naturals} E_n$ exists and equals $0$, then $\lim_{n\to\infty} \P(E_n) = 0$.
-\end{definition}
-%
-This axiom implies that $\P$ is countably additive when the join of a sequence of elements in $\calF$ also lies in $\calF$. To prove this fact we need a lemma, which is obvious if $\calF$ is a set algebra:
-
-\begin{lemma}
-    % \label{thm:refine_join}
-    Let $\langle B; \join, \meet, ', 0, 1 \rangle$ be a Boolean algebra. Let $(a_i)_{i \in I}$ be a collection of elements in $B$ such that $a_i \meet a_j = 0$ when $i \neq j$. If $\bigjoin_{i \in I} a_i \in B$, then $\bigjoin_{i \in J} a_i \in B$ for any $J \subseteq I$ such that $I \setminus J$ is finite (i.e. $J$ is cofinite).
-\end{lemma}
-
-\begin{proof}
-    Let $(a_i)_{i \in I}$ be such a collection of elements, and let $J \subseteq I$ be cofinite. It suffices to prove the lemma in the case $I \setminus J = \{i_0\}$, since the general case then follows by induction. We claim that
-    %
-    \begin{equation*}
-        \bigjoin_{i \in J} a_i
-            = a_{i_0}' \meet \bigjoin_{i \in I} a_i.
-    \end{equation*}
-    %
-    Let $j \in J$ and notice that, since $a_{i_0} \meet a_j = 0$,
-    %
-    \begin{equation*}
-        a_{i_0}' \meet a_j
-            = (a_{i_0}' \meet a_j) \join (a_{i_0} \meet a_j)
-            = (a_{i_0}' \join a_{i_0}) \meet a_j
-            = 1 \meet a_j
-            = a_j.
-    \end{equation*}
-    %
-    Now because $a_j \leq \bigjoin_{i \in I} a_i$ we get
-    %
-    \begin{equation*}
-        a_j
-            = a_{i_0}' \meet a_j
-            \leq a_{i_0}' \meet \bigjoin_{i \in I} a_i.
-    \end{equation*}
-    %
-    Conversely, suppose that $a_j \leq s$ for all $j \in J$. Then $a_i \leq a_{i_0} \join s$ for all $i \in I$, so
-    %
-    \begin{equation*}
-        \bigjoin_{i \in I} a_i
-            \leq a_{i_0} \join s.
-    \end{equation*}
-    %
-    It follows that
-    %
-    \begin{equation*}
-        a_{i_0}' \meet \bigjoin_{i \in I} a_i
-            \leq a_{i_0}' \meet (a_{i_0} \join s)
-            = 0 \join (a_{i_0} \meet s)
-            \leq s,
-    \end{equation*}
-    %
-    as desired.
-\end{proof}
-
-
-\begin{proposition}[The generalised addition theorem]
-    Let $(\calF, \P)$ be a generalised abstract probability space satisfying the axiom of continuity. If $(E_n)_{n\in\naturals}$ be a sequence of pairwise disjoint events in $\calF$ such that $E = \bigjoin_{n\in\naturals} E_n \in \calF$, then
-    %
-    \begin{equation*}
-        \P(E)
-            = \sum_{n=1}^\infty \P(E_n).
-    \end{equation*}
-\end{proposition}
-
-\begin{proof}
-    By \cref{thm:refine_join}, $R_n = \bigjoin_{i > n} E_i$ exists in $\calF$, and we claim that $\bigmeet_{n\in\naturals} R_n = 0$. Let $L \in \calF$ be a lower bound of $R_n$ for $n \in \naturals$. Then for $n \in \naturals$ we have
-    %
-    \begin{equation*}
-        L \join \bigjoin_{i > n} E_i
-            = \bigjoin_{i > n} E_i,
-    \end{equation*}
-    %
-    and taking the meet of each side with $E_n'$ yields $L \meet E_n' = 0$. Hence $\bigjoin_{n\in\naturals} L \meet E_n = 0$. Now notice that $\bigmeet_{n\in\naturals} E_n = 0$, since $E_n \meet E_m = 0$ when $n \neq m$. It follows that $\bigjoin_{n\in\naturals} E_n' = 1$, and so
-    %
-    \begin{equation*}
-        L
-            = L \meet \bigjoin_{n\in\naturals} E_n'
-            = \bigjoin_{n\in\naturals} L \meet E_n'
-            = 0.
-    \end{equation*}
-    %
-    Thus $\bigmeet_{n\in\naturals} R_n = 0$ as claimed. It now follows from finite additivity of $\P$ and the axiom of continuity that
-    %
-    \begin{equation*}
-        \P(E)
-            = \sum_{i=1}^n \P(E_i) + \P(R_n)
-            \to \sum_{i=1}^\infty \P(E_i)
-    \end{equation*}
-    %
-    as $n \to \infty$ as desired.
-\end{proof}
-
-Of course, we are not always guaranteed that a generalised abstract probability space is closed under countable joins.
-
-
-\begin{definition}[Abstract $\sigma$-algebra]
-    An \emph{abstract $\sigma$-algebra} is a Boolean algebra $\langle B; \join, \meet, ', 0, 1 \rangle$ with countable joins. That is, if $(a_n)_{n\in\naturals}$ is a sequence of elements in $B$, then their join $\bigjoin_{n\in\naturals} a_n$ exists.
-\end{definition}
-%
-If the join $\bigjoin_{n\in\naturals} a_n$ exists, then it follows by taking complements that the meet $\bigmeet_{n\in\naturals} a_n$ also exists.
 
 
 \nocite{*}
