@@ -98,6 +98,7 @@
 
 % Add to basicmathcommands.sty
 \DeclarePairedDelimiter{\card}{\lvert}{\rvert}
+\renewcommand{\symdiff}{\mathbin{\triangle}}
 
 
 \begin{document}
@@ -136,15 +137,87 @@ In this note we turn this result on its head and attempt to use it to motivate t
 
 \chapter{Metric Boolean algebras}
 
+We begin by reviewing some of the purely algebraic properties of Boolean algebras.
+
 \begin{definition}[Boolean algebras]
+    \label{def:Boolean-algebra}
     A \emph{Boolean algebra} is a structure $\langle B; \join, \meet, ', 0, 1 \rangle$ such that
     %
     \begin{enumdef}
         \item $\langle B; \join, \meet \rangle$ is a distributive lattice,
-        \item $a \join 0 = a$ and $a \meet 1$ for all $a \in B$, and
-        \item $a \join a' = 1$ and $a \meet a' = 0$ for all $a \in B$.
+        \item $0$ and $1$ are elements of $B$ such that $x \join 0 = x$ and $x \meet 1$ for all $x \in B$, and
+        \item $'$ is a unary operation such that $x \join x' = 1$ and $x \meet x' = 0$ for all $x \in B$.
     \end{enumdef}
+\end{definition}
+%
+The binary operations $\join$ and $\meet$ are called \emph{join} and \emph{meet}, respectively. For $x \in B$ the element $x'$ is called the \emph{complement} of $x$. In a general bounded lattice $L$, an element $y \in L$ such that $x \join y = 1$ and $x \meet y = 0$ is called a complement of $x \in L$. If $L$ is distributive, complements are unique. Recall also that the lattice structure on $B$ induces a partial order $\leq$ such that $x \leq y$ if and only if $x \join y = y$ for $x,y \in B$.
+
+Let $B$ be a Boolean algebra. For $x,y \in B$ we define the \emph{symmetric difference} between $x$ and $y$ by
+%
+\begin{equation*}
+    x \symdiff y
+        = (x \meet y') \join (y \meet x').
+\end{equation*}
+%
+If $x \symdiff y = 0$, then it is easy to show that $x = y$.
+
+Before proceeding we note the following technical result that we shall need later:
+
+\begin{lemma}
+    \label{thm:refine_join}
+    Let $\langle B; \join, \meet, ', 0, 1 \rangle$ be a Boolean algebra. Let $(a_i)_{i \in I}$ be a collection of elements in $B$ such that $a_i \meet a_j = 0$ when $i \neq j$. If $\bigjoin_{i \in I} a_i \in B$, then $\bigjoin_{i \in J} a_i \in B$ for any $J \subseteq I$ such that $I \setminus J$ is finite (i.e. $J$ is cofinite).
+\end{lemma}
+
+\begin{proof}
+    Let $(a_i)_{i \in I}$ be such a collection of elements, and let $J \subseteq I$ be cofinite. It suffices to prove the lemma in the case $I \setminus J = \{i_0\}$, since the general case then follows by induction. We claim that
     %
+    \begin{equation*}
+        \bigjoin_{i \in J} a_i
+            = a_{i_0}' \meet \bigjoin_{i \in I} a_i.
+    \end{equation*}
+    %
+    Let $j \in J$ and notice that, since $a_{i_0} \meet a_j = 0$,
+    %
+    \begin{equation*}
+        a_{i_0}' \meet a_j
+            = (a_{i_0}' \meet a_j) \join (a_{i_0} \meet a_j)
+            = (a_{i_0}' \join a_{i_0}) \meet a_j
+            = 1 \meet a_j
+            = a_j.
+    \end{equation*}
+    %
+    Now because $a_j \leq \bigjoin_{i \in I} a_i$ we get
+    %
+    \begin{equation*}
+        a_j
+            = a_{i_0}' \meet a_j
+            \leq a_{i_0}' \meet \bigjoin_{i \in I} a_i.
+    \end{equation*}
+    %
+    Conversely, suppose that $a_j \leq s$ for all $j \in J$. Then $a_i \leq a_{i_0} \join s$ for all $i \in I$, so
+    %
+    \begin{equation*}
+        \bigjoin_{i \in I} a_i
+            \leq a_{i_0} \join s.
+    \end{equation*}
+    %
+    It follows that
+    %
+    \begin{equation*}
+        a_{i_0}' \meet \bigjoin_{i \in I} a_i
+            \leq a_{i_0}' \meet (a_{i_0} \join s)
+            = 0 \join (a_{i_0} \meet s)
+            \leq s,
+    \end{equation*}
+    %
+    as desired.
+\end{proof}
+
+
+
+
+
+\begin{definition}[Abstract measure spaces]
     A \emph{measure} on a Boolean algebra $B$ is a map $\mu \colon B \to [0,\infty)$ such that $x \meet y = 0$ implies
     %
     \begin{equation}
@@ -153,21 +226,21 @@ In this note we turn this result on its head and attempt to use it to motivate t
             = \mu(x) + \mu(y)
     \end{equation}
     %
-    for all $x,y \in B$.
+    for all $x,y \in B$. If $\mu$ is a measure on a Boolean algebra $B$, then we call the pair $(B,\mu)$ a \emph{generalised abstract measure space}. If $x \neq 0$ implies that $\mu(x) > 0$, then $\mu$ is called \emph{positive definite}. If $\mu(1) = 1$, then we call $\mu$ a \emph{probability measure}.
 \end{definition}
 %
-The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of $\mu$. Recall that the lattice structure induces an order $\leq$ on $B$ such that $x \leq y$ if and only if $x \join y = y$ for $x,y \in B$. With this ordering it is clear that $\mu$ is increasing.
+It is clear that $\mu(\emptyset) = 0$ and that $\mu$ is increasing. It follows that $\mu(x) \leq \mu(1)$ for all $x \in B$. Notice that we require that $\mu$ is finite, but this is no restriction since we are ultimately interested in the case where $\mu$ is a probability measure.
 
-We also have the following:
+The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of $\mu$. We will later define more restrictive structures and measures upon them, hence the adjective \enquote{generalised}.
 
-\begin{lemma}[Boole's inequality]
-    Let $\mu$ be a measure on a Boolean algebra $B$. Then for any $x,y \in B$ we have
+\begin{proposition}[Boole's inequality]
+    Let $(B,\mu)$ be a generalised abstract measure space $B$. Then for any $x,y \in B$ we have
     %
     \begin{equation*}
         \mu(x \join y)
             \leq \mu(x) + \mu(y).
     \end{equation*}
-\end{lemma}
+\end{proposition}
 
 \begin{proof}
     Notice that
@@ -195,29 +268,36 @@ We also have the following:
 \end{proof}
 
 
-Next we equip Boolean algebras with a pseudometric. Let $B$ be a Boolean algebra. For $x,y \in B$ we define the \emph{symmetric difference} between $x$ and $y$ by
-%
-\begin{equation*}
-    x \symdiff y
-        = (x \meet y') \join (y \meet x').
-\end{equation*}
-%
-If $\mu$ is a measure on $B$, define a map $\rho \colon B \times B \to [0,\infty)$ by
+\begin{definition}[Metric Boolean algebras]
+    A \emph{pseudometric Boolean algebra} is a tuple $(B,\rho)$, where $B$ is a Boolean algebra and $\rho$ is a pseudometric on $B$ such that the maps $x \mapsto x'$, $(x,y) \mapsto x \join y$, and $(x,y) \mapsto x \meet y$ are continuous.
+
+    If $\rho$ is a metric, then $(B,\rho)$ is called a \emph{metric Boolean algebra}.
+\end{definition}
+
+Next we equip abstract measure spaces with a canonical pseudometric. If $(B,\mu)$ is an abstract measure space, define a map $\rho_\mu \colon B \times B \to [0,\infty)$ by
 %
 \begin{equation}
     \label{eq:Boolean-metric}
-    \rho(x,y)
+    \rho_\mu(x,y)
         = \mu(x \symdiff y)
 \end{equation}
 %
-for $x,y \in B$.
+for $x,y \in B$. The next proposition shows that $\rho_\mu$ is in fact a pseudometric. We will always equip an abstract measure space with this pseudometric.
 
+\begin{proposition}
+    Given an abstract measure space $(B,\mu)$, the map $\rho_\mu$ defined in \eqref{eq:Boolean-metric} makes $(B,\rho_\mu)$ into a pseudometric Boolean algebra. Furthermore, $\rho_\mu$ is a metric if and only if $\mu$ is positive definite.
+\end{proposition}
+%
+Notice that the measure $\mu$ can be written in terms of $\rho_\mu$, since $\mu(x) = \rho_\mu(x,0)$. Furthermore, since (pseudo)metrics are continuous, it follows that $\mu(x_n) \to \mu(x)$ whenever $x_n \to x$ in $B$.
 
-\begin{lemma}
-    The map $\rho$ is a pseudometric on $B$.
-\end{lemma}
+% Add to framedtheorems.sty
+\newcommand{\mylistlabelfont}[1]{{\normalfont\color{linkcolor}\textit{#1}:}}
+\newlist{proofsec}{description}{1}
+\setlist[proofsec]{leftmargin=0pt, parsep=0pt, listparindent=\parindent, font=\mylistlabelfont}
 
 \begin{proof}
+\begin{proofsec}
+    \item[$\rho_\mu$ is a pseudometric]
     We only need to prove the triangle inequality. To this end, let $x,y,z \in B$ and notice that
     %
     \begin{align*}
@@ -240,29 +320,16 @@ for $x,y \in B$.
     Now Boole's inequality implies that
     %
     \begin{equation*}
-        \rho(x,z)
+        \rho_\mu(x,z)
             = \mu(x \symdiff y)
             \leq \mu(x \symdiff y) + \mu(y \symdiff z)
-            = \rho(x,y) + \rho(y,z),
+            = \rho_\mu(x,y) + \rho_\mu(y,z),
     \end{equation*}
     %
     as desired.
-\end{proof}
 
-\begin{definition}[Metric Boolean algebras]
-    A \emph{pseudometric Boolean algebra} is a tuple $(B,\mu,\rho)$, where $B$ is a Boolean algebra, $\mu$ is a measure on $B$, and $\rho$ is the pseudometric on $B$ given by \eqref{eq:Boolean-metric}.
-
-    If $\rho$ is a metric, then $(B,\mu,\rho)$ is called a \emph{metric Boolean algebra}.
-\end{definition}
-
-Next we show that this pseudometric respects the lattice operations and complementation:
-
-\begin{proposition}
-    Let $(B, \mu, \rho)$ be a pseudometric Boolean algebra. Then the maps $x \mapsto x'$, $(x,y) \mapsto x \join y$, and $(x,y) \mapsto x \meet y$ are continuous.
-\end{proposition}
-
-\begin{proof}
-    Let $x \in B$, and let $(x_n)_{n\in\naturals}$ be a sequence in $B$ that converges to $x$. Notice that $x_n' \symdiff x' = x_n \symdiff x$, so $\rho(x_n',x') = \rho(x_n,x)$. Hence the complementation map $x \mapsto x'$ is continuous.
+    \item[Continuity of lattice operations]
+    Let $x \in B$, and let $(x_n)_{n\in\naturals}$ be a sequence in $B$ that converges to $x$. Notice that $x_n' \symdiff x' = x_n \symdiff x$, so $\rho_\mu(x_n',x') = \rho_\mu(x_n,x)$. Hence the complementation map $x \mapsto x'$ is continuous.
 
     Let further $(y_n)_{n\in\naturals}$ be a sequence converging to a point $y \in B$. A short calculation shows that
     %
@@ -281,10 +348,11 @@ Next we show that this pseudometric respects the lattice operations and compleme
     %
     Thus Boole's inequality shows that
     %
-    \begin{equation*}
-        \rho(x_n \join y_n, x \join y)
-            \leq \rho(x_n,x) + \rho(y_n,y),
-    \end{equation*}
+    \begin{equation}
+        \label{eq:join-continuous}
+        \rho_\mu(x_n \join y_n, x \join y)
+            \leq \rho_\mu(x_n,x) + \rho_\mu(y_n,y),
+    \end{equation}
     %
     which implies continuity of the join map $(x,y) \mapsto x \join y$.
 
@@ -296,13 +364,74 @@ Next we show that this pseudometric respects the lattice operations and compleme
     \end{equation*}
     %
     so it is a composition of continuous functions.
+
+    \item[Positive definiteness]
+    The last claim follows directly from the fact that $x \symdiff y = 0$ if and only if $x = y$ for all $x,y \in B$.
+\end{proofsec}
 \end{proof}
 
-It is well-known that any pseudometric space has a completion, i.e. can be isometrically embedded as a dense subset of a complete pseudometric space. See for instance Willard Corollary~24.5. A natural question is then: If $(B,\rho)$ is a pseudometric Boolean algebra with metric completion $(\altoverline{B}, \altoverline{\rho})$, does $\altoverline{B}$ also carry the structure of a Boolean algebra? (Yes, obvious since operations are continuous.)
+
+It is well-known that any (pseudo)metric space has a completion, i.e. can be isometrically embedded as a dense subset of a complete (pseudo)metric space. See for instance Willard Corollary~24.5. A natural question is then: If $(B,\rho)$ is a (pseudo)metric Boolean algebra with metric completion $(\altoverline{B}, \altoverline{\rho})$, does $\altoverline{B}$ also carry the structure of a Boolean algebra?
+
+This is indeed the case, and we sketch the construction: Let $x,y \in \altoverline{B}$, and let $(x_n)$ and $(y_n)$ be sequences in $B$ that converge to $x$ and $y$, respectively. Then these are Cauchy sequences in $B$, and the calculation leading to \eqref{eq:join-continuous} show that $(x_n \join y_n)$ is also a Cauchy sequence. Thus it converges to some element of $\altoverline{B}$. Denote it $x \join y$. We define $x'$ and $x \meet y$ similarly. It is easy to check that these operations satisfy the conditions in \cref{def:Boolean-algebra}. Furthermore, the completion $\altoverline{\rho}$ of the pseudometric $\rho$ makes $(\altoverline{B}, \altoverline{\rho})$ into a pseudometric Boolean algebra.
+
+This takes care of the metric structure. The next proposition shows that we can also extend the measure on an abstract measure space to its completion.
+
+\begin{proposition}
+    Let $(B,\mu)$ be an abstract measure space, and let $(\altoverline{B}, \altoverline{\rho}_\mu)$ be the completion of $(B,\rho_\mu)$. Define a map $\altoverline{\mu} \colon \altoverline{B} \to [0,\infty)$ by
+    %
+    \begin{equation}
+        \label{eq:mu-overline-def}
+        \altoverline{\mu}(x) = \lim_{n\to\infty} \mu(x_n),
+    \end{equation}
+    %
+    where $(x_n)_{n\in\naturals}$ is any sequence in $B$ that converges to $x$. Then $\altoverline{\mu}$ is a well-defined measure on $\altoverline{B}$.
+\end{proposition}
+
+\begin{proof}
+    First notice that for any $x \in \altoverline{B}$ there does in fact exist a sequence in $B$ converging to $x$. If $(x_n)_{n\in\naturals}$ is such a sequence, it is a Cauchy sequence in $B$, and the reverse triangle inequality shows that $(\mu(x_n))$ is a Cauchy sequence in $\reals$, hence convergent. Thus the limit on the right-hand side of \eqref{eq:mu-overline-def} exists.
+    
+    Now let $(y_n)$ be another sequence in $B$ that approximates $x$. Another application of the reverse triangle inequality then shows that
+    %
+    \begin{equation*}
+        \abs{ \mu(x_n) - \mu(y_n) }
+            \leq \rho_\mu(x_n,y_n)
+            \leq \rho_\mu(x_n,x) + \rho_\mu(y_n,x)
+            \to 0.
+    \end{equation*}
+    %
+    Hence $\mu(x_n)$ and $\mu(y_n)$ converge to the same value, and thus $\altoverline{\mu}$ is well-defined.
+
+    Next we show that $\altoverline{\mu}$ is finitely additive. Let $x,y \in \altoverline{B}$ with $x \meet y = 0$ and choose approximating sequences $(x_n)$ and $(y_n)$ in $B$. Then
+    %
+    \begin{equation*}
+        (x_n \join y_n) \meet (x_n \meet y_n)'
+            = \bigl( x_n \meet (x_n \meet y_n)' \bigr)
+              \join \bigl( y_n \meet (x_n \meet y_n)' \bigr)
+    \end{equation*}
+    %
+    is the join of disjoint elements of $B$, so
+    %
+    \begin{equation*}
+        \mu \bigl( (x_n \join y_n) \meet (x_n \meet y_n)' \bigr)
+            = \mu \bigl( x_n \meet (x_n \meet y_n)' \bigr)
+              + \mu \bigl( y_n \meet (x_n \meet y_n)' \bigr).
+    \end{equation*}
+    %
+    By continuity of the lattice operations we have $(x_n \meet y_n)' \to 1$, so the three elements given as arguments to $\mu$ above are elements in approximating sequences for $x \join y$, $x$ and $y$ respectively. By definition of $\altoverline{\mu}$ it follows that
+    %
+    \begin{equation*}
+        \altoverline{\mu}(x \join y)
+            = \altoverline{\mu}(x) + \altoverline{\mu}(y)
+    \end{equation*}
+    %
+    as desired.
+\end{proof}
+
 
 \begin{lemma}
     \label{thm:monotonic-sequence-Cauchy}
-    Let $(B,\rho)$ be a pseudometric Boolean algebra. Every monotonic sequence in $B$ is a Cauchy sequence.
+    Let $(B,\mu)$ be an abstract measure space. Every monotonic sequence in $B$ is a Cauchy sequence.
 \end{lemma}
 
 \begin{proof}
@@ -319,7 +448,7 @@ It is well-known that any pseudometric space has a completion, i.e. can be isome
     Hence $x_m \symdiff x_n = x_n \meet x_m'$, so it follows that
     %
     \begin{equation*}
-        \rho(x_m,x_n)
+        \rho_\mu(x_m,x_n)
             = \mu(x_n \meet x_m')
             = \mu(x_n) - \mu(x_m)
             < \epsilon.
@@ -330,7 +459,7 @@ It is well-known that any pseudometric space has a completion, i.e. can be isome
 
 
 \begin{proposition}
-    Let $(B,\rho)$ be a pseudometric Boolean algebra with completion $(\altoverline{B}, \altoverline{\rho})$. Any $(x_n)_{n\in\naturals}$ is a sequence in $B$ has a join in $\altoverline{B}$, and
+    Let $(B,\rho)$ be a metric Boolean algebra with completion $(\altoverline{B}, \altoverline{\rho})$. Any sequence $(x_n)_{n\in\naturals}$ in $B$ has a join in $\altoverline{B}$, and
     %
     \begin{equation*}
         \bigjoin_{n\in\naturals} x_n
@@ -340,7 +469,7 @@ It is well-known that any pseudometric space has a completion, i.e. can be isome
     Similarly for meets.
 \end{proposition}
 %
-[Something about limits not being unique... Is this a problem, since meets and joins are unique?]
+As far as I know, it is not possible to generalise this result to the case where $\rho$ is only a pseudometric. [We also need the measure, don't we? Kolmogorov only looks at this when there is a positive definite measure.]
 
 \begin{proof}
     The sequence $( \bigjoin_{i \leq n} x_i )_{n\in\naturals}$ is increasing, so by \cref{thm:monotonic-sequence-Cauchy} it has a limit $s \in \altoverline{B}$. For $k \in \naturals$ and $n \geq k$ we have $x_k \leq \bigjoin_{i \leq n} x_i$, i.e.
@@ -356,6 +485,18 @@ It is well-known that any pseudometric space has a completion, i.e. can be isome
 
     The corresponding result for meets follows similarly, or from the fact that complementation is continuous.
 \end{proof}
+
+The previous proposition motivates the following definition:
+
+\begin{definition}[Abstract $\sigma$-algebra]
+    An \emph{abstract $\sigma$-algebra} is a Boolean algebra $\langle B; \join, \meet, ', 0, 1 \rangle$ with countable joins. That is, if $(a_n)_{n\in\naturals}$ is a sequence of elements in $B$, then their join $\bigjoin_{n\in\naturals} a_n$ exists.
+\end{definition}
+%
+If the join $\bigjoin_{n\in\naturals} a_n$ exists, then it follows by taking complements that the meet $\bigmeet_{n\in\naturals} a_n$ also exists. In the context of abstract measure spaces we obtain the following:
+
+\begin{definition}[Abstract measure spaces]
+    Let $(B,\rho)$ be 
+\end{definition}
 
 
 \chapter{Event spaces as Boolean algebras}
@@ -455,7 +596,7 @@ And furthermore:
 This axiom implies that $\P$ is countably additive when the join of a sequence of elements in $\calF$ also lies in $\calF$. To prove this fact we need a lemma, which is obvious if $\calF$ is a set algebra:
 
 \begin{lemma}
-    \label{thm:refine_join}
+    % \label{thm:refine_join}
     Let $\langle B; \join, \meet, ', 0, 1 \rangle$ be a Boolean algebra. Let $(a_i)_{i \in I}$ be a collection of elements in $B$ such that $a_i \meet a_j = 0$ when $i \neq j$. If $\bigjoin_{i \in I} a_i \in B$, then $\bigjoin_{i \in J} a_i \in B$ for any $J \subseteq I$ such that $I \setminus J$ is finite (i.e. $J$ is cofinite).
 \end{lemma}
 
