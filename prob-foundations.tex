@@ -590,6 +590,7 @@ If the join $\bigjoin_{n\in\naturals} x_n$ exists, then it follows by taking com
 \end{definition}
 
 \begin{lemma}
+    \label{thm:completion-gives-countable-additivity}
     If $(B,\mu)$ is a generalised abstract measure space with $\mu$ positive definite, then the completion $(\altoverline{B},\altoverline{\mu})$ is an abstract measure space.
 \end{lemma}
 
@@ -632,10 +633,10 @@ We have justified every part of this definition except for the positive definite
     zero.%
 }
 %
-Furthermore, this also has the technical benefit that the pseudometric $\rho_\P$ induced by $\P$ is in fact a metric. We will return to the consequences of this choice later.
+Furthermore, this also has the technical benefit that the pseudometric $\rho_\P$ induced by $\P$ is in fact a metric. We will return to the consequences of this choice in the next section.
 
 
-\section[Abstract sigma-algebras and continuity][Abstract $\sigma$-algebras and continuity]{Abstract $\sigma$-algebras and continuity}
+\section{Continuity of probability measures}
 
 Of course, the map $\P$ above is supposed to be analogous to a probability measure on a (concrete) $\sigma$-algebra. But ordinary measures are \emph{countably} additive, not just finitely so. It is however difficult to justify extending the finite additivity to sequences of disjoint events purely on conceptual or operational groups. In fact, according to Kolmogorov himself:
 %
@@ -649,7 +650,27 @@ And furthermore:
     \textins*{S}omewhat more complicated problems require, if the theory is to be simple and tractable, that probability be subject to the \emph{axiom of denumerable additivity}. However, the justification of that axiom remains purely empirical, in that we have not yet encountered any interesting problem for which we have not been able to construct a probability field conforming to the axiom in question.%
 }
 %
-The axiom of continuity is, as we saw in \cref{thm:generalised-addition}, equivalent to countable additivity in our formalism. While countable additivity is usually preferred in the definition of (probability) measures today, \textcite{kolmogorov1956} preferred to assume the axiom of continuity and then prove the generalised addition theorem.
+The axiom of continuity is, as we saw in \cref{thm:generalised-addition}, equivalent to countable additivity in our formalism. While countable additivity is usually preferred in the definition of (probability) measures today, \textcite{kolmogorov1956} instead assumed the axiom of continuity and then proved the generalised addition theorem, as we have done above.
+
+Kolmogorov could apparently only find justification for assuming the axiom in the success of the theory, and not in its conceptual underpinnings. Luckily, in the present context we can avoid taking a stance: We have already heard Kolmogorov argue that the absense of non-empty events of probability zero is conceptually problematic; hence we have disallowed them by assuming our probability measures to be positive definite. And according to \cref{thm:positive-definite-implies-continuous}, in this setting we get the axiom of continuity for free.
+
+We are still not assured that our probability spaces are closed under countable joins. However, \cref{thm:completion-gives-countable-additivity} tells us that taking the completion of a generalised abstract probability space solves the problem. And according to Kolmogorov, this can be done without issue:
+%
+\newlength{\oldparindent}
+\setlength{\oldparindent}{\parindent}
+\blockquote[\cite{kolmogorov1995}]{\setlength{\parskip}{0pt}\setlength{\parindent}{\oldparindent}
+    The use of denumerable additivity, with its great concomitant freedom, is not generally possible except in \emph{complete} metric Boolean algebras. It is therefore natural, in probability theory, always to assume that the algebra of events is \emph{complete} by adjunction of ideal elements. As has been pointed out, this situation is always realizable.
+
+    So, the use of denumerably additive probabilities is seen to be legitimate and to impose no additional restrictions on the nature of the problems which fall under the scope of the general theory.
+}
+%
+Notice that he calls the adjoined elements \enquote{ideal}. [ideal vs. real] Thus he seems not to be concerned with how to interpret these new events, but only with how their adjunction can improve the flexibility of the theory without restricting which classes of problems the theory can address. And indeed, upon taking the completion of a probability space we always have an isometric copy of the original space inside the new one.
+
+We summarise the result of the above discussion in the following definition:
+
+\begin{definition}[Abstract probability spaces]
+    An \emph{abstract probability space} is a generalised abstract probability space $(\calF, \P)$, where $\calF$ is an abstract $\sigma$-algebra.
+\end{definition}
 
 
 \nocite{*}
