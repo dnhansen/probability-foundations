@@ -86,9 +86,13 @@
 \newcommand{\calB}{\mathcal{B}}
 \newcommand{\calE}{\mathcal{E}}
 \newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
 \newcommand{\calA}{\mathcal{A}}
+\newcommand{\calC}{\mathcal{C}}
 \newcommand{\calD}{\mathcal{D}}
 \newcommand{\calS}{\mathcal{S}}
+\newcommand{\calJ}{\mathcal{J}}
+\newcommand{\calM}{\mathcal{M}}
 
 \newcommand{\borel}[1]{\calB(#1)}
 \DeclareMathOperator{\supp}{supp}
@@ -696,6 +700,16 @@ We begin by recalling the standard definitions in order to compare them to the a
 %
 Note that a $\sigma$-algebra by this definition is indeed an \emph{abstract} $\sigma$-algebra as defined in \cref{def:abstract-sigma-algebra}. Also contrast the definition of a $\sigma$-algebra with that of a \emph{set algebra}: in the latter case also require it to contain $\Omega$ and be closed under complementation, but we only require it to be closed under \emph{finite} intersections. In particular a set algebra is a Boolean algebra.
 
+\begin{enumdef}
+    \item \verb|\itemsep:| \the\itemsep
+    \item \verb|\labelsep:| \the\labelsep
+    \item \verb|\labelwidth:| \the\labelwidth
+    \item \verb|\parsep:| \the\parsep
+    \item \verb|\topsep:| \the\topsep
+    \item \verb|\partopsep:| \the\partopsep
+    \item \verb|\leftmargin:| \the\leftmargin
+\end{enumdef}
+
 
 \begin{definition}[Measure spaces and probability spaces]
     Let $(\Omega, \calF)$ be a measurable space. A \emph{measure} on $(\Omega, \calF)$ is a map $\mu \colon \calF \to [0,\infty]$ such that
@@ -749,6 +763,306 @@ Recall that we in \cref{thm:completion-gives-countable-additivity} proved that t
 
 % Kolmogorov, now introduces axiom of continuity. Premeasures and Caratheodory, no issue if we assume the axiom! Conceptual reasons for assuming this?
 % Rename section, perhaps something about continuity.
+
+We begin with the latter: Let $\calA$ be an algebra on a set $\Omega$, and let $\mu_0 \colon \calA \to [0,\infty]$ be a \emph{premeasure} on $\calA$. Recall that this means that $\mu_0(\emptyset) = 0$, and that
+%
+\begin{equation*}
+    \mu_0 \bigl( \bigunion_{n\in\naturals} A_n \bigr)
+        = \sum_{n=1}^\infty \mu_0(A_n)
+\end{equation*}
+%
+for any sequence $(A_n)_{n\in\naturals}$ of pairwise disjoint sets in $\calA$ such that $\bigunion_{n\in\naturals} A_n \in \calA$. Notice that if $\mu_0$ is finite, this says exactly that $(\calA,\mu_0)$ is a generalised abstract measure space. But if $\mu_0$ is finite, then countable additivity of the above sort follows from \cref{thm:generalised-addition} if only $(\calA,\mu_0)$ satisfies the axiom of continuity.
+
+We will attempt to motivate the axiom of continuity for a generalised abstract probability space $(\calF, \P)$. In this setting the axiom says that, given a decreasing sequence of events $(E_n)_{n\in\naturals}$ in $\calF$ such that $\bigmeet_{n\in\naturals} E_n = 0$, we have $\lim_{n\to\infty} \P(E_n) = 0$.
+
+If $(E_n)$ is eventually constant, $E_n$ it must equal $0$ for large enough $n$, in which case the axiom is obvious. If instead all $E_n$ are possible, the assumption that $\lim_{n\to\infty} \P(E_n) = 0$ says that it is still impossible for all $E_n$ to obtain. Since the sequence is decreasing, this must mean that the $E_n$ become increasingly less likely to occur, and the probability that $E_n$ occurs must get vanishingly small as $n$ tends to infinity. In other words, $\P(E_n)$ must approach zero in the limit $n \to 0$.
+
+Of course this is not a proof of the axiom of continuity, but it illustrates that it a quite natural assumption. Thus we will henceforth assume that $\mu_0$ is indeed a premeasure on a set algebra $\calA$.
+
+Next, recall that if $\calJ$ is a collection of subsets of $\Omega$ containing $\emptyset$ and $\mu \colon \calJ \to [0,\infty]$ satisfies $\mu(\emptyset) = 0$, then
+%
+\begin{equation}
+    \label{eq:outer-measure}
+    \mu^*(A)
+        = \inf \set[\Big]{
+            \sum_{n=1}^\infty \mu(B_n)
+        }{
+            (B_n)_{n \in \naturals} \subseteq \calJ
+            \text{ and }
+            A \subseteq \bigunion_{n \in \naturals} B_n
+        }
+\end{equation}
+%
+defines an outer measure on $\Omega$. We denote the $\sigma$-algebra of $\mu^*$-measurable sets by $\calM(\mu^*)$. In the case $\calJ = \calA$ and $\mu = \mu_0$, the following theorem guarantees that we may extend $\mu_0$ to an almost unique countably additive measure: (Folland 1.14)
+
+\begin{theorem}
+    Let $\mu_0$ be a premeasure on an algebra $\calA$ in a set $\Omega$, and let $\mu^*$ be given by \cref{eq:outer-measure} with $\mu = \mu_0$ and $\calJ = \calA$. Then $\calA \subseteq \calM(\mu^*)$, and $\mu^*|_\calA = \mu_0$.
+
+    In particular, $\mu^*$ restricts to a measure $\mu$ on $\calF = \sigma(\calA)$ whose restriction to $\calA$ is $\mu_0$. If $\nu$ is another measure on $\calF$ that extends $\mu_0$, then $\nu(A) \leq \mu(A)$ for all $A \in \calF$, with equality when $\mu(A) < \infty$. If $\mu_0$ is $\sigma$-finite, then $\mu = \nu$.
+\end{theorem}
+
+\begin{proof}
+    Folland Theorem~1.14.
+\end{proof}
+%
+Thus in the case where $\mu_0$ is a probability premeasure, there exists a \emph{unique} extension to a probability measure $\P$ on the $\sigma$-algebra $\calF$ generated by $\calA$.
+
+To sum up: Given a finitely additive probability measure $\mu_0$ on a set algebra $\calA$ in a set $\Omega$, the pair $(\calA,\mu_0)$ is a generalised abstract measure space. However, since $\mu_0$ is not necessarily positive definite, it does not immediately extend to a measure on an abstract $\sigma$-algebra, the issue being that $(\calA,\mu_0)$ does not satisfy the axiom of continuity. Thus we must impose this axiom, and we have argued that this is reasonable. Under this assumption $\mu_0$ becomes a premeasure and thus extends uniquely to a measure $\P$ on $\calF = \sigma(\calA)$.
+
+Thus we arrive at the usual conception of a probability space as a measure space $(\Omega,\calF,\P)$ with $\P$ a countably additive probability measure. However, we still don't really understand how to think about $\sigma$-algebras. Can we interpret $\sigma$-algebras in some way, or are they merely a convenience that doesn't mean anything in practice?
+
+% Use DeclarePairedDelimiter to get delimiter sizes
+\newcommand{\condP}[2]{\P(#1 \mid #2)}
+
+\section{Conditional probability and independence}
+
+Let $(\Omega,\calF,\P)$ be a probability space. Given events $A,B \in \calF$ with $\P(B) > 0$, the \emph{conditional probability} of $A$ given $B$ is defined as
+%
+\begin{equation*}
+    \condP{A}{B}
+        = \frac{ \P(A \intersect B) }{ \P(B) }.
+\end{equation*}
+%
+Notice that the map $A \mapsto \condP{A}{B}$ is a probability measure on $B$. We interpret it as the probability that $A$ obtains given the knowledge that $B$ has already occurred. In the case that knowing that $B$ has occurred yields no knowledge about the likelihood of $A$, we would expect that $\condP{A}{B} = \P(A)$, or equivalently
+%
+\begin{equation*}
+    \P(A \intersect B) = \P(A) \P(B).
+\end{equation*}
+%
+That is, $A$ and $B$ are \emph{independent}:
+
+\begin{definition}[Independence I]
+    \label{def:independence-1}
+    Let $I$ be a non-empty index set. A family $(A_i)_{i \in I}$ of events from $\calF$ is called \emph{independent} relative to $\P$ if
+    %
+    \begin{equation*}
+        \P \Bigl( \bigintersect_{\nu = 1}^n A_{i_\nu} \Bigr)
+            = \bigprod_{\nu = 1}^n \P(A_{i_\nu}),
+    \end{equation*}
+    %
+    for any finite subset $\{ i_1, \ldots, i_n \}$ of distinct elements of $I$.
+\end{definition}
+%
+The intuition being that the knowledge that some $A_i$ has obtained does not affect our knowledge of the other $A_i$. We may generalise this definition in the following way:
+
+\begin{definition}[Independence II]
+    Let $(\calC_i)_{i \in I}$ be a family of sets $\calC_i \subseteq \calF$ of events. This family is called \emph{independent} if
+    %
+    \begin{equation*}
+        \P \Bigl( \bigintersect_{\nu = 1}^n A_{i_\nu} \Bigr)
+            = \bigprod_{\nu = 1}^n \P(A_{i_\nu}),
+    \end{equation*}
+    %
+    for any choice of events $A_{i_\nu} \in \calC_{i_\nu}$ and any finite subset $\{ i_1, \ldots, i_n \}$ of distinct elements of $I$.
+\end{definition}
+
+\begin{remark}
+    \label{rem:finite-subfamilies-independent}
+    Finite subfamilies independent is sufficient.
+\end{remark}
+%
+Notice that this definition reduces to the first one if all $\calC_i$ are singletons. But notice what this definition says: Choosing a single event $A_i$ from each $\calC_i$, these $A_i$ are independent. The definition does not imply any relationship between the events in each $\calC_i$. An example, adapted from Bauer prob Example~6.1, will illustrate this point:
+
+\newcommand{\powerset}[1]{2^{#1}}
+
+\begin{example}
+    \label{ex:die-throw-1}
+    Consider two throws of a fair die. The sample space is then $\Omega = \{1, \ldots, 6\}^2$, and we consider the probability space $(\Omega, \powerset{\Omega}, \P)$, where $\P$ assigns equal probability $1/6$ to each elementary event $\{(i,j)\}$. Let $A_1$ and $A_2$ be the events that on the first throw an even or odd number showed up, respectively, and let $A_3$ be the event that the sum of the two throws is odd. Now collect the three events in $\calC_1 = \{A_1, A_2\}$ and $\calC_2 = \{A_3\}$. Then $\calC_1$ and $\calC_2$ are independent even through $A_1$ and $A_2$ are not.
+\end{example}
+%
+The question then becomes, why are we interested in this generalisation of independence? Independence of two collections $\calC_1$ and $\calC_2$ is supposed to mean that the information contained in each is in some way independent of the information contained in the other. By \enquote{information} we mean something like: the ability to better predict the outcome of a random experiment, or in other words improved knowledge of the probabilities of events.
+
+Given that $\calC_1$ and $\calC_2$ are independent, is there any more we can say? Is it the case, for instance, that each event $\calC_1$ is independent of the (finite or countable) intersection of events in $\calC_2$? What about unions or complements? In the case of intersections the answer is negative:
+
+\begin{example}
+    \label{ex:die-throw-2}
+    Let $(\Omega,\powerset{\Omega},\P)$ be the probability space defined in \cref{ex:die-throw-1}, and let $A_1$ and $A_3$ be the same events as before. But now let $A_2'$ be the event that the \emph{second} throw yielded an odd number, and put $\calC_1' = \{A_1, A_2'\}$. Again $\calC_1'$ and $\calC_2$ are easily seen to be independent, and indeed so are $A_1$ and $A_2'$. However, $A_1 \intersect A_2'$ and $A_3$ are manifestly not independent: For while $\P(A_1 \intersect A_2') = 1/4$ by independence, we have
+    %
+    \begin{equation*}
+        \P \bigl( (A_1 \intersect A_2') \intersect A_3 \bigr)
+            = 0,
+    \end{equation*}
+    %
+    since if each throw turns up odd, the sum must be even.
+
+    Incidentally, this also shows that the requirement in \cref{def:independence-1} that $\P$ be multiplicative for \emph{every} finite subset of $I$ is necessary; it is not enough that the events be \emph{pairwise} independent.
+\end{example}
+
+As for unions and complementation, we have slightly more success. To do this discussion justice we introduce another piece of terminology:
+
+\begin{definition}[Dynkin systems]
+    A collection $\calD$ of subsets of a set $X$ is called a \emph{Dynkin system} in $X$ if
+    %
+    \begin{enumdef}
+        \item $X \in \calD$,
+        \item $B \setminus A \in \calD$ for $A,B \in \calD$ with $A \subseteq B$, and
+        \item $\bigunion_{n\in\naturals} A_n \in \calD$ for every increasing sequence $(A_n)_{n\in\naturals}$ of sets in $\calD$.
+    \end{enumdef}
+\end{definition}
+%
+A Dynkin system is also variously called a Dynkin class, $\delta$-system, $d$-system, or $\lambda$-system. Clearly every $\sigma$-algebra is a Dynkin system. If $\calS$ is a collection of subsets of $X$, then there is a smallest Dynkin system in $X$ that contains $\calS$, namely the intersection of all such Dynkin systems. We denote this by $\delta(\calS)$ and say that it is \emph{generated} by $\calS$.
+
+The motivation for considering Dynkin systems is twofold. First of all they are significantly simpler than $\sigma$-algebras, and working with Dynkin systems instead of $\sigma$-algebras can often we done with no loss of generality, as the following fundamental result shows:
+
+\begin{theorem}[Dynkin's Lemma]
+    Let $\calS$ be a collection of subsets of a set $X$ that is closed under finite intersections. Then
+    %
+    \begin{equation*}
+        \delta(\calS) = \sigma(\calS).
+    \end{equation*}
+\end{theorem}
+%
+Also known as \emph{Dynkin's $\pi$-$\lambda$ theorem} since a non-empty collection of sets that is closed under finite intersections is also called a $\pi$-system.
+
+\begin{proof}
+    Bauer Theorem~2.3 (different definition of Dynkin systems), Cohn Theorem~1.6.2.
+\end{proof}
+
+Another source of motivation comes from the following result about finite measures which is important when proving uniqueness of properties of finite or $\sigma$-finite measures, but will also be of interest to us below:
+
+\begin{lemma}
+    \label{thm:finite-measures-agree-on-Dynkin}
+    Let $\mu$ and $\nu$ be finite measures on a measurable space $(X,\calE)$ such that $\mu(X) = \nu(X)$. The family $\calD \subseteq \calE$ of sets on which $\mu$ and $\nu$ agree is a Dynkin system.
+\end{lemma}
+
+\begin{proof}
+    By assumption $X \in \calD$. Let $A_1, A_2 \in \calD$ with $A_1 \subseteq A_2$. Then
+    %
+    \begin{equation*}
+        \mu(A_2 \setminus A_1)
+            = \mu(A_2) - \mu(A_1)
+            = \nu(A_2) - \nu(A_1)
+            = \nu(A_2 \setminus A_1),
+    \end{equation*}
+    %
+    since $\mu$ and $\nu$ are finite. Finally assume that $(A_n)_{n\in\naturals}$ is an increasing sequence of elements in $\calD$. Then by continuity we have
+    %
+    \begin{equation*}
+        \mu \Bigl( \bigunion_{n\in\naturals} A_n \Bigr)
+            = \lim_{n\to\infty} \mu(A_n)
+            = \lim_{n\to\infty} \nu(A_n)
+            = \nu \Bigl( \bigunion_{n\in\naturals} A_n \Bigr).
+    \end{equation*}
+    %
+    Thus $\calD$ is a Dynkin system as claimed.
+\end{proof}
+
+Our motivation for considering Dynkin systems, however, is the following result:
+
+\begin{proposition}
+    \label{thm:Dynkin-independence}
+    Let $(\calC_i)_{i \in I}$ be an independent family of sets of events from $\calF$. Then the family $(\delta(\calC_i))_{i \in I}$ is also independent. In particular, if the $\calC_i$ are closed under intersection, the family $(\sigma(\calC_i))_{i \in I}$ is independent.
+\end{proposition}
+
+\begin{proof}
+    By \cref{rem:finite-subfamilies-independent} we may assume that $I$ is finite.
+
+    Fix an index $i_0 \in I$, and choose sets $A_{i_\nu} \in \calC_{i_\nu}$ for distinct indices $i_1, \ldots, i_n \in I \setminus \{i_0\}$. Then define measures $\P_1$ and $\P_2$ on $\calF$ by
+    %
+    \begin{equation*}
+        \P_1(A)
+            = \P \Bigl( A \intersect \bigintersect_{\nu = 1}^n A_{i_\nu} \Bigr)
+        \quad \text{and} \quad
+        \P_2(A)
+            = \P(A) \bigprod_{\nu = 1}^n \P(A_{i_\nu}),
+    \end{equation*}
+    %
+    for $A \in \calF$. Notice that $\P_1$ and $\P_2$ agree on $\calC_{i_0}$ by independence, so since $\P_1(\Omega) = \P_2(\Omega)$, \cref{thm:finite-measures-agree-on-Dynkin} implies that they also agree on $\delta(\calC_{i_0})$. It follows that
+    %
+    \begin{equation*}
+        \P \Bigl( A \intersect \bigintersect_{\nu = 1}^n A_{i_\nu} \Bigr)
+            = \P(A) \bigprod_{\nu = 1}^n \P(A_{i_\nu})
+    \end{equation*}
+    %
+    for all choices of sets $A_{i_\nu} \in \calC_{i_\nu}$. But this precisely expresses the independence of the family $(\calC_i)_{i \in I}$ with $\calC_{i_0}$ replaced by $\delta(\calC_{i_0})$.
+
+    Performing a finite number of such replacements, once for each index in $I$, proves the first claim. The second claim follows by Dynkin's lemma.
+\end{proof}
+
+
+\section[Sigma-algebras and information][$\sigma$-algebras and information]{$\sigma$-algebras and information}
+
+We interpret \cref{thm:Dynkin-independence} as follows: Say that we are interested in an event $A \in \calC_1$. The independence of $\calC_1$ and $\calC_2$ tells us that no single event $B \in \calC_2$ can provide us with information about $A$. The result above then implies that neither can any event in $\delta(\calC_2)$. In particular, taking complements and increasing countable unions cannot give us information that was available in a single event in $\calC_2$ to begin.
+
+But if we are thinking of $\calC_2$ as information, then surely it makes sense to consider two different events $B_1, B_2 \in \calC_2$ simultaneously. After all, knowing whether $B_1$ and $B_2$ each have occurred we can conclude whether $B_1 \union B_2$ and $B_1 \intersect B_2$ have occurred as well. In other words, $\calC_2$ must be a set algebra if it is to model information. But then \cref{thm:Dynkin-independence} implies that $\calC_1$ and $\sigma(\calC_2)$ are independent: no information in $\sigma(\calC_2)$ can improve our knowledge of $A$ if no single event in the algebra $\calC_2$ can.
+
+In some sense then, if $\calA$ is a set algebra in $\Omega$, the generated $\sigma$-algebra $\sigma(\calA)$ carries no more information than $\calA$. This picture is not quite complete, of course: If $\calA$ is unable to give us \emph{any information whatsoever} about some event $E$, then $\sigma(\calA)$ cannot either. But why should that mean that there is no increasing in information at all when passing from $\calA$ to $\sigma(\calA)$?
+
+To further probe the interpretation of $\sigma$-algebras as information, we introduce the following terminology:
+
+\begin{definition}
+    Let $\calC$ be a collection of subsets of a set $\Omega$. We say that points $\omega, \omega' \in \Omega$ are \emph{$\calC$-equivalent} if, for every $A \in \calC$, they both lie in $A$ or $A^c$, i.e. if $\indicator{A}(\omega) = \indicator{A}(\omega')$. In this case we write $\omega \sim_\calC \omega'$.
+
+    The relation $\sim_\calC$ induces a partition of $\Omega$ called the \emph{$\calC$-partition}.
+\end{definition}
+%
+Another way to put this is that $\omega$ and $\omega'$ lie in all the same sets in $\calC$. Compare this with the \emph{topological indistinguishability} relation from point-set topology: Two points $x,y \in X$ in a topological space $X$ are called topologically indistinguishable if they have all the same (open) neighbourhoods.
+
+\begin{lemma}
+    Given points $\omega, \omega' \in \Omega$ we have $\omega \sim_\calC \omega'$ if and only if $\omega \sim_{\sigma(\calC)} \omega'$. In particular, the $\calC$- and $\sigma(\calC)$-partitions of $\Omega$ coincide.
+\end{lemma}
+
+\begin{proof}
+    The latter clearly implies the former, so assume that $\omega \sim_\calC \omega'$. The collection of subsets $A \subseteq \Omega$ such that $\indicator{A}(\omega) = \indicator{A}(\omega')$ is clearly a $\sigma$-algebra, and it contains $\calC$ by assumption. But then it must also contain $\sigma(\calC)$, so $\omega \sim_{\sigma(\calC)} \omega'$.
+\end{proof}
+%
+Now consider drawing a random element $\omega$ from $\Omega$. If an observer has the information $\calC$, i.e. they know whether or not $\omega \in A$ for all $A \in \calC$, then all they know is which $\calC$-equivalence class $\omega$ lies in. But by the lemma, this class is the same as the $\sigma(\calC)$-equivalence class of $\omega$, so again passing from $\calC$ to $\sigma(\calC)$ yields no new information.
+
+% In general, the smaller a set $A$ is, the more information one gains by knowing that $\omega \in A$. Furthermore, the more sets one has at one's disposal, i.e. the larger $\calC$ is, the more information one has about $\omega$.
+
+Thus it really does not seem like $\sigma$-algebras can do any more work than the algebras that generate them. And since we are comfortable with algebras carrying some kind of information, maybe $\sigma$-algebras do too.
+
+To show that we cannot indiscriminately think of $\sigma$-algebras as information, we give an example of a case in which we seem to have both no information and a lot of information. This is Example~4.10 in \textcite{billingsley1995}.
+
+\begin{example}
+    Consider the probability space $([0,1], \calF, \lambda)$, where $\calF$ is the Borel algebra $\borel{[0,1]}$ and $\lambda$ is the Lebesgue measure restricted to $[0,1]$. Furthermore, let $\calG$ be the sub-$\sigma$-algebra of $\calF$ consisting of countable and cocountable sets. Then the measure of each element in $\calG$ is either $0$ or $1$, so $\calF$ and $\calG$ are independent. Given some event $E \in \calF$,
+    %
+    \begin{enumerate}[label=\normalfont(\alph*)]
+        \item $\calF$ contains \emph{no} information about $E$, in the sense that $E$ is independent of $\calF$.
+    \end{enumerate}
+    %
+    On the other hand, the $\calG$-equivalence classes are singletons, so
+    %
+    \begin{enumerate}[resume, label=\normalfont(\alph*)]
+        \item $\calF$ contains \emph{all} the information about $E$, for given $\calF$ an observer knows precisely which $\omega$ was drawn, hence whether $E$ occurred or not.
+    \end{enumerate}
+    %
+    These are in apparent contradiction, so it must not be the case that we can always interpret $\sigma$-algebras as information.
+
+    Of course this example is rather artificial (indeed $\calG$ is not even countably generated, and $\lambda$ restricted to $\calG$ is also almost trivial), and it should not be seen as prohibiting the interpretation of $\sigma$-algebras as information entirely.
+\end{example}
+
+
+\section{Random variables}
+
+\newcommand{\meas}[1]{\mathcal{M}(#1)}
+\newcommand{\simplemeas}[1]{\mathcal{S\!M}(#1)}
+
+There are various ways of motivating the definition of measurability of functions in general measure theory: In order to make possible integration, by analogy with continuous maps between topological spaces, or heuristically by appealing to an intuitive notion of measurability.
+
+For random variables we do not have this luxury. Why should random variables be integrable? Why should random variables have anything to do with continuity? Hence we focus on the third point and try to explore what measurability means for random variables.
+
+We begin by fixing terminology and notation: If $(X,\calE)$ and $(Y,\calF)$ are measure spaces, a map $f \colon X \to Y$ is said to be \emph{$(\calE,\calF)$-measurable} if $f\preim(B) \in \calE$ for all $B \in \calF$. Denote by $\meas{\calE}$ the space of functions $X \to \reals$ that are $(\calE,\borel{X})$-measurable. Recall that a function is called \emph{simple} if its image is finite. Denote the subspace of $\meas{\calE}$ consisting of simple measurable functions by $\simplemeas{\calE}$.
+
+A \emph{random variable} on a probability space $(\Omega,\calF,\P)$ is a function in $\meas{\calF}$. Before studying general random variables, let us consider simple random variables. Measurability of a simple random variable $\rvar{X} \colon \Omega \to \reals$ means that
+%
+\begin{equation*}
+    \{ \rvar{X} = x \}
+        \defn \set{\omega \in \Omega}{\rvar{X}(\omega) = x}
+        \in \calF
+\end{equation*}
+%
+for all $x \in \reals$. Say that we have drawn some $\omega \in \Omega$. Given the information in $\calF$, can we determine the value of $\rvar{X}(\omega)$? If $\{\rvar{X} = x\} \in \calF$, then we know whether or not $\omega \in \{\rvar{X} = x\}$, i.e. whether $\rvar{X}(\omega) = x$. Thus if $\{\rvar{X} = x\}$ lies in $\calF$ for all $x \in \reals$ (indeed it is sufficient that this holds for all $x$ in the range of $\rvar{X}$), then we do have enough information to determine $\rvar{X}(\omega)$. In fact, since the range of $\rvar{X}$ is finite we only need to check the finitely many sets on the form $\{\rvar{X} = x\}$, as $x$ runs through the range of $\rvar{X}$. Of course this assumes that we have a list of the values that $\rvar{X}$ obtains. If this is not the case we can still approximate $x$ arbitrarily well in finitely many steps, as we will see below. Another way to put this is that the $\sigma$-algebra $\sigma(\rvar{X})$ generated by $\rvar{X}$ corresponds to knowledge of the value $\rvar{X}(\omega)$. [If we have $\calF$, how do we know which sets to use? If not, why look at simple random variables?]
+
+Next we consider a general random variable $\rvar{X} \in \meas{\calF}$. By the same reasoning, for $\calF$ to be able to determine $\rvar{X}(\omega)$ given $\omega \in \Omega$ it must contain the sets $\{\rvar{X} = x\}$ for $x \in \rvar{X}(\Omega)$. But we claim that this is not sufficient for $\rvar{X}$ to be measurable:
+%
+\begin{example}
+    Let $\calE$ be the countable, cocountable $\sigma$-algebra on $\reals$, and let $\rvar{X} \colon \reals \to \reals$ be the identity function. Then $\{\rvar{X} = x\} = \{x\} \in \calE$, but $\{\rvar{X} \in [0,\infty)\} = [0, \infty)$, which is neither countable nor cocountable. Hence $\rvar{X}$ has measurable fibres despite not being measurable.
+\end{example}
+%
+Hence we need to come up with a different criterion. Instead of trying to determine the value of $\rvar{X}$ exactly, we attempt to approximate it. Suppose for definiteness that we have drawn an element $\omega \in \Omega$ such that $x = \rvar{X}(\omega) > 0$, and that we wish to determine $x$ within some error $\epsilon > 0$. First, check if $x$ lies in the interval $(-\infty,n)$ for $n \in \naturals$, starting with $n = 1$. After a finite number of checks we find that $x \in [n_0, n_0+1)$ for some $n_0 \in \naturals$. Next, keep dividing this interval in half by checking if $x \in (-\infty, a)$ for appropriate $a \in \rationals$, always keeping the part of the interval in which $x$ lies and discarding the other. Eventually we are left with an interval $[p,q)$ with $q-p < \epsilon$, and hence we obtain in finitely many steps an approximation $r \in \rationals$ of $x$ such that $\abs{x-r} < \epsilon$.
+
+Notice that we only used intervals on the form $(-\infty, a)$ with $a \in \rationals$ during this process. Thus only knowledge of the events $\{\rvar{X} \in (-\infty, a)\}$ is necessary to determine $\rvar{X}(\omega)$, at least approximately. And since the sets $(-\infty, a)$ generate the Borel algebra $\borel{\reals}$, this requirement is the same as requiring $\rvar{X}$ to be $(\calF,\borel{\reals})$-measurable.
 
 
 \nocite{*}
