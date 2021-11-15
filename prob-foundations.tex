@@ -380,7 +380,7 @@ for $x,y \in B$. The next proposition shows that $\rho_\mu$ is in fact a pseudom
 \end{remark}
 
 
-It is well-known that any (pseudo)metric space has a completion, i.e. can be isometrically embedded as a dense subset of a complete (pseudo)metric space. See for instance Willard Corollary~24.5. A natural question is then: If $(B,\rho)$ is a (pseudo)metric Boolean algebra with metric completion $(\altoverline{B}, \altoverline{\rho})$, does $\altoverline{B}$ also carry the structure of a Boolean algebra?
+It is well-known that any (pseudo)metric space has a completion, i.e. can be isometrically embedded as a dense subset of a complete (pseudo)metric space. See for instance Corollary~24.5 in \textcite{willard}. A natural question is then: If $(B,\rho)$ is a (pseudo)metric Boolean algebra with metric completion $(\altoverline{B}, \altoverline{\rho})$, does $\altoverline{B}$ also carry the structure of a Boolean algebra?
 
 This is indeed the case, and we sketch the construction: Let $x,y \in \altoverline{B}$, and let $(x_n)$ and $(y_n)$ be sequences in $B$ that converge to $x$ and $y$, respectively. Then these are Cauchy sequences in $B$, and the calculation leading to \eqref{eq:join-continuous} show that $(x_n \join y_n)$ is also a Cauchy sequence. Thus it converges to some element of $\altoverline{B}$. Denote it $x \join y$. We define $x'$ and $x \meet y$ similarly. It is easy to check that these operations satisfy the conditions in \cref{def:Boolean-algebra}. Furthermore, the completion $\altoverline{\rho}$ of the pseudometric $\rho$ makes $(\altoverline{B}, \altoverline{\rho})$ into a pseudometric Boolean algebra.
 
@@ -580,12 +580,14 @@ This is an analogue of the continuity (from above) of ordinary countably additiv
 Of course, the join of a sequence of elements may not exist. In the case where we are ensured the existence of countable joins we use the following terminology:
 
 \begin{definition}[Abstract $\sigma$-algebra]
+    \label{def:abstract-sigma-algebra}
     An \emph{abstract $\sigma$-algebra} is a Boolean algebra $B$ with countable joins. That is, if $(x_n)_{n\in\naturals}$ is a sequence of elements in $B$, then their join $\bigjoin_{n\in\naturals} x_n$ exists.
 \end{definition}
 %
 If the join $\bigjoin_{n\in\naturals} x_n$ exists, then it follows by taking complements that the meet $\bigmeet_{n\in\naturals} x_n'$ also exists. Hence an abstract $\sigma$-algebra also has countable meets. In the context of abstract measure spaces we obtain the following:
 
 \begin{definition}[Abstract measure spaces]
+    \label{def:abstract-measure-space}
     An \emph{abstract measure space} is a generalised abstract measure space $(B,\mu)$ that satisfies the axiom of continuity, and where $B$ is an abstract $\sigma$-algebra.
 \end{definition}
 
@@ -664,13 +666,89 @@ We are still not assured that our probability spaces are closed under countable 
     So, the use of denumerably additive probabilities is seen to be legitimate and to impose no additional restrictions on the nature of the problems which fall under the scope of the general theory.
 }
 %
-Notice that he calls the adjoined elements \enquote{ideal}. [ideal vs. real] Thus he seems not to be concerned with how to interpret these new events, but only with how their adjunction can improve the flexibility of the theory without restricting which classes of problems the theory can address. And indeed, upon taking the completion of a probability space we always have an isometric copy of the original space inside the new one.
+Notice that he calls the adjoined elements \enquote{ideal}. Thus he seems to think of these new events as not (necessarily) corresponding to a real, observable event as described above. Instead, he seems only to be concerned with how their adjunction can improve the flexibility of the theory without restricting which classes of problems the theory can address. And indeed, upon taking the completion of a probability space we always have an isometric copy of the original space inside the new one.
 
-We summarise the result of the above discussion in the following definition:
+We summarise the result of the above discussion in the following definition, which is the one we will be concerned with going forward:
 
 \begin{definition}[Abstract probability spaces]
+    \label{def:abstract-probability-space}
     An \emph{abstract probability space} is a generalised abstract probability space $(\calF, \P)$, where $\calF$ is an abstract $\sigma$-algebra.
 \end{definition}
+
+
+\chapter{Set-theoretical probability theory}
+
+\section{Basic definitions and properties}
+
+We begin by recalling the standard definitions in order to compare them to the abstract versions we have considered above:
+
+\begin{definition}[Measurable spaces]
+    A \emph{(concrete) $\sigma$-algebra} in a set $\Omega$ is a collection $\calF$ of subsets of $\Omega$ such that
+    %
+    \begin{enumdef}
+        \item $\Omega \in \calF$,
+        \item $A \in \calF$ implies $A^c \in \calF$, and
+        \item if $(A_n)_{n\in\naturals}$ is a sequence in $\calF$, then $\bigunion_{n\in\naturals} \in \calF$.
+    \end{enumdef}
+    %
+    The sets in $\calF$ are called \emph{$\calF$-measurable}, and the pair $(\Omega, \calF)$ is called a \emph{measurable space}.
+\end{definition}
+%
+Note that a $\sigma$-algebra by this definition is indeed an \emph{abstract} $\sigma$-algebra as defined in \cref{def:abstract-sigma-algebra}. Also contrast the definition of a $\sigma$-algebra with that of a \emph{set algebra}: in the latter case also require it to contain $\Omega$ and be closed under complementation, but we only require it to be closed under \emph{finite} intersections. In particular a set algebra is a Boolean algebra.
+
+
+\begin{definition}[Measure spaces and probability spaces]
+    Let $(\Omega, \calF)$ be a measurable space. A \emph{measure} on $(\Omega, \calF)$ is a map $\mu \colon \calF \to [0,\infty]$ such that
+    %
+    \begin{enumdef}
+        \item $\mu(\emptyset) = 0$, and
+        \item $\mu$ is countably additive, i.e. for every sequence $(A_n)_{n\in\naturals}$ of pairwise disjoint sets in $\calF$ we have
+        %
+        \begin{equation*}
+            \mu \Bigl( \bigunion_{n\in\naturals} A_n \Bigr)
+                = \sum_{n=1}^\infty \mu(A_n).
+        \end{equation*}
+    \end{enumdef}
+    %
+    The triple $(\Omega, \calF, \mu)$ is called a \emph{(concrete) measure space}. If $\mu(\Omega) = 1$ then $\mu$ is called a \emph{probability measure} and the triple $(\Omega, \calF, \mu)$ a \emph{(concrete) probability space}.
+\end{definition}
+%
+Again, if $(\Omega, \calF, \mu)$ is a measure space thus defined, then $(\calF, \mu)$ is also an \emph{abstract} measure space of the type considered in \cref{def:abstract-measure-space}. However, even if $\mu$ is a probability measure, $(\calF, \mu)$ is not necessarily an \emph{abstract} probability space as defined in \cref{def:abstract-probability-space}.
+
+The trouble is that $\mu(A) = 0$ does not necessarily imply that $A = \emptyset$, i.e. $\mu$ need not be positive definite. In an abstract measure space (perhaps of the generalised kind) $(\calF,\mu)$ the only information we have about the relationship between two elements $x,y \in \calF$ is whether they are comparable and, if so, which one is greater.\footnote{Recall that the ordering on a lattice completely determines the lattice structure.} Or in other terms for events $E$ and $F$, whether one of them implies the other or not.
+
+By contrast, elements of a concrete $\sigma$-algebra are subsets of an underlying set. This has several important implications: First of all, this vastly increases the number of objects we have to contend with, namely \emph{every} subset of $\Omega$, not just those lying in $\calF$. This may have benefits of the technical nature; certainly it would have simplified many of the arguments in the previous section on Boolean algebras.
+
+Secondly, it forces us to take the very elements of the \emph{sample space} $\Omega$ seriously. Usually these are referred to as \emph{outcomes} or, e.g. by Kolmogorov, \emph{elementary events}. But this may be conceptually problematic:
+%
+\blockquote[\cite{kolmogorov1995}]{
+    \textins*{T}he notion of an elementary event is an artificial superstructure imposed on the concrete notion of an event. In reality, events are not composed of elementary events, but elementary events originate in the dismemberment of composite events.
+}
+%
+In other words, arriving at the idea of an elementary event requires \emph{analysis} of the collection of events that is given in some random experiment.
+
+A simple example may help elucidate this point: Consider the random experiment consisting of rolling a six-sided die. Say this die is loaded in such a way that it is impossible to roll a $6$, and that it is very likely to roll a $1$ or a $2$. We construct an abstract probability space ($\calF, \P)$ to model the outcome of the die roll. The event space might be
+%
+\begin{equation*}
+    \calF
+        = \{ 0, A_1, \ldots, A_5, E, F, 1 \},
+\end{equation*}
+%
+where we interpret the event $A_i$ as \enquote{the result was $i$} for $i = 1, \ldots, 5$, $E$ as \enquote{the result was even} and $F$ as \enquote{the result was odd}. There is no event $A_6$ since it is impossible to roll a $6$. Certainly we would require that $A_1, A_3, A_5 \leq F$, and that $A_2, A_4 \leq E$. Assigning probabilities to each event we might find that $\P(A_1) = \P(A_2) = 0.35$, and that $\P(A_3) = \P(A_4) = \P(A_5) = 0.1$. Additivity of $\P$ would then imply that $\P(E) = 0.45$ and $\P(F) = 0.55$.
+
+It is tempting to \emph{identify} each of $E$ and $F$ with the (possible) events that imply them, i.e. identify $E$ with the set $\{A_2, A_4\}$ and $F$ with the set $\{A_1, A_3, A_4\}$ of events. Maybe we are even tempted to include a hypothetical event $A_6$ in the former set. But notice that this is an \emph{analysis} of the events $E$ and $F$. It would be quite possible to grasp the meaning of the event $E$ without immediately enumerating each of the \enquote{elementary} events it consists of. Indeed events in even set-theoretic probability theory (and objects in mathematics as a whole, for that matter) are often defined in terms of their properties, not of their constituents. Or to put it in other terms: by their \emph{intension} and not their \emph{extension}.
+
+On the other hand, the set-theoretic approach and the possibility of non-empty null sets offer certain conceptual advantages as well. Perhaps we would like there to be an event $A_6$ even if it is impossible. Certainly our model of the die seems incomplete without it; the die is, after all, six-sided! Admittedly this picture seems rather artificial since the probability of rolling a $6$ using a physical die is surely positive, if very small. So imagine that this die appears in a video game or in a fantasy novel where this might be a more easily digestible proposition.
+
+Furthermore, if we actually do want to use our theory of probability to \emph{model} physical phenomena, then it might be perfectly reasonable to include some event in the model on conceptual grounds, even if this event happens to be assigned probability zero in the model. Perhaps this fact is due to numerical approximation, missing information or a state of affairs that comes about after each event under consideration has been identified.
+
+
+\section[Extending premeasures to sigma-algebras][Extending premeasures to $\sigma$-algebras]{Extending premeasures to $\sigma$-algebras}
+
+Recall that we in \cref{thm:completion-gives-countable-additivity} proved that the completion of a generalised abstract measure space $(B,\mu)$ is an abstract measure space under the assumption that $\mu$ is positive definite. Since this is no longer the case we need another way of extending a finitely additive probability measure on a set algebra to a $\sigma$-algebra. Furthermore, in \cref{thm:positive-definite-implies-continuous} we showed that $(B,\mu)$ automatically satisfies the axiom of continuity if $\mu$ is positive definite. We will thus also have to overcome this obstacle.
+
+% Kolmogorov, now introduces axiom of continuity. Premeasures and Caratheodory, no issue if we assume the axiom! Conceptual reasons for assuming this?
+% Rename section, perhaps something about continuity.
 
 
 \nocite{*}
