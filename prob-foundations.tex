@@ -103,9 +103,15 @@
 \renewcommand{\P}{\mathbb{P}}
 
 \renewcommand{\mean}[2][]{\mathbb{E}\meanaux[#1]{#2}}
+
 \DeclarePairedDelimiterX{\condexpaux}[2]{[}{]}{#1\;\delimsize\vert\;#2}
 \newcommand{\condexp}[3][]{{\mathbb{E}\condexpaux[#1]{#2}{#3}}}
 % \newcommand{\condexp}[2]{\mathbb{E}[#1 \mid #2]}
+
+% Use DeclarePairedDelimiter to get delimiter sizes
+% \newcommand{\condP}[2]{\P(#1 \mid #2)}
+\DeclarePairedDelimiterX{\condPaux}[2]{(}{)}{#1\;\delimsize\vert\;#2}
+\newcommand{\condP}[3][]{{\P\condPaux[#1]{#2}{#3}}}
 
 % Add to basicmathcommands.sty
 \DeclarePairedDelimiter{\card}{\lvert}{\rvert}
@@ -117,6 +123,22 @@
 \maketitle
 
 \chapter{Introduction}
+
+\begin{theorem}[The strong law of large numbers]
+    \label{thm:strong-LLN}
+    Let $(\rvar{X}_n)_{n\in\naturals}$ be a sequence of i.i.d. integrable random variables on a probability space $(\Omega,\calF,\P)$. Then
+    %
+    \begin{equation*}
+        \lim_{n\to\infty} \frac{1}{n} \sum_{i=1}^n \rvar{X}_i(\omega)
+            = \mean{\rvar{X}_1}
+    \end{equation*}
+    %
+    for $\P$-almost all $\omega \in \Omega$.
+\end{theorem}
+
+\begin{proof}
+    \textcite[Theorem~12.1]{bauer1995} or \textcite[Theorem~22.1]{billingsley1995}.
+\end{proof}
 
 In the usual measure-theoretical formulation of probability theory, the following result is a corollary of the Law of Large Numbers:
 
@@ -136,7 +158,7 @@ In the usual measure-theoretical formulation of probability theory, the followin
 \end{theorem}
 
 \begin{proof}
-    Thorbjørnsen Korollar~13.6.2. [Maybe reproduce the proof given LLN for completeness?]
+    This follows directly by applying \cref{thm:strong-LLN} to the sequence $(\indicator{B}(\rvar{X}_n))_{n\in\naturals}$.
 \end{proof}
 %
 That is, given a sequence $(\rvar{X}_n)_{n\in\naturals}$, and one extra $\rvar{X}$, of i.i.d. random variables, the probability that $\rvar{X}$ lies in some Borel set $B$ can be thought of as the proportion of the $\rvar{X}_n$ that lie in $B$, as $n$ tends to infinity. In other words, probability is a measure of the \emph{frequency} with which an outcome of a random experiment obtains, if we repeat the experiment many times.
@@ -654,7 +676,7 @@ Furthermore, this also has the technical benefit that the pseudometric $\rho_\P$
 Of course, the map $\P$ above is supposed to be analogous to a probability measure on a (concrete) $\sigma$-algebra. But ordinary measures are \emph{countably} additive, not just finitely so. It is however difficult to justify extending the finite additivity to sequences of disjoint events purely on conceptual or operational groups. In fact, according to Kolmogorov himself:
 %
 \blockquote[\cite{kolmogorov1956}]{%
-    Since the new axiom \textins{countable additivity} is essential for infinite fields of probability only, it is almost impossible to elucidate its empirical meaning. \textelp{} For, in describing any observable random process we can obtain only finite fields of probability. Infinite fields of probability occur only as idealized models of real random processes. \emph{We limit ourselves, arbitrarily, to only those models which satisfy Axiom VI} \textins{countable additivity}. This limitation has been found expedient in researches of the most diverse sort.%
+    Since the new axiom \textins{the axiom of continuity} is essential for infinite fields of probability only, it is almost impossible to elucidate its empirical meaning. \textelp{} For, in describing any observable random process we can obtain only finite fields of probability. Infinite fields of probability occur only as idealized models of real random processes. \emph{We limit ourselves, arbitrarily, to only those models which satisfy Axiom VI} \textins{the axiom of continuity}. This limitation has been found expedient in researches of the most diverse sort.%
 }
 %
 And furthermore:
@@ -677,7 +699,7 @@ We are still not assured that our probability spaces are closed under countable 
     So, the use of denumerably additive probabilities is seen to be legitimate and to impose no additional restrictions on the nature of the problems which fall under the scope of the general theory.
 }
 %
-Notice that he calls the adjoined elements \enquote{ideal}. Thus he seems to think of these new events as not (necessarily) corresponding to a real, observable event as described above. Instead, he seems only to be concerned with how their adjunction can improve the flexibility of the theory without restricting which classes of problems the theory can address. And indeed, upon taking the completion of a probability space we always have an isometric copy of the original space inside the new one.
+Notice that he calls the adjoined elements \enquote{ideal}. Thus he seems to think of these new events as not (necessarily) corresponding to a real, observable event as described above, or at least not an event that we can gain any information about. Instead, he seems only to be concerned with how their adjunction can improve the flexibility of the theory without restricting which classes of problems the theory can address. And indeed, upon taking the completion of a probability space we always have an isometric copy of the original space inside the new one.
 
 We summarise the result of the above discussion in the following definition, which is the one we will be concerned with going forward:
 
@@ -699,23 +721,13 @@ We begin by recalling the standard definitions in order to compare them to the a
     \begin{enumdef}
         \item $\Omega \in \calF$,
         \item $A \in \calF$ implies $A^c \in \calF$, and
-        \item if $(A_n)_{n\in\naturals}$ is a sequence in $\calF$, then $\bigunion_{n\in\naturals} \in \calF$.
+        \item if $(A_n)_{n\in\naturals}$ is a sequence in $\calF$, then $\bigunion_{n\in\naturals} A_n \in \calF$.
     \end{enumdef}
     %
     The sets in $\calF$ are called \emph{$\calF$-measurable}, and the pair $(\Omega, \calF)$ is called a \emph{measurable space}.
 \end{definition}
 %
 Note that a $\sigma$-algebra by this definition is indeed an \emph{abstract} $\sigma$-algebra as defined in \cref{def:abstract-sigma-algebra}. Also contrast the definition of a $\sigma$-algebra with that of a \emph{set algebra}: in the latter case also require it to contain $\Omega$ and be closed under complementation, but we only require it to be closed under \emph{finite} intersections. In particular a set algebra is a Boolean algebra.
-
-\begin{enumdef}
-    \item \verb|\itemsep:| \the\itemsep
-    \item \verb|\labelsep:| \the\labelsep
-    \item \verb|\labelwidth:| \the\labelwidth
-    \item \verb|\parsep:| \the\parsep
-    \item \verb|\topsep:| \the\topsep
-    \item \verb|\partopsep:| \the\partopsep
-    \item \verb|\leftmargin:| \the\leftmargin
-\end{enumdef}
 
 
 \begin{definition}[Measure spaces and probability spaces]
@@ -736,9 +748,9 @@ Note that a $\sigma$-algebra by this definition is indeed an \emph{abstract} $\s
 %
 Again, if $(\Omega, \calF, \mu)$ is a measure space thus defined, then $(\calF, \mu)$ is also an \emph{abstract} measure space of the type considered in \cref{def:abstract-measure-space}. However, even if $\mu$ is a probability measure, $(\calF, \mu)$ is not necessarily an \emph{abstract} probability space as defined in \cref{def:abstract-probability-space}.
 
-The trouble is that $\mu(A) = 0$ does not necessarily imply that $A = \emptyset$, i.e. $\mu$ need not be positive definite. In an abstract measure space (perhaps of the generalised kind) $(\calF,\mu)$ the only information we have about the relationship between two elements $x,y \in \calF$ is whether they are comparable and, if so, which one is greater.\footnote{Recall that the ordering on a lattice completely determines the lattice structure.} Or in other terms for events $E$ and $F$, whether one of them implies the other or not.
+The trouble is that $\mu(A) = 0$ does not necessarily imply that $A = \emptyset$, i.e. $\mu$ need not be positive definite. In an abstract measure space (perhaps of the generalised kind) $(\calF,\mu)$, the only information we have about the relationship between two elements $x,y \in \calF$ is whether they are comparable and, if so, which one is greater.\footnote{Recall that the ordering on a lattice completely determines the lattice structure.} Or in other terms for events $E$ and $F$, whether one of them implies the other or not.
 
-By contrast, elements of a concrete $\sigma$-algebra are subsets of an underlying set. This has several important implications: First of all, this vastly increases the number of objects we have to contend with, namely \emph{every} subset of $\Omega$, not just those lying in $\calF$. This may have benefits of the technical nature; certainly it would have simplified many of the arguments in the previous section on Boolean algebras.
+By contrast, elements of a concrete $\sigma$-algebra are subsets of an underlying set. This has several important implications: First of all, this vastly increases the number of objects we have to contend with, namely \emph{every} subset of $\Omega$, not just those lying in $\calF$. This may have benefits of a technical nature; certainly it would have simplified many of the arguments in the previous section on Boolean algebras.
 
 Secondly, it forces us to take the very elements of the \emph{sample space} $\Omega$ seriously. Usually these are referred to as \emph{outcomes} or, e.g. by Kolmogorov, \emph{elementary events}. But this may be conceptually problematic:
 %
@@ -782,7 +794,7 @@ for any sequence $(A_n)_{n\in\naturals}$ of pairwise disjoint sets in $\calA$ su
 
 We will attempt to motivate the axiom of continuity for a generalised abstract probability space $(\calF, \P)$. In this setting the axiom says that, given a decreasing sequence of events $(E_n)_{n\in\naturals}$ in $\calF$ such that $\bigmeet_{n\in\naturals} E_n = 0$, we have $\lim_{n\to\infty} \P(E_n) = 0$.
 
-If $(E_n)$ is eventually constant, $E_n$ it must equal $0$ for large enough $n$, in which case the axiom is obvious. If instead all $E_n$ are possible, the assumption that $\lim_{n\to\infty} \P(E_n) = 0$ says that it is still impossible for all $E_n$ to obtain. Since the sequence is decreasing, this must mean that the $E_n$ become increasingly less likely to occur, and the probability that $E_n$ occurs must get vanishingly small as $n$ tends to infinity. In other words, $\P(E_n)$ must approach zero in the limit $n \to 0$.
+If $(E_n)$ is eventually constant, $E_n$ must equal $0$ for large enough $n$, in which case the axiom is obvious. If instead all $E_n$ are possible, the assumption that $\lim_{n\to\infty} \P(E_n) = 0$ says that it is still impossible for all $E_n$ to obtain. Since the sequence is decreasing, this must mean that the $E_n$ become increasingly less likely to occur, and the probability that $E_n$ occurs must get vanishingly small as $n$ tends to infinity. In other words, $\P(E_n)$ must approach zero in the limit $n \to 0$.
 
 Of course this is not a proof of the axiom of continuity, but it illustrates that it a quite natural assumption. Thus we will henceforth assume that $\mu_0$ is indeed a premeasure on a set algebra $\calA$.
 
@@ -800,7 +812,7 @@ Next, recall that if $\calJ$ is a collection of subsets of $\Omega$ containing $
         }
 \end{equation}
 %
-defines an outer measure on $\Omega$. We denote the $\sigma$-algebra of $\mu^*$-measurable sets by $\calM(\mu^*)$. In the case $\calJ = \calA$ and $\mu = \mu_0$, the following theorem guarantees that we may extend $\mu_0$ to an almost unique countably additive measure: (Folland 1.14)
+defines an outer measure on $\Omega$. We denote the $\sigma$-algebra of $\mu^*$-measurable sets by $\calM(\mu^*)$. In the case $\calJ = \calA$ and $\mu = \mu_0$, the following theorem guarantees that we may extend $\mu_0$ to an almost unique countably additive measure:
 
 \begin{theorem}
     Let $\mu_0$ be a premeasure on an algebra $\calA$ in a set $\Omega$, and let $\mu^*$ be given by \cref{eq:outer-measure} with $\mu = \mu_0$ and $\calJ = \calA$. Then $\calA \subseteq \calM(\mu^*)$, and $\mu^*|_\calA = \mu_0$.
@@ -809,7 +821,7 @@ defines an outer measure on $\Omega$. We denote the $\sigma$-algebra of $\mu^*$-
 \end{theorem}
 
 \begin{proof}
-    Folland Theorem~1.14.
+    \textcite[Theorem~1.14]{folland2007}.
 \end{proof}
 %
 Thus in the case where $\mu_0$ is a probability premeasure, there exists a \emph{unique} extension to a probability measure $\P$ on the $\sigma$-algebra $\calF$ generated by $\calA$.
@@ -818,8 +830,6 @@ To sum up: Given a finitely additive probability measure $\mu_0$ on a set algebr
 
 Thus we arrive at the usual conception of a probability space as a measure space $(\Omega,\calF,\P)$ with $\P$ a countably additive probability measure. However, we still don't really understand how to think about $\sigma$-algebras. Can we interpret $\sigma$-algebras in some way, or are they merely a convenience that doesn't mean anything in practice?
 
-% Use DeclarePairedDelimiter to get delimiter sizes
-\newcommand{\condP}[2]{\P(#1 \mid #2)}
 
 \section{Conditional probability and independence}
 \label{sec:independence}
@@ -867,10 +877,10 @@ The intuition being that the knowledge that some $A_i$ has obtained does not aff
 
 \begin{remark}
     \label{rem:finite-subfamilies-independent}
-    Finite subfamilies independent is sufficient.
+    Notice that, since the intersections and products above are finite, $(\calC_i)_{i \in I}$ is independent if and only if $(\calC_i)_{i \in J}$ is independent for every finite subset $J \subseteq I$.
 \end{remark}
 %
-Notice that this definition reduces to the first one if all $\calC_i$ are singletons. But notice what this definition says: Choosing a single event $A_i$ from each $\calC_i$, these $A_i$ are independent. The definition does not imply any relationship between the events in each $\calC_i$. An example, adapted from Bauer prob Example~6.1, will illustrate this point:
+This definition reduces to the first one if all $\calC_i$ are singletons. But notice what this definition says: Choosing a single event $A_i$ from each $\calC_i$, these $A_i$ are independent. The definition does not imply any relationship between the events in each $\calC_i$. An example, adapted from Example~6.1 in \textcite{bauer1995}, will illustrate this point:
 
 \newcommand{\powerset}[1]{2^{#1}}
 
@@ -924,7 +934,7 @@ The motivation for considering Dynkin systems is twofold. First of all they are 
 Also known as \emph{Dynkin's $\pi$-$\lambda$ theorem} since a non-empty collection of sets that is closed under finite intersections is also called a $\pi$-system.
 
 \begin{proof}
-    Bauer Theorem~2.3 (different definition of Dynkin systems), Cohn Theorem~1.6.2.
+    \textcite[Theorem~1.6.2]{cohn2001}. See also \textcite[Theorem~2.3]{bauer2001}, though note that Bauer uses a slightly different definition of Dynkin systems.
 \end{proof}
 
 Another source of motivation comes from the following result about finite measures which is important when proving uniqueness of properties of finite or $\sigma$-finite measures, but will also be of interest to us below:
@@ -995,7 +1005,7 @@ We interpret \cref{thm:Dynkin-independence} as follows: Say that we are interest
 
 But if we are thinking of $\calC_2$ as information, then surely it makes sense to consider two different events $B_1, B_2 \in \calC_2$ simultaneously. After all, knowing whether $B_1$ and $B_2$ each have occurred we can conclude whether $B_1 \union B_2$ and $B_1 \intersect B_2$ have occurred as well. In other words, $\calC_2$ must be a set algebra if it is to model information. But then \cref{thm:Dynkin-independence} implies that $\calC_1$ and $\sigma(\calC_2)$ are independent: no information in $\sigma(\calC_2)$ can improve our knowledge of $A$ if no single event in the algebra $\calC_2$ can.
 
-In some sense then, if $\calA$ is a set algebra in $\Omega$, the generated $\sigma$-algebra $\sigma(\calA)$ carries no more information than $\calA$. This picture is not quite complete, of course: If $\calA$ is unable to give us \emph{any information whatsoever} about some event $E$, then $\sigma(\calA)$ cannot either. But why should that mean that there is no increasing in information at all when passing from $\calA$ to $\sigma(\calA)$?
+In some sense then, if $\calA$ is a set algebra in $\Omega$, the generated $\sigma$-algebra $\sigma(\calA)$ carries no more information than $\calA$. This picture is not quite complete, of course: If $\calA$ is unable to give us \emph{any information whatsoever} about some event $E$, then $\sigma(\calA)$ cannot either. But why should that mean that there is no increase in information at all when passing from $\calA$ to $\sigma(\calA)$?
 
 To further probe the interpretation of $\sigma$-algebras as information, we introduce the following terminology:
 
@@ -1072,6 +1082,85 @@ Next we consider a general random variable $\rvar{X} \in \meas{\calF}$. By the s
 Hence we need to come up with a different criterion. Instead of trying to determine the value of $\rvar{X}$ exactly, we attempt to approximate it. Suppose for definiteness that we have drawn an element $\omega \in \Omega$ such that $x = \rvar{X}(\omega) > 0$, and that we wish to determine $x$ within some error $\epsilon > 0$. First, check if $x$ lies in the interval $(-\infty,n)$ for $n \in \naturals$, starting with $n = 1$. After a finite number of checks we find that $x \in [n_0, n_0+1)$ for some $n_0 \in \naturals$. Next, keep dividing this interval in half by checking if $x \in (-\infty, a)$ for appropriate $a \in \rationals$, always keeping the part of the interval in which $x$ lies and discarding the other. Eventually we are left with an interval $[p,q)$ with $q-p < \epsilon$, and hence we obtain in finitely many steps an approximation $r \in \rationals$ of $x$ such that $\abs{x-r} < \epsilon$.
 
 Notice that we only used intervals on the form $(-\infty, a)$ with $a \in \rationals$ during this process. Thus only knowledge of the events $\{\rvar{X} \in (-\infty, a)\}$ is necessary to determine $\rvar{X}(\omega)$, at least approximately. And since the sets $(-\infty, a)$ generate the Borel algebra $\borel{\reals}$, this requirement is the same as requiring $\rvar{X}$ to be $(\calF,\borel{\reals})$-measurable.
+
+
+\subsection{The factorisation lemma}
+
+We prove a fundamental lemma that helps shed further light on the interpretation of measurability of random variables.
+
+
+\begin{proposition}[The factorisation lemma]
+    Let $X$ be a set, let $(Y,\calF)$ be a measurable space, and let $\phi \colon X \to Y$ be a map. Equip $X$ with the $\sigma$-algebra $\calE = \sigma(\phi)$ generated by $\phi$. Then
+    %
+    \begin{equation}
+        \label{eq:factorisation-lemma}
+        \meas{\calE}
+            = \set{g \circ \phi}{g \in \meas{\calF}}.
+    \end{equation}
+    %
+    That is, for every $f \in \meas{\calE}$ there exists a $g \in \meas{\calF}$ such that the diagram
+    %
+    \begin{equation*}
+        \begin{tikzcd}[column sep=1em]
+            X
+                \ar[rr, "\phi"]
+                \ar[dr, "f", swap]
+            && Y
+                \ar[dl, "g"] \\
+            & \reals
+        \end{tikzcd}
+    \end{equation*}
+    %
+    commutes.
+\end{proposition}
+%
+In other words, a function $g \colon X \to \reals$ is $\calE$-measurable if and only if it factors through $\phi$.
+
+\begin{proof}
+    Denote the set on the right-hand side of \eqref{eq:factorisation-lemma} by $W$. It is clear that $W$ is a subspace of $\meas{\calE}$. If $A \in \calE$, then $A = \phi\preim(B)$ for some $B \in \calF$. Notice then that
+    %
+    \begin{equation*}
+        \indicator{A}
+            = \indicator{\phi\preim(B)}
+            = \indicator{B} \circ \phi
+            \in \calF,
+    \end{equation*}
+    %
+    so $\indicator{A} \in W$. Hence $W$ contains all simple $\calE$-measurable functions.
+    
+    Now let $f \in \meas{\calE}^+$ be a non-negative function. Then there exists an increasing sequence $(f_n)_{n\in\naturals}$ of simple functions, i.e. functions in $W$, such that $f$ is the pointwise limit of $(f_n)$. For each $n\in\naturals$ there is a function $g_n \in \meas{\calF}$ such that $f_n = g_n \circ \phi$. Hence we have for each $x \in X$,
+    %
+    \begin{equation*}
+        f(x)
+            = \sup_{n\in\naturals} f_n(x)
+            = \sup_{n\in\naturals} g_n(\phi(x))
+            = g(\phi(x)),
+    \end{equation*}
+    %
+    where $g \colon Y \to \reals$ is given by $g = \sup_{n\in\naturals}g_n$. This is $\calF$-measurable as a function into the extended real line $\altoverline{\reals}$. Next let $B = \set{y \in Y}{g(y) = \infty}$. Then $\tilde{g} = g \indicator{B^c} \in \meas{\calF}$, and since $\phi(X) \in B^c$ we have $f = \tilde{g} \circ \phi$ as desired.
+
+    Finally let $f \in \meas{\calE}$ be an arbitrary measurable function, and write $f = f^+ - f^-$ where $f^+ = f \join 0$ and $f^- = -(f \meet 0)$. Applying the above to $f^+$ and $f^-$ yields functions $g^+, g^- \in \meas{\calF}$ such that $f^\pm = g^\pm \circ \phi$. Letting $g = g^+ - g^-$ we obtain $f = g \circ \phi$, and the theorem is proved.
+\end{proof}
+%
+Now let $\rvar{X}$ and $\rvar{Y}$ be random variables on $(\Omega,\calF,\P)$. Then the factorisation lemma says that, if $\rvar{Y}$ is in fact $\sigma(\rvar{X})$-measurable, then there exists a measurable function $g \colon \reals \to \reals$ such that $\rvar{Y} = g(\rvar{X})$, i.e. such that the diagram
+%
+\begin{equation*}
+    \begin{tikzcd}[column sep=1em]
+        \Omega
+            \ar[rr, "\rvar{X}"]
+            \ar[dr, "\rvar{Y}", swap]
+        && \Omega
+            \ar[dl, "g"] \\
+        & \reals
+    \end{tikzcd}
+\end{equation*}
+%
+commutes. This is also clearly sufficient for $\rvar{Y}$ to be $\sigma(\rvar{X})$-measurable.
+
+Let us try to understand this in terms of the information interpretation of measurability: Knowing $\sigma(\rvar{X})$ is the same as knowing the value $\rvar{X}(\omega)$ that $\rvar{X}$ takes at each $\omega \in \Omega$, or at least being able to approximate it. And an ability to, for all $\omega \in \Omega$, determine $\rvar{Y}(\omega)$ given the value $\rvar{X}(\omega)$ just means that there is a function $g \colon \reals \to \reals$ such that $\rvar{Y} = g(\rvar{X})$. Hence there is such a function $g$ just in case $\rvar{Y}$ is determined by -- that is, measurable with respect to -- $\sigma(\rvar{X})$.
+
+
+
 
 
 \section[Sub-sigma-algebras and conditional expectation][Sub-$\sigma$-algebras and conditional expectation]{Sub-$\sigma$-algebras and conditional expectation}
