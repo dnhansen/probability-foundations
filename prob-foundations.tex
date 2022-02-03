@@ -18,13 +18,16 @@
 \usepackage{latex-sty/articlesectionstyle}
 
 % Fonts
+\usepackage{amssymb}
 \usepackage[largesmallcaps,partialup]{kpfonts}
 \DeclareSymbolFontAlphabet{\mathrm}{operators} % https://tex.stackexchange.com/questions/40874/kpfonts-siunitx-and-math-alphabets
 \linespread{1.06}
-\let\mathfrak\undefined
-\usepackage{eufrak}
+% \let\mathfrak\undefined
+% \usepackage{eufrak}
+\DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
+\SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
+% https://tex.stackexchange.com/questions/13815/kpfonts-with-eufrak
 \usepackage{inconsolata}
-\usepackage{amssymb}
 
 % Hyperlinks
 \usepackage{hyperref}
@@ -50,6 +53,7 @@
 \usepackage{latex-sty/framedtheorems}
 \usepackage{latex-sty/probabilitycommands}
 \usepackage{tikz-cd}
+\tikzcdset{arrow style=math font} % https://tex.stackexchange.com/questions/300352/equalities-look-broken-with-tikz-cd-and-math-font
 \usetikzlibrary{babel}
 
 % Lists
@@ -63,14 +67,6 @@
 % Title
 \title{\doctitle}
 \author{\docauthor}
-
-
-% Section style -- add to section style .sty?
-\setsubsecheadstyle{\normalfont\itshape}
-
-
-% Preimage -- to be added to mathcommands .sty
-\newcommand{\preim}{^{-1}}
 
 
 \newcommand{\calN}{\mathcal{N}}
@@ -114,7 +110,6 @@
 \newcommand{\condP}[3][]{{\P\condPaux[#1]{#2}{#3}}}
 
 % Add to basicmathcommands.sty
-\DeclarePairedDelimiter{\card}{\lvert}{\rvert}
 \renewcommand{\symdiff}{\mathbin{\triangle}}
 
 
@@ -181,12 +176,14 @@ We begin by reviewing some of the purely algebraic properties of Boolean algebra
     %
     \begin{enumdef}
         \item $\langle B; \join, \meet \rangle$ is a distributive lattice,
-        \item $0$ and $1$ are elements of $B$ such that $x \join 0 = x$ and $x \meet 1$ for all $x \in B$, and
+        \item $0$ and $1$ are elements of $B$ such that $x \join 0 = x$ and $x \meet 1 = x$ for all $x \in B$, and
         \item $'$ is a unary operation such that $x \join x' = 1$ and $x \meet x' = 0$ for all $x \in B$.
     \end{enumdef}
 \end{definition}
 %
 The binary operations $\join$ and $\meet$ are called \emph{join} and \emph{meet}, respectively. For $x \in B$ the element $x'$ is called the \emph{complement} of $x$. In a general bounded lattice $L$, an element $y \in L$ such that $x \join y = 1$ and $x \meet y = 0$ is called a complement of $x \in L$. If $L$ is distributive, complements are unique. Recall also that the lattice structure on $B$ induces a partial order $\leq$ such that $x \leq y$ if and only if $x \join y = y$ for $x,y \in B$.
+
+If $x \meet y = 0$, then $x$ and $y$ are said to be \emph{disjoint}. A collection $\{x_i\}_{i \in I}$ of elements in $B$ is called \emph{pairwise disjoint} if $x_i$ and $x_j$ are disjoint for any choice of indices $i \neq j$.
 
 Let $B$ be a Boolean algebra. For $x,y \in B$ we define the \emph{symmetric difference} between $x$ and $y$ by
 %
@@ -201,37 +198,36 @@ Before proceeding we note the following technical result that we shall need late
 
 \begin{lemma}
     \label{thm:refine_join}
-    Let $\langle B; \join, \meet, ', 0, 1 \rangle$ be a Boolean algebra. Let $(x_i)_{i \in I}$ be a collection of elements in $B$ such that $x_i \meet x_j = 0$ when $i \neq j$. If $\bigjoin_{i \in I} x_i \in B$, then $\bigjoin_{i \in J} x_i \in B$ for any cofinite\footnotemark{} $J \subseteq I$.
+    Let $\langle B; \join, \meet, ', 0, 1 \rangle$ be a Boolean algebra. Let $\{x_i\}_{i \in I}$ be a collection of pairwise disjoint elements in $B$. If $\bigjoin_{i \in I} x_i \in B$, then $\bigjoin_{i \in J} x_i \in B$ for any cofinite\footnotemark{} $J \subseteq I$.
 \end{lemma}
-\footnotetext{Recall that a subset $J$ of a set $I$ is called \emph{cofinite} if the complement $I \setminus J$ is finite.}
 
-\begin{proof}
+\begin{proof}\footnotetext{Recall that a subset $J$ of a set $I$ is called \emph{cofinite} if the complement $I \setminus J$ is finite.}
     Let $(x_i)_{i \in I}$ be such a collection of elements, and let $J \subseteq I$ be cofinite. It suffices to prove the lemma in the case $I \setminus J = \{i_0\}$, since the general case then follows by induction. We claim that
     %
-    \begin{equation*}
+    \begin{equation}
+        \label{eq:Boolean-algebra-lemma}
         \bigjoin_{i \in J} x_i
-            = x_{i_0}' \meet \bigjoin_{i \in I} x_i.
-    \end{equation*}
+            = x_{i_0}' \meet \bigjoin_{i \in I} x_i,
+    \end{equation}
     %
-    Let $j \in J$ and notice that, since $x_{i_0} \meet x_j = 0$,
+    in which case the claim would follow. Let $j \in J$ and notice that, since $x_{i_0} \meet x_j = 0$,
     %
     \begin{equation*}
         x_{i_0}' \meet x_j
             = (x_{i_0}' \meet x_j) \join (x_{i_0} \meet x_j)
             = (x_{i_0}' \join x_{i_0}) \meet x_j
             = 1 \meet x_j
-            = x_j.
+            = x_j,
     \end{equation*}
     %
-    Now because $x_j \leq \bigjoin_{i \in I} x_i$ we get
+    i.e. $x_j \leq x_{i_0}'$. Now because also $x_j \leq \bigjoin_{i \in I} x_i$ we get
     %
     \begin{equation*}
         x_j
-            = x_{i_0}' \meet x_j
             \leq x_{i_0}' \meet \bigjoin_{i \in I} x_i.
     \end{equation*}
     %
-    Conversely, suppose that $x_j \leq s$ for all $j \in J$. Then $x_i \leq x_{i_0} \join s$ for all $i \in I$, so
+    Since $j \in J$ was arbitrary, the inequality $\leq$ in \cref{eq:Boolean-algebra-lemma} follows. Conversely, suppose that $s \in B$ is such that $x_j \leq s$ for all $j \in J$. Then $x_i \leq x_{i_0} \join s$ for all $i \in I$, so
     %
     \begin{equation*}
         \bigjoin_{i \in I} x_i
@@ -247,7 +243,7 @@ Before proceeding we note the following technical result that we shall need late
             \leq s,
     \end{equation*}
     %
-    as desired.
+    which implies the inequality $\geq$ in \cref{eq:Boolean-algebra-lemma}.
 \end{proof}
 
 
@@ -255,7 +251,7 @@ Before proceeding we note the following technical result that we shall need late
 \section{Abstract measure spaces}
 
 \begin{definition}[Generalised abstract measure spaces]
-    A \emph{measure} on a Boolean algebra $B$ is a map $\mu \colon B \to [0,\infty)$ such that $x \meet y = 0$ implies
+    A \emph{measure} on a Boolean algebra $B$ is a map $\mu \colon B \to [0,\infty)$ such that
     %
     \begin{equation}
         \label{eq:finite-additivity}
@@ -263,15 +259,15 @@ Before proceeding we note the following technical result that we shall need late
             = \mu(x) + \mu(y)
     \end{equation}
     %
-    for all $x,y \in B$. If $\mu$ is a measure on a Boolean algebra $B$, then we call the pair $(B,\mu)$ a \emph{generalised abstract measure space}. If $x \neq 0$ implies that $\mu(x) > 0$, then $\mu$ is called \emph{positive definite}. If $\mu(1) = 1$, then we call $\mu$ a \emph{probability measure}.
+    for all disjoint $x,y \in B$. If $\mu$ is a measure on a Boolean algebra $B$, then we call the pair $(B,\mu)$ a \emph{generalised abstract measure space}. If $x \neq 0$ implies that $\mu(x) > 0$, then $\mu$ is called \emph{positive definite}. If $\mu(1) = 1$, then we call $\mu$ a \emph{probability measure}.
 \end{definition}
 %
-It is clear that $\mu(\emptyset) = 0$ and that $\mu$ is increasing. It follows that $\mu(x) \leq \mu(1)$ for all $x \in B$. Notice that we require that $\mu$ is finite, but this is no restriction since we are ultimately interested in the case where $\mu$ is a probability measure.
+It is clear that $\mu(\emptyset) = 0$ and that $\mu$ is increasing. It follows that $\mu(x) \leq \mu(1)$ for all $x \in B$. Notice that we require that $\mu$ is finite, but this is no restriction since we are ultimately interested in the case where $\mu$ is a probability measure. % I don't think we need to assume finiteness. Get back to this. -- We need it for the metric, but we can just replace the (possibly infinite) metric by an equivalent finite one.
 
 The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of $\mu$, since an easy induction argument extends it to all finite joins. We will later define more restrictive structures and measures upon them, hence the adjective \enquote{generalised}.
 
 \begin{proposition}[Boole's inequality]
-    Let $(B,\mu)$ be a generalised abstract measure space $B$. Then for any $x,y \in B$ we have
+    Let $(B,\mu)$ be a generalised abstract measure space. Then for any $x,y \in B$ we have
     %
     \begin{equation*}
         \mu(x \join y)
@@ -279,7 +275,7 @@ The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of
     \end{equation*}
 \end{proposition}
 %
-Similar to \eqref{eq:finite-additivity}, Boole's inequality may be extended to all finite joins by induction.
+Similar to \cref{eq:finite-additivity}, Boole's inequality may be extended to all finite joins by induction.
 
 \begin{proof}
     Notice that
@@ -288,7 +284,7 @@ Similar to \eqref{eq:finite-additivity}, Boole's inequality may be extended to a
         (x \meet y') \meet y = x \meet (y' \meet y) = 0,
     \end{equation*}
     %
-    and that
+    so $x \meet y'$and $y$ are disjoint, and that
     %
     \begin{equation*}
         (x \meet y') \join y = (x \join y) \meet (y' \join y) = x \join y.
@@ -324,13 +320,9 @@ Next we equip generalised abstract measure spaces with a canonical pseudometric.
 for $x,y \in B$. The next proposition shows that $\rho_\mu$ is in fact a pseudometric. We will always equip a generalised abstract measure space with this pseudometric.
 
 \begin{proposition}
-    Given a generalised abstract measure space $(B,\mu)$, the map $\rho_\mu$ defined in \eqref{eq:Boolean-metric} makes $(B,\rho_\mu)$ into a pseudometric Boolean algebra. Furthermore, $\rho_\mu$ is a metric if and only if $\mu$ is positive definite.
+    Given a generalised abstract measure space $(B,\mu)$, the map $\rho_\mu$ defined in \cref{eq:Boolean-metric} makes $(B,\rho_\mu)$ into a pseudometric Boolean algebra. Furthermore, $\rho_\mu$ is a metric if and only if $\mu$ is positive definite.
 \end{proposition}
 
-% Add to framedtheorems.sty
-\newcommand{\mylistlabelfont}[1]{{\normalfont\color{linkcolor}\textit{#1}:}}
-\newlist{proofsec}{description}{1}
-\setlist[proofsec]{leftmargin=0pt, parsep=0pt, listparindent=\parindent, font=\mylistlabelfont}
 
 \begin{proof}
 \begin{proofsec}
@@ -403,7 +395,7 @@ for $x,y \in B$. The next proposition shows that $\rho_\mu$ is in fact a pseudom
     so it is a composition of continuous functions.
 
     \item[Positive definiteness]
-    The last claim follows directly from the fact that $x \symdiff y = 0$ if and only if $x = y$ for all $x,y \in B$.
+    The last claim follows directly from the fact that $x \symdiff y = 0$ if and only if $x = y$, for all $x,y \in B$.
 \end{proofsec}
 \end{proof}
 
@@ -415,7 +407,7 @@ for $x,y \in B$. The next proposition shows that $\rho_\mu$ is in fact a pseudom
 
 It is well-known that any (pseudo)metric space has a completion, i.e. can be isometrically embedded as a dense subset of a complete (pseudo)metric space. See for instance Corollary~24.5 in \textcite{willard}. A natural question is then: If $(B,\rho)$ is a (pseudo)metric Boolean algebra with metric completion $(\altoverline{B}, \altoverline{\rho})$, does $\altoverline{B}$ also carry the structure of a Boolean algebra?
 
-This is indeed the case, and we sketch the construction: Let $x,y \in \altoverline{B}$, and let $(x_n)$ and $(y_n)$ be sequences in $B$ that converge to $x$ and $y$, respectively. Then these are Cauchy sequences in $B$, and the calculation leading to \eqref{eq:join-continuous} show that $(x_n \join y_n)$ is also a Cauchy sequence. Thus it converges to some element of $\altoverline{B}$. Denote it $x \join y$. We define $x'$ and $x \meet y$ similarly. It is easy to check that these operations satisfy the conditions in \cref{def:Boolean-algebra}. Furthermore, the completion $\altoverline{\rho}$ of the pseudometric $\rho$ makes $(\altoverline{B}, \altoverline{\rho})$ into a pseudometric Boolean algebra.
+This is indeed the case, and we sketch the construction: Let $x,y \in \altoverline{B}$, and let $(x_n)$ and $(y_n)$ be sequences in $B$ that converge to $x$ and $y$, respectively. Then these are Cauchy sequences in $B$, and the calculation leading to \cref{eq:join-continuous} shows that $(x_n \join y_n)$ is also a Cauchy sequence. Thus it converges to some element of $\altoverline{B}$. Denote it $x \join y$. We define $x'$ and $x \meet y$ similarly. It is easy to check that these operations satisfy the conditions in \cref{def:Boolean-algebra}. Furthermore, the completion $\altoverline{\rho}$ of the pseudometric $\rho$ makes $(\altoverline{B}, \altoverline{\rho})$ into a pseudometric Boolean algebra.
 
 This takes care of the metric structure. The next proposition shows that we can also extend the measure on a generalised abstract measure space to its completion.
 
@@ -475,6 +467,7 @@ This takes care of the metric structure. The next proposition shows that we can 
     \label{thm:monotonic-sequence-Cauchy}
     Let $(B,\mu)$ be a generalised abstract measure space. Every monotonic sequence in $B$ is a Cauchy sequence.
 \end{lemma}
+% If we allow $\mu$ to be infinite, we probably need to assume that it is "bounded" as well.
 
 \begin{proof}
     Let $(x_n)_{n\in\naturals}$ be an increasing sequence in $B$. Then since $x_n \leq 1$ we also have $\mu(x_n) \leq \mu(1) < \infty$ for all $n \in \naturals$. Thus the sequence $(\mu(x_n))$ is a bounded increasing sequence in $\setR$, hence it converges to some $\alpha \geq 0$. For $\epsilon > 0$ there is an $N \in \naturals$ such that $\mu(x_n) \in (\alpha - \epsilon, \alpha]$ for all $n \geq N$.
@@ -502,29 +495,27 @@ This takes care of the metric structure. The next proposition shows that we can 
 
 \begin{proposition}
     \label{thm:existence-of-joins}
-    Let $(B,\rho)$ be a metric Boolean algebra with completion $(\altoverline{B}, \altoverline{\rho})$. Any sequence $(x_n)_{n\in\naturals}$ in $B$ has a join in $\altoverline{B}$, and
+    Let $(B,\mu)$ be a generalised abstract measure space with completion $(\altoverline{B}, \altoverline{\mu})$. Then any sequence $(x_n)_{n\in\naturals}$ in $B$ has a join $s$ in $\altoverline{B}$, and
     %
     \begin{equation*}
-        \bigjoin_{n\in\naturals} x_n
-            = \lim_{n\to\infty} \bigjoin_{i \leq n} x_i.
+        \bigjoin_{i \leq n} x_i
+            \to s
     \end{equation*}
     %
-    Similarly for meets.
+    as $n \to \infty$. Similarly for meets.
 \end{proposition}
-%
-As far as I know, it is not possible to generalise this result to the case where $\rho$ is only a pseudometric. [We also need the measure, don't we? For the lemma? Kolmogorov only looks at this when there is a positive definite measure.]
 
 \begin{proof}
-    The sequence $( \bigjoin_{i \leq n} x_i )_{n\in\naturals}$ is increasing, so by \cref{thm:monotonic-sequence-Cauchy} it has a limit $s \in \altoverline{B}$. For $k \in \naturals$ and $n \geq k$ we have $x_k \leq \bigjoin_{i \leq n} x_i$, i.e.
+    The sequence $( \bigjoin_{i \leq n} x_i )_{n\in\naturals}$ is increasing, so by \cref{thm:monotonic-sequence-Cauchy} it has a limit $s \in \altoverline{B}$. We show that $s$ is the join of $(x_n)$. For $k \in \naturals$ and $n \geq k$ we have $x_k \leq \bigjoin_{i \leq n} x_i$, i.e.
     %
     \begin{equation*}
         x_k \join \bigjoin_{i \leq n} x_i
             = \bigjoin_{i \leq n} x_i.
     \end{equation*}
     %
-    Taking the limit as $n \to \infty$, continuity of (binary) joins implies that $x_k \join s = s$, or $x_k \leq s$. Thus $s$ is an upper bound of the sequence $(x_n)$.
+    Taking the limit as $n \to \infty$, continuity of (binary) joins implies that $x_k \join s = s$ in $\altoverline B$, or $x_k \leq s$. Thus $s$ is an upper bound of the sequence $(x_n)$.
 
-    On the other hand, if $t \in \altoverline{B}$ is an upper bound of $(x_n)$, then $x_k \leq t$. We have just seen that taking limits preserves inequalities, so this implies that $s \leq t$ as desired.
+    On the other hand, if $t \in \altoverline{B}$ is an upper bound of $(x_n)$, then $x_k \leq t$. We have just seen that taking limits preserves inequalities, so this implies that $s \leq t$, and hence $s$ is the least upper bound.
 
     The corresponding result for meets follows similarly, or from the fact that complementation is continuous.
 \end{proof}
@@ -543,9 +534,11 @@ This is an analogue of the continuity (from above) of ordinary countably additiv
     \label{thm:positive-definite-implies-continuous}
     Let $(B, \mu)$ be a generalised abstract measure space with $\mu$ positive definite. Then $(B,\mu)$ satisfies the axiom of continuity.
 \end{lemma}
+%
+As far as I know, the assumption that $\mu$ be positive definite is necessary for this to hold in general.
 
 \begin{proof}
-    Let $(x_n)_{n\in\naturals}$ be a decreasing sequence in $B$ such that $\bigmeet_{n\in\naturals} x_n = 0$. Since it is decreasing, $x_n = \bigmeet_{i \leq n} x_i$, so because $\mu$ is positive definite, \cref{thm:existence-of-joins} implies that the sequence converges to its meet, i.e. it converges to $0$. By \cref{rem:convergence-of-measure}, $\mu(x_n)$ converges to $\mu(0) = 0$, proving the claim.
+    Let $(x_n)_{n\in\naturals}$ be a decreasing sequence in $B$ such that $\bigmeet_{n\in\naturals} x_n = 0$. A similar argument to the one in the proof of \cref{thm:existence-of-joins} shows that $x_n$ converges to $0$ as $n \to \infty$ in $B$, hence also in the completion $\altoverline B$. Furthermore, since the sequence is decreasing we have $x_n = \bigmeet_{i \leq n} x_i$, so \cref{thm:existence-of-joins} also implies that the sequence converges to its meet $s$ in $\altoverline B$. But since $\mu$ is positive definite, limits in $\altoverline B$ are unique, so $s = 0$. By \cref{rem:convergence-of-measure}, $\mu(x_n)$ converges to $\mu(0) = 0$, proving the claim.
 \end{proof}
 
 
@@ -560,14 +553,14 @@ This is an analogue of the continuity (from above) of ordinary countably additiv
 \end{proposition}
 
 \begin{proof}
-    By \cref{thm:refine_join}, $r_n = \bigjoin_{i > n} x_i$ exists in $B$, and we claim that $\bigmeet_{n\in\naturals} r_n = 0$. Let $t \in \calF$ be a lower bound of $r_n$ for $n \in \naturals$. Then for $n \in \naturals$ we have
+    By \cref{thm:refine_join}, $r_n = \bigjoin_{i > n} x_i$ exists in $B$, and we claim that $\bigmeet_{n\in\naturals} r_n = 0$. Let $t \in B$ be a lower bound of $r_n$ for $n \in \naturals$. Then for $n \in \naturals$ we have
     %
     \begin{equation*}
         t \join \bigjoin_{i > n} x_i
             = \bigjoin_{i > n} x_i,
     \end{equation*}
     %
-    and taking the meet of each side with $x_n'$ yields $t \meet x_n' = 0$. Hence $\bigjoin_{n\in\naturals} t \meet x_n = 0$. Now notice that $\bigmeet_{n\in\naturals} x_n = 0$, since $x_n \meet x_m = 0$ when $n \neq m$. It follows by taking complements that $\bigjoin_{n\in\naturals} x_n' = 1$, and so
+    and taking the meet of each side with $x_n'$ yields $t \meet x_n' = 0$. Hence $\bigjoin_{n\in\naturals} t \meet x_n' = 0$. Now notice that $\bigmeet_{n\in\naturals} x_n = 0$, since $x_n \meet x_m = 0$ when $n \neq m$. It follows by taking complements that $\bigjoin_{n\in\naturals} x_n' = 1$, and so
     %
     \begin{equation*}
         t
@@ -595,7 +588,7 @@ This is an analogue of the continuity (from above) of ordinary countably additiv
         \mu(x)
             \leq \sum_{n=1}^\infty \mu(x_n).
     \end{equation*}
-\end{proposition}
+\end{proposition}% Is this correct??? Because it doesn't necessarily converge to its join in B but in the completion of B!
 
 \begin{proof}
     First notice that, by the finite Boole equality,
@@ -642,8 +635,9 @@ If the join $\bigjoin_{n\in\naturals} x_n$ exists, then it follows by taking com
 \section{Motivation}
 
 \newcommand{\compl}[1]{\altoverline{#1}}
+\renewcommand{\P}{P}
 
-If the probability of an event is supposed to be a measure of how often this event occurs on repetitions of the random experiment in question, then it seems reasonable to assume that we are, at least in principle, able to distinguish when the event does and does not obtain. For example, after rolling a six-sided die the state of affairs \textquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, after throwing a ball the state of affairs \textquote{the ball was thrown more than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
+If the probability of an event is supposed to be a measure of how often this event occurs on repetitions of the random experiment in question, then it seems reasonable to assume that we are, at least in principle, able to distinguish when the event does and does not obtain. For example, after rolling a six-sided die the state of affairs \enquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, after throwing a ball the state of affairs \enquote{the ball was thrown further than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
 
 One might take a different view: Say that one grants that it is possible to \emph{affirm} that the length of the throw, measured in metres, lies in the interval $(50,\infty)$. If the length $L$ in metres does in fact lie in the above interval, we can simply use a ruler whose subdivisions are smaller than $L - 50$ in metres. Still one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smaller), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
 
@@ -699,7 +693,17 @@ We are still not assured that our probability spaces are closed under countable 
     So, the use of denumerably additive probabilities is seen to be legitimate and to impose no additional restrictions on the nature of the problems which fall under the scope of the general theory.
 }
 %
-Notice that he calls the adjoined elements \enquote{ideal}. Thus he seems to think of these new events as not (necessarily) corresponding to a real, observable event as described above, or at least not an event that we can gain any information about. Instead, he seems only to be concerned with how their adjunction can improve the flexibility of the theory without restricting which classes of problems the theory can address. And indeed, upon taking the completion of a probability space we always have an isometric copy of the original space inside the new one.
+Notice that he calls the adjoined elements \enquote{ideal}. Thus he seems to think of these new events as not (necessarily) corresponding to real, observable events as described above, or at least not events that we can gain any information about. Instead, he seems only to be concerned with how their adjunction can improve the flexibility of the theory without restricting which classes of problems the theory can address. Indeed, we had the following to say:
+%
+\blockquote[\cite{kolmogorov1956}]{\setlength{\parskip}{0pt}\setlength{\parindent}{\oldparindent}
+    Even if the sets (events) $A$ of $\mathfrak{F}$ can be interpreted as actual and (perhaps only approximately) observable events, it does not, of course, follow from this that the sets of the extended field $B\mathfrak{F}$ [the $\sigma$-algebra generated by $\mathfrak{F}$] reasonably admit of such an interpretation.
+
+    Thus there is the possibility that while a field of probability $(\mathfrak{F}, P)$ may be regarded as the image (idealized, however) of actual random events, the extended field of probability $(B\mathfrak{F}, P)$ will still remain merely a mathematical structure.
+    
+    Thus sets of $B\mathfrak{F}$ are generally merely ideal events to which nothing corresponds in the outside world. However, if reasoning which utilizes the probabilities of such ideal events leads us to a determination of the probability of an actual event of $\mathfrak{F}$, then, from an empirical point of view also, this determination will automatically fail to be contradictory.
+}
+%
+And indeed, upon taking the completion of a probability space we always have an isometric copy of the original space inside the new one.
 
 We summarise the result of the above discussion in the following definition, which is the one we will be concerned with going forward:
 
@@ -727,7 +731,7 @@ We begin by recalling the standard definitions in order to compare them to the a
     The sets in $\calF$ are called \emph{$\calF$-measurable}, and the pair $(\Omega, \calF)$ is called a \emph{measurable space}.
 \end{definition}
 %
-Note that a $\sigma$-algebra by this definition is indeed an \emph{abstract} $\sigma$-algebra as defined in \cref{def:abstract-sigma-algebra}. Also contrast the definition of a $\sigma$-algebra with that of a \emph{set algebra}: in the latter case also require it to contain $\Omega$ and be closed under complementation, but we only require it to be closed under \emph{finite} intersections. In particular a set algebra is a Boolean algebra.
+Note that a $\sigma$-algebra by this definition is indeed an \emph{abstract} $\sigma$-algebra in the sense of \cref{def:abstract-sigma-algebra}. Also contrast the definition of a $\sigma$-algebra with that of a \emph{set algebra}: in the latter case we also require it to contain $\Omega$ and be closed under complementation, but we only require it to be closed under \emph{finite} unions. In particular a set algebra is a Boolean algebra.
 
 
 \begin{definition}[Measure spaces and probability spaces]
@@ -767,13 +771,21 @@ A simple example may help elucidate this point: Consider the random experiment c
         = \{ 0, A_1, \ldots, A_5, E, F, 1 \},
 \end{equation*}
 %
-where we interpret the event $A_i$ as \enquote{the result was $i$} for $i = 1, \ldots, 5$, $E$ as \enquote{the result was even} and $F$ as \enquote{the result was odd}. There is no event $A_6$ since it is impossible to roll a $6$. Certainly we would require that $A_1, A_3, A_5 \leq F$, and that $A_2, A_4 \leq E$. Assigning probabilities to each event we might find that $\P(A_1) = \P(A_2) = 0.35$, and that $\P(A_3) = \P(A_4) = \P(A_5) = 0.1$. Additivity of $\P$ would then imply that $\P(E) = 0.45$ and $\P(F) = 0.55$.
+where we interpret the event $A_i$ as \enquote{the result was $i$} for $i = 1, \ldots, 5$, $E$ as \enquote{the result was even} and $F$ as \enquote{the result was odd}. There is no event $A_6$ since it is impossible to roll a $6$. Certainly we would require that
+%
+\begin{enumerate}
+    \item $A_1, \ldots, A_5$ be pairwise disjoint,
+    \item $E = A_2 \join A_4$ and $F = A_1 \join A_3 \join A_5$ (from which it follows that $E$ and $F$ are disjoint), and
+    \item $E \join F = 1$.
+\end{enumerate}
+%
+Assigning probabilities to each event we might find that $\P(A_1) = \P(A_2) = 0.35$, and that $\P(A_3) = \P(A_4) = \P(A_5) = 0.1$. Additivity of $\P$ would then imply that $\P(E) = 0.45$ and $\P(F) = 0.55$.
 
 It is tempting to \emph{identify} each of $E$ and $F$ with the (possible) events that imply them, i.e. identify $E$ with the set $\{A_2, A_4\}$ and $F$ with the set $\{A_1, A_3, A_4\}$ of events. Maybe we are even tempted to include a hypothetical event $A_6$ in the former set. But notice that this is an \emph{analysis} of the events $E$ and $F$. It would be quite possible to grasp the meaning of the event $E$ without immediately enumerating each of the \enquote{elementary} events it consists of. Indeed events in even set-theoretic probability theory (and objects in mathematics as a whole, for that matter) are often defined in terms of their properties, not of their constituents. Or to put it in other terms: by their \emph{intension} and not their \emph{extension}.
 
-On the other hand, the set-theoretic approach and the possibility of non-empty null sets offer certain conceptual advantages as well. Perhaps we would like there to be an event $A_6$ even if it is impossible. Certainly our model of the die seems incomplete without it; the die is, after all, six-sided! Admittedly this picture seems rather artificial since the probability of rolling a $6$ using a physical die is surely positive, if very small. So imagine that this die appears in a video game or in a fantasy novel where this might be a more easily digestible proposition.
+On the other hand, the set-theoretic approach and the possibility of non-empty null sets offer certain conceptual advantages as well. Perhaps we would like there to be an event $A_6$ even if it is impossible. Certainly our model of the die seems incomplete without it; the die is, after all, six-sided! Admittedly this picture seems rather artificial since the probability of rolling a $6$ using a physical die is surely positive, however small it happens to be. So imagine that this die appears in a video game or in a fantasy novel where this might be a more easily digestible proposition.
 
-Furthermore, if we actually do want to use our theory of probability to \emph{model} physical phenomena, then it might be perfectly reasonable to include some event in the model on conceptual grounds, even if this event happens to be assigned probability zero in the model. Perhaps this fact is due to numerical approximation, missing information or a state of affairs that comes about after each event under consideration has been identified.
+Furthermore, if we actually do want to use our theory of probability to \emph{model} physical phenomena, then it might be perfectly reasonable to include some event in the model on conceptual grounds, even if this event happens to be assigned probability zero in the model. Perhaps this fact is due to numerical approximation, missing information or a state of affairs that comes about after each event under consideration has been identified. Indeed, we may consider a (concrete or abstract) $\sigma$-algebra and interpret its elements as events, even if there is no particular probability measure defined on it. Thus the system of events seems in some sense prior to the assignment of probabilities to the events.
 
 
 \section[Extending premeasures to sigma-algebras][Extending premeasures to $\sigma$-algebras]{Extending premeasures to $\sigma$-algebras}
@@ -786,7 +798,7 @@ Recall that we in \cref{thm:completion-gives-countable-additivity} proved that t
 We begin with the latter: Let $\calA$ be an algebra on a set $\Omega$, and let $\mu_0 \colon \calA \to [0,\infty]$ be a \emph{premeasure} on $\calA$. Recall that this means that $\mu_0(\emptyset) = 0$, and that
 %
 \begin{equation*}
-    \mu_0 \bigl( \bigunion_{n\in\naturals} A_n \bigr)
+    \mu_0 \Bigl( \bigunion_{n\in\naturals} A_n \Bigr)
         = \sum_{n=1}^\infty \mu_0(A_n)
 \end{equation*}
 %
@@ -882,11 +894,10 @@ The intuition being that the knowledge that some $A_i$ has obtained does not aff
 %
 This definition reduces to the first one if all $\calC_i$ are singletons. But notice what this definition says: Choosing a single event $A_i$ from each $\calC_i$, these $A_i$ are independent. The definition does not imply any relationship between the events in each $\calC_i$. An example, adapted from Example~6.1 in \textcite{bauer1995}, will illustrate this point:
 
-\newcommand{\powerset}[1]{2^{#1}}
 
 \begin{example}
     \label{ex:die-throw-1}
-    Consider two throws of a fair die. The sample space is then $\Omega = \{1, \ldots, 6\}^2$, and we consider the probability space $(\Omega, \powerset{\Omega}, \P)$, where $\P$ assigns equal probability $1/6$ to each elementary event $\{(i,j)\}$. Let $A_1$ and $A_2$ be the events that on the first throw an even or odd number showed up, respectively, and let $A_3$ be the event that the sum of the two throws is odd. Now collect the three events in $\calC_1 = \{A_1, A_2\}$ and $\calC_2 = \{A_3\}$. Then $\calC_1$ and $\calC_2$ are independent even through $A_1$ and $A_2$ are not.
+    Consider two throws of a fair die. The sample space is then $\Omega = \{1, \ldots, 6\}^2$, and we consider the probability space $(\Omega, \powerset{\Omega}, \P)$, where $\P$ assigns equal probability $1/36$ to each elementary event $\{(i,j)\}$. Let $A_1$ and $A_2$ be the events that on the first throw an even or odd number showed up, respectively, and let $A_3$ be the event that the sum of the two throws is odd. Now collect the three events in $\calC_1 = \{A_1, A_2\}$ and $\calC_2 = \{A_3\}$. Then $\calC_1$ and $\calC_2$ are independent even through $A_1$ and $A_2$ are not.
 \end{example}
 %
 The question then becomes, why are we interested in this generalisation of independence? Independence of two collections $\calC_1$ and $\calC_2$ is supposed to mean that the information contained in each is in some way independent of the information contained in the other. By \enquote{information} we mean something like: the ability to better predict the outcome of a random experiment, or in other words improved knowledge of the probabilities of events.
@@ -1076,10 +1087,10 @@ for all $x \in \reals$. Say that we have drawn some $\omega \in \Omega$. Given t
 Next we consider a general random variable $\rvar{X} \in \meas{\calF}$. By the same reasoning, for $\calF$ to be able to determine $\rvar{X}(\omega)$ given $\omega \in \Omega$ it must contain the sets $\{\rvar{X} = x\}$ for $x \in \rvar{X}(\Omega)$. But we claim that this is not sufficient for $\rvar{X}$ to be measurable:
 %
 \begin{example}
-    Let $\calE$ be the countable, cocountable $\sigma$-algebra on $\reals$, and let $\rvar{X} \colon \reals \to \reals$ be the identity function. Then $\{\rvar{X} = x\} = \{x\} \in \calE$, but $\{\rvar{X} \in [0,\infty)\} = [0, \infty)$, which is neither countable nor cocountable. Hence $\rvar{X}$ has measurable fibres despite not being measurable.
+    Let $\calE$ be the countable, cocountable $\sigma$-algebra on $\reals$, and let $\rvar{X} \colon (\reals, \calE) \to (\reals, \borel{X})$ be the identity function. Then $\{\rvar{X} = x\} = \{x\} \in \calE$, but $\rvar{X}\preim([0,\infty)) = [0,\infty)$, which is neither countable nor cocountable. Hence $\rvar{X}$ has measurable fibres despite not being measurable.
 \end{example}
 %
-Hence we need to come up with a different criterion. Instead of trying to determine the value of $\rvar{X}$ exactly, we attempt to approximate it. Suppose for definiteness that we have drawn an element $\omega \in \Omega$ such that $x = \rvar{X}(\omega) > 0$, and that we wish to determine $x$ within some error $\epsilon > 0$. First, check if $x$ lies in the interval $(-\infty,n)$ for $n \in \naturals$, starting with $n = 1$. After a finite number of checks we find that $x \in [n_0, n_0+1)$ for some $n_0 \in \naturals$. Next, keep dividing this interval in half by checking if $x \in (-\infty, a)$ for appropriate $a \in \rationals$, always keeping the part of the interval in which $x$ lies and discarding the other. Eventually we are left with an interval $[p,q)$ with $q-p < \epsilon$, and hence we obtain in finitely many steps an approximation $r \in \rationals$ of $x$ such that $\abs{x-r} < \epsilon$.
+Hence we need to come up with a different criterion. Instead of trying to determine the value of $\rvar{X}$ exactly, we attempt to approximate it. Suppose for definiteness that we have drawn an element $\omega \in \Omega$ such that $x = \rvar{X}(\omega) > 0$, and that we wish to determine $x$ within some error $\epsilon > 0$. First, check if $x$ lies in the interval $(-\infty,n)$ for $n \in \naturals$, starting with $n = 1$. After a finite number of checks we find that $x \in I_0 \defn [n_0, n_0+1)$ for some $n_0 \in \naturals$. Next, we construct a sequence $(I_n)_{n\in\naturals}$ as follows: Let $a_n \in \rationals$ be the midpoint of $I_n$, and check if $x \in (-\infty, a_n)$. If this is the case, let $I_{n+1} = I_n \intersect (-\infty, a_n)$, and otherwise let $I_{n+1} = I_n \intersect [a_n, \infty)$. Since the interval length is halved in each step, then for some $N \in \naturals$ the length of $I_N$ is less than $\epsilon$. Hence we obtain in finitely many steps an approximation $a_N \in \rationals$ of $x$ such that $\abs{x-a_N} < \epsilon$.
 
 Notice that we only used intervals on the form $(-\infty, a)$ with $a \in \rationals$ during this process. Thus only knowledge of the events $\{\rvar{X} \in (-\infty, a)\}$ is necessary to determine $\rvar{X}(\omega)$, at least approximately. And since the sets $(-\infty, a)$ generate the Borel algebra $\borel{\reals}$, this requirement is the same as requiring $\rvar{X}$ to be $(\calF,\borel{\reals})$-measurable.
 
@@ -1114,10 +1125,10 @@ We prove a fundamental lemma that helps shed further light on the interpretation
     commutes.
 \end{proposition}
 %
-In other words, a function $g \colon X \to \reals$ is $\calE$-measurable if and only if it factors through $\phi$.
+In other words, a function $f \colon X \to \reals$ is $\calE$-measurable if and only if it factors through $\phi$.
 
 \begin{proof}
-    Denote the set on the right-hand side of \eqref{eq:factorisation-lemma} by $W$. It is clear that $W$ is a subspace of $\meas{\calE}$. If $A \in \calE$, then $A = \phi\preim(B)$ for some $B \in \calF$. Notice then that
+    Denote the set on the right-hand side of \cref{eq:factorisation-lemma} by $W$. It is clear that $W$ is a subspace of $\meas{\calE}$. If $A \in \calE$, then $A = \phi\preim(B)$ for some $B \in \calF$. Notice then that
     %
     \begin{equation*}
         \indicator{A}
@@ -1137,7 +1148,7 @@ In other words, a function $g \colon X \to \reals$ is $\calE$-measurable if and 
             = g(\phi(x)),
     \end{equation*}
     %
-    where $g \colon Y \to \reals$ is given by $g = \sup_{n\in\naturals}g_n$. This is $\calF$-measurable as a function into the extended real line $\altoverline{\reals}$. Next let $B = \set{y \in Y}{g(y) = \infty}$. Then $\tilde{g} = g \indicator{B^c} \in \meas{\calF}$, and since $\phi(X) \in B^c$ we have $f = \tilde{g} \circ \phi$ as desired.
+    where $g \colon Y \to \reals$ is given by $g = \sup_{n\in\naturals}g_n$. This is $\calF$-measurable as a function into the extended real line $\altoverline{\reals}$. Next let $B = \set{y \in Y}{g(y) = \infty}$. Then $\tilde{g} = g \indicator{B^c} \in \meas{\calF}$, and since $\phi(X) \subseteq B^c$ we have $f = \tilde{g} \circ \phi$ as desired.
 
     Finally let $f \in \meas{\calE}$ be an arbitrary measurable function, and write $f = f^+ - f^-$ where $f^+ = f \join 0$ and $f^- = -(f \meet 0)$. Applying the above to $f^+$ and $f^-$ yields functions $g^+, g^- \in \meas{\calF}$ such that $f^\pm = g^\pm \circ \phi$. Letting $g = g^+ - g^-$ we obtain $f = g \circ \phi$, and the theorem is proved.
 \end{proof}
