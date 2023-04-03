@@ -112,6 +112,10 @@
 % Add to basicmathcommands.sty
 \renewcommand{\symdiff}{\mathbin{\triangle}}
 
+% https://tex.stackexchange.com/a/124311/63353
+\makeatletter
+\g@addto@macro\bfseries{\boldmath}
+\makeatother
 \newcommand{\keyword}[1]{{\itshape\bfseries #1}}
 
 
@@ -961,8 +965,8 @@ Given that $\calC_1$ and $\calC_2$ are independent, is there any more we can say
 
 As for unions and complementation, we have slightly more success. To do this discussion justice we introduce another piece of terminology:
 
-\begin{definition}[Dynkin systems]
-    A collection $\calD$ of subsets of a set $X$ is called a \keyword{Dynkin system} in $X$ if
+\begin{definition}[$\delta$-systems]
+    A collection $\calD$ of subsets of a set $X$ is called a \keyword{$\delta$-system} in $X$ if
     %
     \begin{enumdef}
         \item $X \in \calD$,
@@ -971,9 +975,9 @@ As for unions and complementation, we have slightly more success. To do this dis
     \end{enumdef}
 \end{definition}
 %
-A Dynkin system is also variously called a Dynkin class, $\delta$-system, $d$-system, or $\lambda$-system. Clearly every $\sigma$-algebra is a Dynkin system. If $\calS$ is a collection of subsets of $X$, then there is a smallest Dynkin system in $X$ that contains $\calS$, namely the intersection of all such Dynkin systems. We denote this by $\delta(\calS)$ and say that it is \keyword{generated} by $\calS$.
+A $\delta$-system is also variously called a Dynkin class, Dynkin system, $d$-system, or $\lambda$-system. Clearly every $\sigma$-algebra is a $\delta$-system. If $\calS$ is a collection of subsets of $X$, then there is a smallest $\delta$-system in $X$ that contains $\calS$, namely the intersection of all such $\delta$-systems. We denote this by $\delta(\calS)$ and say that it is \keyword{generated} by $\calS$.
 
-The motivation for considering Dynkin systems is twofold. First of all they are significantly simpler than $\sigma$-algebras, and working with Dynkin systems instead of $\sigma$-algebras can often we done with no loss of generality, as the following fundamental result shows:
+The motivation for considering $\delta$-systems is twofold. First of all they are significantly simpler than $\sigma$-algebras, and working with $\delta$-systems instead of $\sigma$-algebras can often we done with no loss of generality, as the following fundamental result shows:
 
 \begin{theorem}[Dynkin's Lemma]
     Let $\calS$ be a collection of subsets of a set $X$ that is closed under finite intersections. Then
@@ -986,14 +990,14 @@ The motivation for considering Dynkin systems is twofold. First of all they are 
 Also known as \keyword{Dynkin's $\pi$-$\lambda$ theorem} since a non-empty collection of sets that is closed under finite intersections is also called a $\pi$-system.
 
 \begin{proof}
-    \textcite[Theorem~1.6.2]{cohn2001}. See also \textcite[Theorem~2.3]{bauer2001}, though note that Bauer uses a slightly different definition of Dynkin systems.
+    \textcite[Theorem~1.6.2]{cohn2001}. See also \textcite[Theorem~2.3]{bauer2001}, though note that Bauer uses a slightly different definition of $\delta$-systems.
 \end{proof}
 
 Another source of motivation comes from the following result about finite measures which is important when proving uniqueness of properties of finite or $\sigma$-finite measures, but will also be of interest to us below:
 
 \begin{lemma}
     \label{thm:finite-measures-agree-on-Dynkin}
-    Let $\mu$ and $\nu$ be finite measures on a measurable space $(X,\calE)$ such that $\mu(X) = \nu(X)$. The family $\calD \subseteq \calE$ of sets on which $\mu$ and $\nu$ agree is a Dynkin system.
+    Let $\mu$ and $\nu$ be finite measures on a measurable space $(X,\calE)$ such that $\mu(X) = \nu(X)$. The family $\calD \subseteq \calE$ of sets on which $\mu$ and $\nu$ agree is a $\delta$-system.
 \end{lemma}
 
 \begin{proof}
@@ -1015,10 +1019,10 @@ Another source of motivation comes from the following result about finite measur
             = \nu \Bigl( \bigunion_{n\in\naturals} A_n \Bigr).
     \end{equation*}
     %
-    Thus $\calD$ is a Dynkin system as claimed.
+    Thus $\calD$ is a $\delta$-system as claimed.
 \end{proof}
 
-Our motivation for considering Dynkin systems, however, is the following result:
+Our motivation for considering $\delta$-systems, however, is the following result:
 
 \begin{proposition}
     \label{thm:Dynkin-independence}
