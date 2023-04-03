@@ -1,5 +1,5 @@
 % Document setup
-\documentclass[article, a4paper, 11pt, oneside]{memoir}
+\documentclass[a4paper, 11pt, oneside]{memoir}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[UKenglish]{babel}
@@ -14,24 +14,25 @@
 \usepackage[final]{microtype}
 \usepackage{xcolor}
 \frenchspacing
-\usepackage{latex-sty/articlepagestyle}
-\usepackage{latex-sty/articlesectionstyle}
+\usepackage{latex-sty/sfarticlepagestyle}
+\usepackage{latex-sty/sfarticlesectionstyle}
 
 % Fonts
-\usepackage{amssymb}
-\usepackage[largesmallcaps,partialup]{kpfonts}
+\usepackage[largesmallcaps]{kpfonts}
+\usepackage{biolinum}
+% \usepackage{libertine}
+% \usepackage[libertine]{newtxmath}
 \DeclareSymbolFontAlphabet{\mathrm}{operators} % https://tex.stackexchange.com/questions/40874/kpfonts-siunitx-and-math-alphabets
 \linespread{1.06}
-% \let\mathfrak\undefined
-% \usepackage{eufrak}
-\DeclareMathAlphabet\mathfrak{U}{euf}{m}{n}
-\SetMathAlphabet\mathfrak{bold}{U}{euf}{b}{n}
-% https://tex.stackexchange.com/questions/13815/kpfonts-with-eufrak
+\let\mathfrak\undefined
+\usepackage{eufrak}
 \usepackage{inconsolata}
+% \usepackage{amssymb}
 
 % Hyperlinks
 \usepackage{hyperref}
-\definecolor{linkcolor}{HTML}{4f4fa3}
+% \definecolor{linkcolor}{HTML}{4f4fa3}
+\definecolor{linkcolor}{HTML}{6b6bb3}
 \hypersetup{%
 	pdftitle=\doctitle,
 	pdfauthor=\docauthor,
@@ -50,7 +51,13 @@
 
 % Mathematics
 \usepackage{latex-sty/basicmathcommands}
-\usepackage{latex-sty/framedtheorems}
+% \usepackage{latex-sty/mdtheoremfix}
+\usepackage[new]{latex-sty/framedtheorems}
+\usepackage{latex-sty/theoremrefs}
+\definecolor{chaptercolor}{HTML}{6b6bb3}
+% \definecolor{titlecolor}{HTML}{61496b}
+% \definecolor{backgroundcolor}{HTML}{fbf2ff}
+\usepackage{latex-sty/topologycommands}
 \usepackage{latex-sty/probabilitycommands}
 \usepackage{tikz-cd}
 \tikzcdset{arrow style=math font} % https://tex.stackexchange.com/questions/300352/equalities-look-broken-with-tikz-cd-and-math-font
@@ -122,6 +129,8 @@
 \begin{document}
 
 \maketitle
+\thispagestyle{empty}
+
 
 \chapter{Introduction}
 
