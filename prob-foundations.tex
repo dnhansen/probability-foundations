@@ -1047,6 +1047,22 @@ Our motivation for considering Dynkin systems, however, is the following result:
 \end{proof}
 
 
+\begin{proposition}[Combining $\sigma$-algebras]
+    \label{prop:combining-sigma-algebras}
+    Let $(\calC_i)_{i \in I}$ be an independent family of $\intersect$-stable sets $\calC_i \subseteq \calF$, and let $(I_j)_{j \in J}$ be a partition of $I$. If $\calG_j = \sigma( \bigunion_{i \in I_j} \calC_i)$, then $(\calG_j)_{j \in J}$ is independent.
+\end{proposition}
+
+\begin{proof}
+    Let $\tilde{\calC}_j$ denote the collection of sets
+    %
+    \begin{equation*}
+        A_{i_1} \intersect \cdots \intersect A_{i_n},
+    \end{equation*}
+    %
+    where $i_1, \ldots, i_n$ are distinct elements from $I_j$, and $A_{i_\nu} \in \calC_{i_\nu}$. Then $\tilde{\calC}_j$ is $\intersect$-stable, and the family $(\tilde{\calC}_j)_{j \in I_j}$ is independent. We clearly have $\calG_j = \sigma(\tilde{\calC}_j)$, so \cref{thm:Dynkin-independence} implies that $(\calG_j)_{j \in J}$ is independent.
+\end{proof}
+
+
 \section[Sigma-algebras and information][$\sigma$-algebras and information]{$\sigma$-algebras and information}
 
 We interpret \cref{thm:Dynkin-independence} as follows: Say that we are interested in an event $A \in \calC_1$. The independence of $\calC_1$ and $\calC_2$ tells us that no single event $B \in \calC_2$ can provide us with information about $A$. The result above then implies that neither can any event in $\delta(\calC_2)$. In particular, taking complements and increasing countable unions cannot give us information that was available in a single event in $\calC_2$ to begin with.
@@ -1098,6 +1114,55 @@ To show that we cannot indiscriminately think of $\sigma$-algebras as informatio
 
     Of course this example is rather artificial (indeed $\calG$ is not even countably generated, and $\lambda$ restricted to $\calG$ is also almost trivial), and it should not be seen as prohibiting the interpretation of $\sigma$-algebras as information entirely.
 \end{example}
+
+
+\section{Kolmogorov's 0-1 law}
+
+Let $\calF$ be a $\sigma$-algebra, and let $(\calF_n)_{n \in \naturals}$ be a sequence of $\sigma$-algebras contained in $\calF$. For $n \in \naturals$ define $\sigma$-algebras
+%
+\begin{equation*}
+    \calT_n
+        = \bigjoin_{i \leq n} \calF_i
+        = \sigma \Bigl( \bigunion_{i \leq n} \calF_i \Bigr)
+    \quad \text{and} \quad
+    \calT^n
+        = \bigjoin_{n < i} \calF_i
+        = \sigma \Bigl( \bigunion_{n < i} \calF_i \Bigr),
+\end{equation*}
+%
+and further define
+%
+\begin{equation*}
+    \calT_\infty
+        = \bigjoin_{n \in \naturals} \calT_n
+        = \sigma \Bigl( \bigunion_{n \in \naturals} \calT_n \Bigr)
+    \quad \text{and} \quad
+    \calT^\infty
+        = \bigmeet_{n \in \naturals} \calT^n
+        = \bigintersect_{n \in \naturals} \calT^n.
+\end{equation*}
+%
+We call $\calT_n$ the \emph{past of $\calF_n$} and $\calT^n$ the \emph{future of $\calF_n$}, and we furthermore call $\calF^\infty$ the \emph{total history} and $\calT^\infty$ the \emph{ultimative future} or the \emph{tail-$\sigma$-algebra} of the sequence $(\calF_n)$. Notice that $\calT^\infty \subseteq \calT^1 \subseteq \calT_\infty$, where the last inclusion follows since $\calF_i \subseteq \calT_{i+1} \subseteq \calT_\infty$ for all $i \in \naturals$.
+
+
+\begin{lemma}
+    \label{lem:tail-sigma-algebra-independence}
+    In the notation above, if the sequence $(\calF_n)$ is independent, then for each $n \in \naturals \union \{\infty\}$ the $\sigma$-algebras $\calT_n$ and $\calT^n$ are independent.
+\end{lemma}
+
+\begin{proof}
+    This follows from \cref{prop:combining-sigma-algebras} for $n \in \naturals$, and hence $\calT_n$ and $\calT^\infty$ are also independent. Now notice that $\tilde{\calT} = \bigunion_{n \in \naturals} \calT_n$ is $\intersect$-stable: For if $A,B \in \tilde{\calT}$, then since the sequence $(\calT_n)_{n \in \naturals}$ is increasing, $A$ and $B$ lie in a common $\calT_n$, and this is obviously $\intersect$-stable. But since $\tilde{\calT}$ and $\calT^\infty$ are independent, it follows from \cref{thm:Dynkin-independence} that $\calT_\infty = \sigma(\tilde{\calT})$ and $\calT^\infty$ are also independent.
+\end{proof}
+
+
+\begin{theorem}[Kolmogorov's 0-1 law]
+    Let $(\Omega,\calF,P)$ be a probability space, and let $(\calF_n)_{n \in \naturals}$ be an independent sequence of $\sigma$-algebras $\calF_n \subseteq \calF$. Then $P(A) \in \{0,1\}$ for all $A \in \calT^\infty$.
+\end{theorem}
+
+\begin{proof}
+    Recall that $\calT^\infty \subseteq \calT_\infty$. Then $A \in \calT_\infty$, so \cref{lem:tail-sigma-algebra-independence} implies that $A$ is independent of itself. The claim follows.
+\end{proof}
+
 
 
 \section{Random variables}
