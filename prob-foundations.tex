@@ -112,6 +112,8 @@
 % Add to basicmathcommands.sty
 \renewcommand{\symdiff}{\mathbin{\triangle}}
 
+\newcommand{\keyword}[1]{{\itshape\bfseries #1}}
+
 
 \begin{document}
 
@@ -172,7 +174,7 @@ We begin by reviewing some of the purely algebraic properties of Boolean algebra
 
 \begin{definition}[Boolean algebras]
     \label{def:Boolean-algebra}
-    A \emph{Boolean algebra} is a structure $\langle B; \join, \meet, ', 0, 1 \rangle$ such that
+    A \keyword{Boolean algebra} is a structure $\langle B; \join, \meet, ', 0, 1 \rangle$ such that
     %
     \begin{enumdef}
         \item $\langle B; \join, \meet \rangle$ is a distributive lattice,
@@ -181,11 +183,11 @@ We begin by reviewing some of the purely algebraic properties of Boolean algebra
     \end{enumdef}
 \end{definition}
 %
-The binary operations $\join$ and $\meet$ are called \emph{join} and \emph{meet}, respectively. For $x \in B$ the element $x'$ is called the \emph{complement} of $x$. In a general bounded lattice $L$, an element $y \in L$ such that $x \join y = 1$ and $x \meet y = 0$ is called a complement of $x \in L$. If $L$ is distributive, complements are unique. Recall also that the lattice structure on $B$ induces a partial order $\leq$ such that $x \leq y$ if and only if $x \join y = y$ for $x,y \in B$.
+The binary operations $\join$ and $\meet$ are called \keyword{join} and \keyword{meet}, respectively. For $x \in B$ the element $x'$ is called the \keyword{complement} of $x$. In a general bounded lattice $L$, an element $y \in L$ such that $x \join y = 1$ and $x \meet y = 0$ is called a complement of $x \in L$. If $L$ is distributive, complements are unique. Recall also that the lattice structure on $B$ induces a partial order $\leq$ such that $x \leq y$ if and only if $x \join y = y$ for $x,y \in B$.
 
-If $x \meet y = 0$, then $x$ and $y$ are said to be \emph{disjoint}. A collection $\{x_i\}_{i \in I}$ of elements in $B$ is called \emph{pairwise disjoint} if $x_i$ and $x_j$ are disjoint for any choice of indices $i \neq j$.
+If $x \meet y = 0$, then $x$ and $y$ are said to be \keyword{disjoint}. A collection $\{x_i\}_{i \in I}$ of elements in $B$ is called \keyword{pairwise disjoint} if $x_i$ and $x_j$ are disjoint for any choice of indices $i \neq j$.
 
-Let $B$ be a Boolean algebra. For $x,y \in B$ we define the \emph{symmetric difference} between $x$ and $y$ by
+Let $B$ be a Boolean algebra. For $x,y \in B$ we define the \keyword{symmetric difference} between $x$ and $y$ by
 %
 \begin{equation*}
     x \symdiff y
@@ -251,7 +253,7 @@ Before proceeding we note the following technical result that we shall need late
 \section{Abstract measure spaces}
 
 \begin{definition}[Generalised abstract measure spaces]
-    A \emph{measure} on a Boolean algebra $B$ is a map $\mu \colon B \to [0,\infty)$ such that
+    A \keyword{measure} on a Boolean algebra $B$ is a map $\mu \colon B \to [0,\infty)$ such that
     %
     \begin{equation}
         \label{eq:finite-additivity}
@@ -259,12 +261,12 @@ Before proceeding we note the following technical result that we shall need late
             = \mu(x) + \mu(y)
     \end{equation}
     %
-    for all disjoint $x,y \in B$. If $\mu$ is a measure on a Boolean algebra $B$, then we call the pair $(B,\mu)$ a \emph{generalised abstract measure space}. If $x \neq 0$ implies that $\mu(x) > 0$, then $\mu$ is called \emph{positive definite}. If $\mu(1) = 1$, then we call $\mu$ a \emph{probability measure}.
+    for all disjoint $x,y \in B$. If $\mu$ is a measure on a Boolean algebra $B$, then we call the pair $(B,\mu)$ a \keyword{generalised abstract measure space}. If $x \neq 0$ implies that $\mu(x) > 0$, then $\mu$ is called \keyword{positive definite}. If $\mu(1) = 1$, then we call $\mu$ a \keyword{probability measure}.
 \end{definition}
 %
 It is clear that $\mu(\emptyset) = 0$ and that $\mu$ is increasing. It follows that $\mu(x) \leq \mu(1)$ for all $x \in B$. Notice that we require that $\mu$ is finite, but this is no restriction since we are ultimately interested in the case where $\mu$ is a probability measure. % I don't think we need to assume finiteness. Get back to this. -- We need it for the metric, but we can just replace the (possibly infinite) metric by an equivalent finite one.
 
-The property \cref{eq:finite-additivity} is called \emph{(finite) additivity} of $\mu$, since an easy induction argument extends it to all finite joins. We will later define more restrictive structures and measures upon them, hence the adjective \enquote{generalised}.
+The property \cref{eq:finite-additivity} is called \keyword{(finite) additivity} of $\mu$, since an easy induction argument extends it to all finite joins. We will later define more restrictive structures and measures upon them, hence the adjective \enquote{generalised}.
 
 \begin{proposition}[Boole's inequality]
     Let $(B,\mu)$ be a generalised abstract measure space. Then for any $x,y \in B$ we have
@@ -304,9 +306,9 @@ Similar to \cref{eq:finite-additivity}, Boole's inequality may be extended to al
 
 
 \begin{definition}[Metric Boolean algebras]
-    A \emph{pseudometric Boolean algebra} is a tuple $(B,\rho)$, where $B$ is a Boolean algebra and $\rho$ is a pseudometric on $B$ such that the maps $x \mapsto x'$, $(x,y) \mapsto x \join y$, and $(x,y) \mapsto x \meet y$ are continuous.
+    A \keyword{pseudometric Boolean algebra} is a tuple $(B,\rho)$, where $B$ is a Boolean algebra and $\rho$ is a pseudometric on $B$ such that the maps $x \mapsto x'$, $(x,y) \mapsto x \join y$, and $(x,y) \mapsto x \meet y$ are continuous.
 
-    If $\rho$ is a metric, then $(B,\rho)$ is called a \emph{metric Boolean algebra}.
+    If $\rho$ is a metric, then $(B,\rho)$ is called a \keyword{metric Boolean algebra}.
 \end{definition}
 
 Next we equip generalised abstract measure spaces with a canonical pseudometric. If $(B,\mu)$ is a generalised abstract measure space, define a map $\rho_\mu \colon B \times B \to [0,\infty)$ by
@@ -419,7 +421,7 @@ This takes care of the metric structure. The next proposition shows that we can 
         \altoverline{\mu}(x) = \lim_{n\to\infty} \mu(x_n),
     \end{equation}
     %
-    where $(x_n)_{n\in\naturals}$ is any sequence in $B$ that converges to $x$. Then $\altoverline{\mu}$ is a well-defined measure on $\altoverline{B}$. The generalised abstract measure space $(\altoverline{B}, \altoverline{\mu})$ is called the \emph{completion} of $(B,\mu)$.
+    where $(x_n)_{n\in\naturals}$ is any sequence in $B$ that converges to $x$. Then $\altoverline{\mu}$ is a well-defined measure on $\altoverline{B}$. The generalised abstract measure space $(\altoverline{B}, \altoverline{\mu})$ is called the \keyword{completion} of $(B,\mu)$.
 \end{proposition}
 
 \begin{proof}
@@ -524,7 +526,7 @@ This takes care of the metric structure. The next proposition shows that we can 
 \section[Abstract sigma-algebras and continuity][Abstract $\sigma$-algebras and continuity]{Abstract $\sigma$-algebras and continuity}
 
 \begin{definition}[Axiom of continuity]
-    A generalised abstract measure space $(B, \mu)$ is said to satisfy the \emph{axiom of continuity} if it has the following property: If $(x_n)_{n\in\naturals}$ is a decreasing sequence of elements in $B$ such that $\bigmeet_{n\in\naturals} x_n$ exists and equals $0$, then $\lim_{n\to\infty} \mu(x_n) = 0$.
+    A generalised abstract measure space $(B, \mu)$ is said to satisfy the \keyword{axiom of continuity} if it has the following property: If $(x_n)_{n\in\naturals}$ is a decreasing sequence of elements in $B$ such that $\bigmeet_{n\in\naturals} x_n$ exists and equals $0$, then $\lim_{n\to\infty} \mu(x_n) = 0$.
 \end{definition}
 %
 This is an analogue of the continuity (from above) of ordinary countably additive measures on concrete $\sigma$-algebras.
@@ -607,14 +609,14 @@ Of course, the join of a sequence of elements may not exist. In the case where w
 
 \begin{definition}[Abstract $\sigma$-algebra]
     \label{def:abstract-sigma-algebra}
-    An \emph{abstract $\sigma$-algebra} is a Boolean algebra $B$ with countable joins. That is, if $(x_n)_{n\in\naturals}$ is a sequence of elements in $B$, then their join $\bigjoin_{n\in\naturals} x_n$ exists.
+    An \keyword{abstract $\sigma$-algebra} is a Boolean algebra $B$ with countable joins. That is, if $(x_n)_{n\in\naturals}$ is a sequence of elements in $B$, then their join $\bigjoin_{n\in\naturals} x_n$ exists.
 \end{definition}
 %
 If the join $\bigjoin_{n\in\naturals} x_n$ exists, then it follows by taking complements that the meet $\bigmeet_{n\in\naturals} x_n'$ also exists. Hence an abstract $\sigma$-algebra also has countable meets. In the context of abstract measure spaces we obtain the following:
 
 \begin{definition}[Abstract measure spaces]
     \label{def:abstract-measure-space}
-    An \emph{abstract measure space} is a generalised abstract measure space $(B,\mu)$ that satisfies the axiom of continuity, and where $B$ is an abstract $\sigma$-algebra.
+    An \keyword{abstract measure space} is a generalised abstract measure space $(B,\mu)$ that satisfies the axiom of continuity, and where $B$ is an abstract $\sigma$-algebra.
 \end{definition}
 
 \begin{lemma}
@@ -639,18 +641,18 @@ If the join $\bigjoin_{n\in\naturals} x_n$ exists, then it follows by taking com
 
 If the probability of an event is supposed to be a measure of how often this event occurs on repetitions of the random experiment in question, then it seems reasonable to assume that we are, at least in principle, able to distinguish when the event does and does not obtain. For example, after rolling a six-sided die the state of affairs \enquote{the result of the die roll is three} is an event, since we can determine the outcome of the roll just by looking at the die. To take another example, after throwing a ball the state of affairs \enquote{the ball was thrown further than 50 metres} is also an event: That is, we can determine whether or not the length of the throw was strictly greater than 50 metres.
 
-One might take a different view: Say that one grants that it is possible to \emph{affirm} that the length of the throw, measured in metres, lies in the interval $(50,\infty)$. If the length $L$ in metres does in fact lie in the above interval, we can simply use a ruler whose subdivisions are smaller than $L - 50$ in metres. Still one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smaller), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \emph{logic of affirmative assertions}.
+One might take a different view: Say that one grants that it is possible to \emph{affirm} that the length of the throw, measured in metres, lies in the interval $(50,\infty)$. If the length $L$ in metres does in fact lie in the above interval, we can simply use a ruler whose subdivisions are smaller than $L - 50$ in metres. Still one might disagree that it is possible to \emph{refute} that $L \in (50, \infty)$. For if $L$ is exactly $50$ metres, then since any measurement of $L$ carries some error, it is in practice impossible to determine whether $L$ is $50$ (or slightly smaller), or whether it is slightly larger than $50$. We will not pursue this line further but refer the reader to \textcite{vickers1989} for more on this \keyword{logic of affirmative assertions}.
 
-To be precise, after performing the relevant random experiment, we will assume that we are always able to decide whether or not the event has occurred or not. In particular, if $E$ is an event, then the state of affairs \textquote{$E$ does not obtain} is also an event, denoted $\compl{E}$: If $E$ obtains, then $\compl{E}$ does not. And conversely, if $E$ does not obtain, then $\compl{E}$ does obtain. We call $\compl{E}$ the \emph{complement of} or the \emph{complementary event to $E$}.\footnote{In contrast, in the logic of affirmative assertions we do not allow complementation (i.e. negation). Hence it may not be surprising that this logic ends up being closely tied to topology, the relevant analogy being that the complement of an open set need not be open.} Evidently, the complement of a complement is just the event we started with.
+To be precise, after performing the relevant random experiment, we will assume that we are always able to decide whether or not the event has occurred or not. In particular, if $E$ is an event, then the state of affairs \textquote{$E$ does not obtain} is also an event, denoted $\compl{E}$: If $E$ obtains, then $\compl{E}$ does not. And conversely, if $E$ does not obtain, then $\compl{E}$ does obtain. We call $\compl{E}$ the \keyword{complement of} or the \keyword{complementary event to $E$}.\footnote{In contrast, in the logic of affirmative assertions we do not allow complementation (i.e. negation). Hence it may not be surprising that this logic ends up being closely tied to topology, the relevant analogy being that the complement of an open set need not be open.} Evidently, the complement of a complement is just the event we started with.
 
-Next consider two events $E_1$ and $E_2$. Since we are able to decide whether each of them have obtained, the same is true for the event \textquote{both $E_1$ and $E_2$ have obtained} and the event \textquote{at least one of $E_1$ and $E_2$ has obtained}. The first is called the \emph{conjunction} of $E_1$ and $E_2$ and is denoted $E_1 \meet E_2$, and the second is the \emph{disjunction} $E_1 \join E_2$ of $E_1$ and $E_2$.
+Next consider two events $E_1$ and $E_2$. Since we are able to decide whether each of them have obtained, the same is true for the event \textquote{both $E_1$ and $E_2$ have obtained} and the event \textquote{at least one of $E_1$ and $E_2$ has obtained}. The first is called the \keyword{conjunction} of $E_1$ and $E_2$ and is denoted $E_1 \meet E_2$, and the second is the \keyword{disjunction} $E_1 \join E_2$ of $E_1$ and $E_2$.
 
-Finally it seems natural to allow an \textquote{impossible event} $0$ which never occurs, as well as a \textquote{sure event} $1$ that always occurs. Clearly $0$ and $1$ are each other's complements. If $E_1$ and $E_2$ are events with $E_1 \meet E_2 = 0$, then this manifestly means that $E_1$ and $E_2$ cannot obtain simultaneously: The two events are \emph{incompatible}.
+Finally it seems natural to allow an \textquote{impossible event} $0$ which never occurs, as well as a \textquote{sure event} $1$ that always occurs. Clearly $0$ and $1$ are each other's complements. If $E_1$ and $E_2$ are events with $E_1 \meet E_2 = 0$, then this manifestly means that $E_1$ and $E_2$ cannot obtain simultaneously: The two events are \keyword{incompatible}.
 
 We collect all the relevant events in a set $\calF$ and postulate that the structure $\langle \calF; \join, \meet, \compl{\,\cdot\,\vphantom{e}}, 0, 1 \rangle$ is a Boolean algebra. We leave it to the reader to reflect on the reasonability of this assumption. This leads naturally to the following definition:
 
 \begin{definition}[Generalised abstract probability spaces]
-    A \emph{generalised abstract probability space} is a generalised abstract measure space $(\calF, \P)$, where $\P$ is a positive definite probability measure.
+    A \keyword{generalised abstract probability space} is a generalised abstract measure space $(\calF, \P)$, where $\P$ is a positive definite probability measure.
 \end{definition}
 %
 The partial order $\leq$ induced by the lattice structure then has the interpretation that if $E \leq F$, then $E$ implies $F$. For recall that this means that $E \join F = F$, i.e. if $F$ has already occurred then no information is gained by observing that $E$ has also occurred. Conversely, if $F$ has \emph{not} occurred, then $E$ is impossible.
@@ -709,7 +711,7 @@ We summarise the result of the above discussion in the following definition, whi
 
 \begin{definition}[Abstract probability spaces]
     \label{def:abstract-probability-space}
-    An \emph{abstract probability space} is a generalised abstract probability space $(\calF, \P)$, where $\calF$ is an abstract $\sigma$-algebra.
+    An \keyword{abstract probability space} is a generalised abstract probability space $(\calF, \P)$, where $\calF$ is an abstract $\sigma$-algebra.
 \end{definition}
 
 
@@ -720,7 +722,7 @@ We summarise the result of the above discussion in the following definition, whi
 We begin by recalling the standard definitions in order to compare them to the abstract versions we have considered above:
 
 \begin{definition}[Measurable spaces]
-    A \emph{(concrete) $\sigma$-algebra} in a set $\Omega$ is a collection $\calF$ of subsets of $\Omega$ such that
+    A \keyword{(concrete) $\sigma$-algebra} in a set $\Omega$ is a collection $\calF$ of subsets of $\Omega$ such that
     %
     \begin{enumdef}
         \item $\Omega \in \calF$,
@@ -728,14 +730,14 @@ We begin by recalling the standard definitions in order to compare them to the a
         \item if $(A_n)_{n\in\naturals}$ is a sequence in $\calF$, then $\bigunion_{n\in\naturals} A_n \in \calF$.
     \end{enumdef}
     %
-    The sets in $\calF$ are called \emph{$\calF$-measurable}, and the pair $(\Omega, \calF)$ is called a \emph{measurable space}.
+    The sets in $\calF$ are called \keyword{$\calF$-measurable}, and the pair $(\Omega, \calF)$ is called a \keyword{measurable space}.
 \end{definition}
 %
 Note that a $\sigma$-algebra by this definition is indeed an \emph{abstract} $\sigma$-algebra in the sense of \cref{def:abstract-sigma-algebra}. Also contrast the definition of a $\sigma$-algebra with that of a \emph{set algebra}: in the latter case we also require it to contain $\Omega$ and be closed under complementation, but we only require it to be closed under \emph{finite} unions. In particular a set algebra is a Boolean algebra.
 
 
 \begin{definition}[Measure spaces and probability spaces]
-    Let $(\Omega, \calF)$ be a measurable space. A \emph{measure} on $(\Omega, \calF)$ is a map $\mu \colon \calF \to [0,\infty]$ such that
+    Let $(\Omega, \calF)$ be a measurable space. A \keyword{measure} on $(\Omega, \calF)$ is a map $\mu \colon \calF \to [0,\infty]$ such that
     %
     \begin{enumdef}
         \item $\mu(\emptyset) = 0$, and
@@ -747,7 +749,7 @@ Note that a $\sigma$-algebra by this definition is indeed an \emph{abstract} $\s
         \end{equation*}
     \end{enumdef}
     %
-    The triple $(\Omega, \calF, \mu)$ is called a \emph{(concrete) measure space}. If $\mu(\Omega) = 1$ then $\mu$ is called a \emph{probability measure} and the triple $(\Omega, \calF, \mu)$ a \emph{(concrete) probability space}.
+    The triple $(\Omega, \calF, \mu)$ is called a \keyword{(concrete) measure space}. If $\mu(\Omega) = 1$ then $\mu$ is called a \keyword{probability measure} and the triple $(\Omega, \calF, \mu)$ a \keyword{(concrete) probability space}.
 \end{definition}
 %
 Again, if $(\Omega, \calF, \mu)$ is a measure space thus defined, then $(\calF, \mu)$ is also an \emph{abstract} measure space of the type considered in \cref{def:abstract-measure-space}. However, even if $\mu$ is a probability measure, $(\calF, \mu)$ is not necessarily an \emph{abstract} probability space as defined in \cref{def:abstract-probability-space}.
@@ -795,7 +797,7 @@ Recall that we in \cref{thm:completion-gives-countable-additivity} proved that t
 % Kolmogorov, now introduces axiom of continuity. Premeasures and Caratheodory, no issue if we assume the axiom! Conceptual reasons for assuming this?
 % Rename section, perhaps something about continuity.
 
-We begin with the latter: Let $\calA$ be an algebra on a set $\Omega$, and let $\mu_0 \colon \calA \to [0,\infty]$ be a \emph{premeasure} on $\calA$. Recall that this means that $\mu_0(\emptyset) = 0$, and that
+We begin with the latter: Let $\calA$ be an algebra on a set $\Omega$, and let $\mu_0 \colon \calA \to [0,\infty]$ be a \keyword{premeasure} on $\calA$. Recall that this means that $\mu_0(\emptyset) = 0$, and that
 %
 \begin{equation*}
     \mu_0 \Bigl( \bigunion_{n\in\naturals} A_n \Bigr)
@@ -846,7 +848,7 @@ Thus we arrive at the usual conception of a probability space as a measure space
 \section{Conditional probability and independence}
 \label{sec:independence}
 
-Let $(\Omega,\calF,\P)$ be a probability space. Given events $A,B \in \calF$ with $\P(B) > 0$, the \emph{conditional probability} of $A$ given $B$ is defined as
+Let $(\Omega,\calF,\P)$ be a probability space. Given events $A,B \in \calF$ with $\P(B) > 0$, the \keyword{conditional probability of $A$ given $B$} is defined as
 %
 \begin{equation*}
     \condP{A}{B}
@@ -883,7 +885,7 @@ That is, $A$ and $B$ are \emph{independent}:
 
 \begin{definition}[Independence I]
     \label{def:independence-1}
-    Let $I$ be a non-empty index set. A family $(A_i)_{i \in I}$ of events from $\calF$ is called \emph{independent} relative to $\P$ if
+    Let $I$ be a non-empty index set. A family $(A_i)_{i \in I}$ of events from $\calF$ is called \keyword{independent} relative to $\P$ if
     %
     \begin{equation*}
         \P \Bigl( \bigintersect_{\nu = 1}^n A_{i_\nu} \Bigr)
@@ -916,7 +918,7 @@ We may generalise this definition of independence in the following way:
 
 \begin{definition}[Independence II]
     \label{def:independence-2}
-    Let $(\calC_i)_{i \in I}$ be a family of sets $\calC_i \subseteq \calF$ of events. This family is called \emph{independent} relative to $\P$ if
+    Let $(\calC_i)_{i \in I}$ be a family of sets $\calC_i \subseteq \calF$ of events. This family is called \keyword{independent} relative to $\P$ if
     %
     \begin{equation*}
         \P \Bigl( \bigintersect_{\nu = 1}^n A_{i_\nu} \Bigr)
@@ -960,7 +962,7 @@ Given that $\calC_1$ and $\calC_2$ are independent, is there any more we can say
 As for unions and complementation, we have slightly more success. To do this discussion justice we introduce another piece of terminology:
 
 \begin{definition}[Dynkin systems]
-    A collection $\calD$ of subsets of a set $X$ is called a \emph{Dynkin system} in $X$ if
+    A collection $\calD$ of subsets of a set $X$ is called a \keyword{Dynkin system} in $X$ if
     %
     \begin{enumdef}
         \item $X \in \calD$,
@@ -969,7 +971,7 @@ As for unions and complementation, we have slightly more success. To do this dis
     \end{enumdef}
 \end{definition}
 %
-A Dynkin system is also variously called a Dynkin class, $\delta$-system, $d$-system, or $\lambda$-system. Clearly every $\sigma$-algebra is a Dynkin system. If $\calS$ is a collection of subsets of $X$, then there is a smallest Dynkin system in $X$ that contains $\calS$, namely the intersection of all such Dynkin systems. We denote this by $\delta(\calS)$ and say that it is \emph{generated} by $\calS$.
+A Dynkin system is also variously called a Dynkin class, $\delta$-system, $d$-system, or $\lambda$-system. Clearly every $\sigma$-algebra is a Dynkin system. If $\calS$ is a collection of subsets of $X$, then there is a smallest Dynkin system in $X$ that contains $\calS$, namely the intersection of all such Dynkin systems. We denote this by $\delta(\calS)$ and say that it is \keyword{generated} by $\calS$.
 
 The motivation for considering Dynkin systems is twofold. First of all they are significantly simpler than $\sigma$-algebras, and working with Dynkin systems instead of $\sigma$-algebras can often we done with no loss of generality, as the following fundamental result shows:
 
@@ -981,7 +983,7 @@ The motivation for considering Dynkin systems is twofold. First of all they are 
     \end{equation*}
 \end{theorem}
 %
-Also known as \emph{Dynkin's $\pi$-$\lambda$ theorem} since a non-empty collection of sets that is closed under finite intersections is also called a $\pi$-system.
+Also known as \keyword{Dynkin's $\pi$-$\lambda$ theorem} since a non-empty collection of sets that is closed under finite intersections is also called a $\pi$-system.
 
 \begin{proof}
     \textcite[Theorem~1.6.2]{cohn2001}. See also \textcite[Theorem~2.3]{bauer2001}, though note that Bauer uses a slightly different definition of Dynkin systems.
@@ -1074,9 +1076,9 @@ In some sense then, if $\calA$ is a set algebra (so in particular $\calA$ is clo
 To further probe the interpretation of $\sigma$-algebras as information, we introduce the following terminology:
 
 \begin{definition}
-    Let $\calC$ be a collection of subsets of a set $\Omega$. We say that points $\omega, \omega' \in \Omega$ are \emph{$\calC$-equivalent} if, for every $A \in \calC$, they both lie in $A$ or $A^c$, i.e. if $\indicator{A}(\omega) = \indicator{A}(\omega')$. In this case we write $\omega \sim_\calC \omega'$.
+    Let $\calC$ be a collection of subsets of a set $\Omega$. We say that points $\omega, \omega' \in \Omega$ are \keyword{$\calC$-equivalent} if, for every $A \in \calC$, they both lie in $A$ or $A^c$, i.e. if $\indicator{A}(\omega) = \indicator{A}(\omega')$. In this case we write $\omega \sim_\calC \omega'$.
 
-    The relation $\sim_\calC$ induces a partition of $\Omega$ called the \emph{$\calC$-partition}.
+    The relation $\sim_\calC$ induces a partition of $\Omega$ called the \keyword{$\calC$-partition}.
 \end{definition}
 %
 Another way to put this is that $\omega$ and $\omega'$ lie in all the same sets in $\calC$. Compare this with the \emph{topological indistinguishability} relation from point-set topology: Two points $x,y$ in a topological space $(X,\calT)$ are called topologically indistinguishable if they have all the same (open) neighbourhoods, i.e. if every open set either contains both $x$ and $y$ or contains neither. This is then the same as $x$ and $y$ being $\calT$-equivalent, or in the notation above, $x \sim_\calT y$.
@@ -1142,7 +1144,7 @@ and further define
         = \bigintersect_{n \in \naturals} \calT^n.
 \end{equation*}
 %
-We call $\calT_n$ the \emph{past of $\calF_n$} and $\calT^n$ the \emph{future of $\calF_n$}, and we furthermore call $\calF^\infty$ the \emph{total history} and $\calT^\infty$ the \emph{ultimative future} or the \emph{tail-$\sigma$-algebra} of the sequence $(\calF_n)$. Notice that $\calT^\infty \subseteq \calT^1 \subseteq \calT_\infty$, where the last inclusion follows since $\calF_i \subseteq \calT_{i+1} \subseteq \calT_\infty$ for all $i \in \naturals$.
+We call $\calT_n$ the \keyword{past of $\calF_n$} and $\calT^n$ the \keyword{future of $\calF_n$}, and we furthermore call $\calF^\infty$ the \keyword{total history} and $\calT^\infty$ the \keyword{ultimative future} or the \keyword{tail-$\sigma$-algebra} of the sequence $(\calF_n)$. Notice that $\calT^\infty \subseteq \calT^1 \subseteq \calT_\infty$, where the last inclusion follows since $\calF_i \subseteq \calT_{i+1} \subseteq \calT_\infty$ for all $i \in \naturals$.
 
 
 \begin{lemma}
@@ -1174,9 +1176,9 @@ There are various ways of motivating the definition of measurability of function
 
 For random variables we do not have this luxury. Why should random variables be integrable? Why should random variables have anything to do with continuity? Hence we focus on the third point and try to explore what measurability means for random variables.
 
-We begin by fixing terminology and notation: If $(X,\calE)$ and $(Y,\calF)$ are measure spaces, a map $f \colon X \to Y$ is said to be \emph{$(\calE,\calF)$-measurable} if $f\preim(B) \in \calE$ for all $B \in \calF$. Denote by $\meas{\calE}$ the space of functions $X \to \reals$ that are $(\calE,\borel{X})$-measurable.
+We begin by fixing terminology and notation: If $(X,\calE)$ and $(Y,\calF)$ are measure spaces, a map $f \colon X \to Y$ is said to be \keyword{$(\calE,\calF)$-measurable} if $f\preim(B) \in \calE$ for all $B \in \calF$. Denote by $\meas{\calE}$ the space of functions $X \to \reals$ that are $(\calE,\borel{X})$-measurable.
 
-A \emph{random variable} on a probability space $(\Omega,\calF,\P)$ is a function in $\meas{\calF}$. If a random variable $\rvar{X} \colon \Omega \to \reals$ is measurable, then in particular
+A \keyword{random variable} on a probability space $(\Omega,\calF,\P)$ is a function in $\meas{\calF}$. If a random variable $\rvar{X} \colon \Omega \to \reals$ is measurable, then in particular
 %
 \begin{equation*}
     \{ \rvar{X} = x \}
@@ -1288,7 +1290,7 @@ If $(\Omega, \calF, \P)$ is a probability space, then we have seen that we, at l
 
 But what happens if we do not have access to all the information in $\calF$, but only to the information in some sub-$\sigma$-algebra $\calB \subseteq \calF$? If $\rvar{X}$ is not $\calB$-measurable, then there is some $a \in \rationals$ (since the intervals with rational endpoints generate $\borel{\reals}$) such that we cannot even tell whether $\rvar{X} < a$ or not. We wish to construct a random variable that in some sense is the best approximation of $\rvar{X}$, using only the information in $\calB$.
 
-First let $B \in \calB$ be an event with $\P(B) > 0$. We define the \emph{conditional expectation of $\rvar{X}$ given $B$} by
+First let $B \in \calB$ be an event with $\P(B) > 0$. We define the \keyword{conditional expectation of $\rvar{X}$ given $B$} by
 %
 \begin{equation*}
     \condexp{\rvar{X}}{B}
@@ -1338,7 +1340,7 @@ Furthermore, it is an easy theorem (see e.g. \cite[Sætning~10.2.1]{thorbjoernse
     \label{def:conditional-expectation}
     Let $(\Omega, \calF, \P)$ be a probability space, let $\calB$ be a sub-$\sigma$-algebra of $\calF$, and let $\rvar{X} \in \calL^1(\P)$ be a random variable.
 
-    A \emph{conditional expectation of $\rvar{X}$ given $\calB$} is a random variable $\rvar{U}$ on $(\Omega, \calF, \P)$ such that
+    A \keyword{conditional expectation of $\rvar{X}$ given $\calB$} is a random variable $\rvar{U}$ on $(\Omega, \calF, \P)$ such that
     %
     \begin{enumdef}
         \item $\rvar{U} \in \calL^1(\P)$,
@@ -1460,7 +1462,7 @@ Recall that we in \cref{sec:independence} defined what it means for a collection
             \union \set{\rvar{X}_j}{j \in J}
     \end{equation*}
     %
-    is \emph{independent} if the corresponding collection
+    is \keyword{independent} if the corresponding collection
     %
     \begin{equation*}
         \set{\calC_i}{i \in I}
